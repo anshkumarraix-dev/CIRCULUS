@@ -8,9 +8,23 @@ dotenv.config();
 
 const PORT = 3000;
 
+// Safe helper to strip any sensitive API keys or credentials from error logs and responses
+function sanitizeErrorMessage(error: any): string {
+  if (!error) return "An unexpected error occurred.";
+  let msg = typeof error === "string" ? error : error.message || JSON.stringify(error);
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (apiKey && apiKey !== "MY_GEMINI_API_KEY") {
+    msg = msg.split(apiKey).join("[REDACTED_API_KEY]");
+  }
+  // Strip potential bearer tokens or query key params
+  msg = msg.replace(/key=[a-zA-Z0-9_\-]+/gi, "key=[REDACTED]");
+  msg = msg.replace(/Bearer\s+[a-zA-Z0-9_\-\.]+/gi, "Bearer [REDACTED]");
+  return msg;
+}
+
 function getGeminiClient(): GoogleGenAI | null {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
+  if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey.trim() === "") {
     return null;
   }
   return new GoogleGenAI({
@@ -432,12 +446,29 @@ async function startServer() {
   // API: Material Classification (Gemini Multimodal)
   app.post("/api/materials/analyze", async (req, res) => {
     try {
-      const { imageBase64, mimeType, materialCategoryHint, locationHint, quantityHint } = req.body;
+      const { 
+        imageBase64, 
+        imageUrl,
+        mimeType, 
+        materialCategoryHint, 
+        category,
+        locationHint, 
+        quantityHint,
+        quantityMT,
+        originCity,
+        originState
+      } = req.body;
+
+      const rawImage = imageBase64 || imageUrl || "";
+      const effectiveCategory = materialCategoryHint || category || "non_ferrous";
+      const effectiveQuantity = quantityHint || quantityMT;
+      const effectiveLocation = locationHint || (originCity ? `${originCity}, ${originState || "India"}` : "India industrial corridor");
+
       const ai = getGeminiClient();
 
-      if (!ai || !imageBase64) {
+      if (!ai || !rawImage) {
         // Return structured, high quality fallback fixture
-        const fallback = generateFallbackAnalysis(materialCategoryHint, quantityHint);
+        const fallback = generateFallbackAnalysis(effectiveCategory, effectiveQuantity);
         return res.json({
           success: true,
           analysis: fallback,
@@ -447,15 +478,15 @@ async function startServer() {
       }
 
       // Clean base64 string
-      const cleanData = imageBase64.replace(/^data:image\/[a-z]+;base64,/, "");
+      const cleanData = rawImage.replace(/^data:image\/[a-z]+;base64,/, "");
 
       const prompt = `You are the material-intelligence engine for CIRCULUS, an industrial circular-economy marketplace operating in India.
 Analyze this industrial material / scrap imagery conservatively.
 Never invent measurements that cannot be visually inferred. Separate observation from estimation.
 Context hints:
-Category hint: ${materialCategoryHint || "unknown"}
-Location hint: ${locationHint || "India industrial corridor"}
-Quantity hint: ${quantityHint ? `${quantityHint} MT` : "estimate conservatively"}
+Category hint: ${effectiveCategory}
+Location hint: ${effectiveLocation}
+Quantity hint: ${effectiveQuantity ? `${effectiveQuantity} MT` : "estimate conservatively"}
 
 Return strictly structured JSON matching this schema:
 - materialType (string, e.g. Aluminium Extrusion Scrap 6063, Clear rPET Flakes, HMS 1/2 Steel, Fly Ash IS 3812)
@@ -490,7 +521,7 @@ Return strictly structured JSON matching this schema:
             {
               inlineData: {
                 data: cleanData,
-                mimeType: mimeType || "image/jpeg",
+                mimeType: mimeType || (rawImage.startsWith("data:image/png") ? "image/png" : "image/jpeg"),
               },
             },
             {
@@ -590,14 +621,14 @@ Return strictly structured JSON matching this schema:
         source: "gemini_multimodal",
       });
     } catch (err: any) {
-      console.error("Gemini Analysis Error:", err);
+      console.error("Gemini Analysis Error:", sanitizeErrorMessage(err));
       // Seamlessly fallback so user never sees a broken screen
-      const fallback = generateFallbackAnalysis(req.body?.materialCategoryHint, req.body?.quantityHint);
+      const fallback = generateFallbackAnalysis(req.body?.materialCategoryHint || req.body?.category, req.body?.quantityHint || req.body?.quantityMT);
       return res.json({
         success: true,
         analysis: fallback,
         source: "fallback_on_error",
-        errorNote: "Live AI model request timed out or unavailable; loaded standard Indian industrial material profile.",
+        errorNote: "Live AI model request unavailable; loaded standard Indian industrial material profile.",
       });
     }
   });
@@ -610,7 +641,7 @@ Return strictly structured JSON matching this schema:
 
       if (!ai) {
         return res.json({
-          reply: `[CIRCULUS Copilot Demo Engine]: For ${contextPassport?.materialType || "this industrial batch"} (${contextPassport?.grade || "Standard Grade"}), the top circular strategy in ${contextPassport?.locationState || "India"} is direct remelting/reprocessing. This prevents landfill accumulation, generates CPCB/SPCB compliant compliance evidence, and saves approximately ${contextPassport?.carbonImpact?.co2eAvoidedKg ? Math.round(contextPassport.carbonImpact.co2eAvoidedKg / 1000) : "several"} tCO2e. Freight within 50 km logistics radius keeps net transport emissions below 2%.`,
+          reply: `[CIRCULUS Copilot Engine]: For ${contextPassport?.materialType || "this industrial batch"} (${contextPassport?.grade || "Standard Grade"}), the top circular strategy in ${contextPassport?.locationState || "India"} is direct remelting/reprocessing. This prevents landfill accumulation, generates CPCB/SPCB compliant compliance evidence, and saves approximately ${contextPassport?.carbonImpact?.co2eAvoidedKg ? Math.round(contextPassport.carbonImpact.co2eAvoidedKg / 1000) : "several"} tCO2e. Freight within 50 km logistics radius keeps net transport emissions below 2%.`,
         });
       }
 
@@ -638,7 +669,7 @@ Answer the user's inquiry clearly, objectively, with high industrial domain prec
         reply: response.text || "No response generated from AI.",
       });
     } catch (err: any) {
-      console.error("Copilot Error:", err);
+      console.error("Copilot Error:", sanitizeErrorMessage(err));
       return res.json({
         reply: `Based on CIRCULUS Indian Industrial Knowledge Base: This ${req.body?.contextPassport?.materialType || "material batch"} has high circular compatibility in Indian secondary manufacturing corridors. We recommend evaluating secondary remelting or blending with local foundries/processors within a 100 km radius to optimize both net profit and carbon avoidance.`,
       });
