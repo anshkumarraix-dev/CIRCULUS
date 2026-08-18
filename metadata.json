@@ -1,0 +1,6 @@
+{
+  "name": "CIRCULUS",
+  "description": "AI-Powered Industrial Material Intelligence Network & Circular Economy Marketplace for India",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
