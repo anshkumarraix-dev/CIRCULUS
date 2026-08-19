@@ -352,23 +352,79 @@ export const MatchRecommendations: React.FC<MatchRecommendationsProps> = ({
               })}
             </div>
           ) : (
-            <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-5 shadow-xs">
-              <div className="w-16 h-16 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto shadow-inner">
-                <Users2 className="w-8 h-8" />
-              </div>
-              <div className="max-w-md mx-auto space-y-1.5">
-                <h3 className="text-lg font-extrabold text-slate-900">No Active Batch Matches Right Now</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Add a real-time scrap batch or scan a photo to instantly find buyers. You can also explore our full directory of 8 verified Indian scrap buyer factories below!
-                </p>
+            <div className="space-y-6">
+              <div className="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 text-center space-y-5 shadow-xs">
+                <div className="w-16 h-16 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto shadow-inner">
+                  <Users2 className="w-8 h-8" />
+                </div>
+                <div className="max-w-md mx-auto space-y-1.5">
+                  <h3 className="text-lg font-extrabold text-slate-900">No Active Batch Matches Right Now</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Add a real-time scrap batch or scan a photo to instantly find buyers. You can also explore our full directory of 8 verified Indian scrap buyer factories below!
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setActiveViewTab("buyer_directory")}
+                  className="px-6 py-3 rounded-2xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white font-extrabold text-xs transition cursor-pointer shadow-sm"
+                >
+                  Explore Verified Buyer Factories Directory →
+                </button>
               </div>
 
-              <button
-                onClick={() => setActiveViewTab("buyer_directory")}
-                className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition cursor-pointer shadow-sm"
-              >
-                Explore Verified Buyer Factories Directory →
-              </button>
+              {/* 3-Step Educational Guide */}
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                <h4 className="font-extrabold text-sm text-slate-900 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  How Intelligent Buyer Matching Works (3 Steps):
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                    <span className="w-6 h-6 rounded-full bg-[#1B4332] text-white font-bold flex items-center justify-center text-[11px]">1</span>
+                    <p className="font-bold text-slate-900">Proximity & Freight Scoring</p>
+                    <p className="text-slate-500 text-[11px]">Calculates road distance to nearest secondary smelter in km, reducing transport diesel smoke.</p>
+                  </div>
+                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                    <span className="w-6 h-6 rounded-full bg-[#1B4332] text-white font-bold flex items-center justify-center text-[11px]">2</span>
+                    <p className="font-bold text-slate-900">Furnace Metallurgy Match</p>
+                    <p className="text-slate-500 text-[11px]">Pairs specific scrap alloy specs (e.g. 6063 extrusions) with melting furnaces requiring that exact input.</p>
+                  </div>
+                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                    <span className="w-6 h-6 rounded-full bg-[#1B4332] text-white font-bold flex items-center justify-center text-[11px]">3</span>
+                    <p className="font-bold text-slate-900">Direct Factory Settlement</p>
+                    <p className="text-slate-500 text-[11px]">Direct trade with zero middleman margin, generating verified BRSR circularity records.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Ghost Preview Match Cards at 40% opacity */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 opacity-40 select-none pointer-events-none">
+                <div className="bg-white rounded-3xl border border-dashed border-slate-300 p-6 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-emerald-700">98% MATCH FIT • 42 KM</span>
+                    <span className="text-[10px] text-slate-400 font-mono">SANAND HUB</span>
+                  </div>
+                  <h4 className="font-bold text-sm text-slate-800">Gujarat Secondary Extrusions Pvt Ltd</h4>
+                  <p className="text-xs text-slate-500">Demands 50 MT/month Aluminium 6063 Clean Billets</p>
+                  <div className="flex justify-between text-xs text-slate-600 pt-2 border-t border-slate-200 font-mono">
+                    <span>Rate: ₹215,000/MT</span>
+                    <span>CO₂ Saved: 9.2 t/MT</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-3xl border border-dashed border-slate-300 p-6 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-emerald-700">95% MATCH FIT • 78 KM</span>
+                    <span className="text-[10px] text-slate-400 font-mono">HAZIRA CORRIDOR</span>
+                  </div>
+                  <h4 className="font-bold text-sm text-slate-800">Mahavir Eco-Polymers Reclaiming</h4>
+                  <p className="text-xs text-slate-500">Demands 100 MT/month rPET Industrial Flakes</p>
+                  <div className="flex justify-between text-xs text-slate-600 pt-2 border-t border-slate-200 font-mono">
+                    <span>Rate: ₹68,000/MT</span>
+                    <span>CO₂ Saved: 2.3 t/MT</span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>

@@ -248,12 +248,8 @@ export default function App() {
     : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-between selection:bg-blue-600 selection:text-white relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#F4F5F3] text-slate-900 flex flex-col justify-between selection:bg-[#1B4332] selection:text-white relative overflow-hidden font-sans">
       
-      {/* Background architectural subtle accents */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-100/40 via-emerald-50/20 to-transparent rounded-full blur-[140px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-sky-100/30 via-slate-100/20 to-transparent rounded-full blur-[120px] pointer-events-none z-0"></div>
-
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-16 right-6 z-50 bg-white border border-slate-200 text-slate-900 px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-semibold animate-fadeIn">

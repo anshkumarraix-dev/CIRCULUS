@@ -41,28 +41,36 @@ export const PassportList: React.FC<PassportListProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Top Banner */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xs">
-        <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold mb-2">
-            <Layers className="w-4 h-4 text-blue-600" />
-            Product Aadhaar Directory
+      {/* Top Banner with Material Classification & Recycling Yard Photography */}
+      <div className="relative rounded-3xl overflow-hidden p-6 sm:p-8 border border-emerald-200 bg-gradient-to-r from-emerald-950 via-teal-900 to-slate-900 text-white shadow-md">
+        <img
+          src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1600&q=80"
+          alt="Recycling Yard & Material Passports"
+          className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30 pointer-events-none"
+          referrerPolicy="no-referrer"
+        />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="max-w-2xl space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold">
+              <Layers className="w-4 h-4 text-emerald-400" />
+              Product Aadhaar Directory
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
+              Digital Identity Cards for All Scrap Lots
+            </h1>
+            <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium">
+              Every batch of recycled material gets its own digital Aadhaar ID card. It shows who made it, how clean it is, what new items can be made from it, and has a scannable QR code for trucks.
+            </p>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
-            Digital Identity Cards for All Scrap Lots
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1.5">
-            Every batch of recycled material gets its own digital Aadhaar ID card. It shows who made it, how clean it is, what new items can be made from it, and has a scannable QR code for trucks.
-          </p>
-        </div>
 
-        <button
-          onClick={onNavigateToScanner}
-          className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs flex items-center gap-2 transition cursor-pointer shadow-sm shadow-blue-600/20 shrink-0"
-        >
-          <Camera className="w-4 h-4" />
-          <span>Scan Photo to Create ID Card</span>
-        </button>
+          <button
+            onClick={onNavigateToScanner}
+            className="px-5 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-emerald-950 font-extrabold text-xs flex items-center gap-2 transition cursor-pointer shadow-md shadow-emerald-950/40 shrink-0 border border-emerald-400"
+          >
+            <Camera className="w-4 h-4 stroke-[2.5]" />
+            <span>Scan Photo to Create ID Card</span>
+          </button>
+        </div>
       </div>
 
       {/* Search & Category Filter */}
@@ -172,22 +180,83 @@ export const PassportList: React.FC<PassportListProps> = ({
           ))}
         </div>
       ) : (
-        <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-4 shadow-xs">
-          <div className="w-14 h-14 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
-            <Layers className="w-7 h-7" />
+        <div className="space-y-6">
+          <div className="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 text-center space-y-4 shadow-xs">
+            <div className="w-14 h-14 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
+              <Layers className="w-7 h-7" />
+            </div>
+            <p className="text-base font-extrabold text-slate-900">No Digital Scrap Aadhaar Cards Found</p>
+            <p className="text-xs text-slate-500 max-w-md mx-auto">
+              Upload or scan a photo of your factory scrap batch to mint a new Digital Aadhaar identity card with verifiable QR code.
+            </p>
+            <div className="flex items-center justify-center gap-3 pt-2">
+              <button
+                onClick={onNavigateToScanner}
+                className="px-5 py-2.5 rounded-2xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-sm shadow-[#1B4332]/20"
+              >
+                <Camera className="w-4 h-4" />
+                <span>Scan Photo to Create First ID Card</span>
+              </button>
+            </div>
           </div>
-          <p className="text-base font-extrabold text-slate-900">No Digital Scrap Aadhaar Cards Found</p>
-          <p className="text-xs text-slate-500 max-w-md mx-auto">
-            Upload or scan a photo of your factory scrap batch to mint a new Digital Aadhaar identity card with verifiable QR code.
-          </p>
-          <div className="flex items-center justify-center gap-3 pt-2">
-            <button
-              onClick={onNavigateToScanner}
-              className="px-5 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-sm shadow-blue-600/20"
-            >
-              <Camera className="w-4 h-4" />
-              <span>Scan Photo to Create First ID Card</span>
-            </button>
+
+          {/* 3-Step Educational Guide */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+            <h4 className="font-extrabold text-sm text-slate-900 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              How Digital Aadhaar Cards Function (3 Step Workflow):
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                <span className="w-6 h-6 rounded-full bg-[#1B4332] text-white font-bold flex items-center justify-center text-[11px]">1</span>
+                <p className="font-bold text-slate-900">AI Spectral Purity Test</p>
+                <p className="text-slate-500 text-[11px]">Gemini Vision analyzes scrap surface, alloy grade (6063, 304, rPET), and contamination percentage.</p>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                <span className="w-6 h-6 rounded-full bg-[#1B4332] text-white font-bold flex items-center justify-center text-[11px]">2</span>
+                <p className="font-bold text-slate-900">QR Code Minting</p>
+                <p className="text-slate-500 text-[11px]">A unique tamper-evident Digital Aadhaar card is minted with CPCB compliance tags and valuation.</p>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                <span className="w-6 h-6 rounded-full bg-[#1B4332] text-white font-bold flex items-center justify-center text-[11px]">3</span>
+                <p className="font-bold text-slate-900">Verified Marketplace Broadcast</p>
+                <p className="text-slate-500 text-[11px]">Certified batches are broadcast directly to registered recyclers and secondary smelters.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Ghost Preview Cards at 40% opacity */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 opacity-40 select-none pointer-events-none">
+            <div className="bg-white rounded-3xl border border-dashed border-slate-300 p-5 space-y-3">
+              <div className="h-36 rounded-2xl bg-slate-200 flex items-center justify-center text-slate-400 font-mono text-xs">
+                [GHOST SAMPLE: 6063 Extrusions]
+              </div>
+              <p className="font-bold text-xs text-slate-700">Sample: Clean Extrusion Aluminium Scrap</p>
+              <div className="flex justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-200">
+                <span>Weight: 18.5 MT</span>
+                <span>Purity: 97.4%</span>
+              </div>
+            </div>
+            <div className="bg-white rounded-3xl border border-dashed border-slate-300 p-5 space-y-3">
+              <div className="h-36 rounded-2xl bg-slate-200 flex items-center justify-center text-slate-400 font-mono text-xs">
+                [GHOST SAMPLE: rPET Flakes]
+              </div>
+              <p className="font-bold text-xs text-slate-700">Sample: Washed Industrial Bottle Flakes</p>
+              <div className="flex justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-200">
+                <span>Weight: 24.0 MT</span>
+                <span>Purity: 99.1%</span>
+              </div>
+            </div>
+            <div className="bg-white rounded-3xl border border-dashed border-slate-300 p-5 space-y-3">
+              <div className="h-36 rounded-2xl bg-slate-200 flex items-center justify-center text-slate-400 font-mono text-xs">
+                [GHOST SAMPLE: Heavy Melting Steel]
+              </div>
+              <p className="font-bold text-xs text-slate-700">Sample: HMS 1 & 2 Structural Steel</p>
+              <div className="flex justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-200">
+                <span>Weight: 35.0 MT</span>
+                <span>Purity: 94.0%</span>
+              </div>
+            </div>
           </div>
         </div>
       )}

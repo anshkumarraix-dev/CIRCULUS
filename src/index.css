@@ -2,37 +2,36 @@
 
 @layer base {
   :root {
-    --bg-main: #F8FAFC;
+    --bg-main: #F4F5F3;
     --bg-surface: #FFFFFF;
     --bg-card: #FFFFFF;
-    --bg-muted: #F1F5F9;
-    --brand-primary: #0284C7;
-    --brand-accent: #059669;
-    --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --text-muted: #64748B;
-    --border-subtle: #E2E8F0;
+    --brand-primary: #1B4332;
+    --brand-accent: #2D6A4F;
+    --brand-dark: #081C15;
+    --text-primary: #1F2937;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
+    --border-subtle: #E5E7EB;
   }
 
   body {
-    background-color: #F8FAFC;
-    color: #0F172A;
-    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #F4F5F3;
+    color: #1F2937;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    letter-spacing: -0.011em;
+    letter-spacing: -0.012em;
   }
 
-  h1, h2, h3, .font-heading {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+  /* Headings: Strictly Bold Only */
+  h1, h2, h3, h4, h5, h6, .font-heading {
     letter-spacing: -0.025em;
-    font-weight: 700;
+    font-weight: 700 !important;
   }
 
   .font-display {
-    font-family: 'Plus Jakarta Sans', sans-serif;
     letter-spacing: -0.03em;
-    font-weight: 800;
+    font-weight: 800 !important;
   }
 
   .font-mono {
@@ -41,27 +40,27 @@
   }
 }
 
-/* Custom crisp light scrollbar */
+/* Custom crisp scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: #E5E7EB;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #9CA3AF;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #6B7280;
 }
 
 ::selection {
-  background-color: #0284C7;
+  background-color: #1B4332;
   color: #FFFFFF;
 }
 
@@ -71,3 +70,4 @@
     linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
 }
+

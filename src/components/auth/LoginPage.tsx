@@ -394,21 +394,35 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         <div className="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Column: Real-Time Verification Overview & Recent Logins (5 cols) */}
-          <div className="lg:col-span-5 bg-white p-8 rounded-3xl border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-mono font-semibold tracking-wider uppercase">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                REAL-TIME INDUSTRIAL GATEWAY
+          <div className="lg:col-span-5 bg-white rounded-3xl border border-emerald-200 overflow-hidden flex flex-col justify-between shadow-md">
+            {/* Visual Photo Header */}
+            <div className="relative h-44 w-full overflow-hidden bg-slate-900">
+              <img
+                src="https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=80"
+                alt="Green Industrial Facility"
+                className="w-full h-full object-cover opacity-80"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+              <div className="absolute top-4 left-4">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-950/85 backdrop-blur-md text-emerald-300 border border-emerald-500/30 text-[10px] font-mono font-semibold tracking-wider uppercase">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  REAL-TIME INDUSTRIAL GATEWAY
+                </div>
               </div>
-
-              <h2 className="text-2xl font-bold text-slate-900 uppercase tracking-tight font-display leading-tight">
-                Secure Enterprise Portal Login
-              </h2>
-
-              <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                Direct access to real-time secondary scrap auctions, Gemini AI material classification, digital material passports, and SPCB/CPCB compliance reporting.
-              </p>
+              <div className="absolute bottom-3 left-4 right-4 text-white">
+                <h2 className="text-xl font-extrabold text-white tracking-tight font-display leading-tight">
+                  Secure Enterprise Portal Login
+                </h2>
+              </div>
             </div>
+
+            <div className="p-6 sm:p-8 space-y-6 flex-1 flex flex-col justify-between">
+              <div className="space-y-3">
+                <p className="text-xs text-slate-600 leading-relaxed font-normal">
+                  Direct access to real-time secondary scrap auctions, Gemini AI material classification, digital material passports, and SPCB/CPCB compliance reporting.
+                </p>
+              </div>
 
             {/* Dynamic GSTIN State Detection Helper if user is typing */}
             {(gstinOrEmail || regGstin) && (
@@ -480,6 +494,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               <span>BRSR READY</span>
             </div>
           </div>
+        </div>
 
           {/* Right Column: Real-Time Interactive Auth Form (7 cols) */}
           <div className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
