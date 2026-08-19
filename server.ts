@@ -633,45 +633,179 @@ Return strictly structured JSON matching this schema:
     }
   });
 
+  // Helper to generate domain-accurate responses for Indian scrap recycling
+  function generateCopilotFallbackReply(queryText: string, contextObj: any): { reply: string; followUps: string[] } {
+    const q = (queryText || "").toLowerCase();
+    
+    if (q.includes("aluminium") || q.includes("aluminum") || q.includes("metal")) {
+      return {
+        reply: `**Aluminium Scrap Recycling in India:**
+• **High Value Reuse:** Clean aluminium scrap (Grade 6063/HE9) is directly remelted into solar panel mounting rails, electric vehicle chassis extrusions, and window sections.
+• **Huge Energy Savings:** Melting scrap aluminium uses **95% less energy** than making fresh aluminium from bauxite ore mined from mountains.
+• **Carbon Savings:** Every 1 ton of aluminium scrap recycled prevents **8.2 to 9.0 tons of CO₂ smoke** from entering the sky.
+• **Indian Tax & HSN:** Classified under HSN 76020010 with 18% GST (RCM applicable for unregistered scrap dealers).`,
+        followUps: [
+          "How do I get an SPCB green certificate for selling metal scrap?",
+          "What is the average price of 6063 aluminium scrap in Gujarat and Maharashtra?",
+          "Can scrap aluminium be melted without losing strength?"
+        ]
+      };
+    }
+
+    if (q.includes("smoke") || q.includes("carbon") || q.includes("coal") || q.includes("save") || q.includes("environment")) {
+      return {
+        reply: `**Environmental & Smoke Savings from Recycling:**
+• **Clean Air:** When scrap metals and plastics are remelted locally, power plants burn far less coal and gas.
+• **Landfill Protection:** 18 metric tons of diverted scrap saves over **40,000 kg of CO₂ equivalent**, equivalent to taking 8 petrol cars off the highway for an entire year!
+• **Water & Soil Safety:** Keeping heavy metal off the ground stops toxic leachates from soaking into underground borewell water.
+• **BRSR & Green Reporting:** Indian listed companies can officially record these verified carbon avoidances in their annual SEBI BRSR Core sustainability filings.`,
+        followUps: [
+          "What is the CO₂ formula for plastic recycling?",
+          "How does CIRCULUS generate Digital Aadhaar QR for scrap?",
+          "How can small factories earn green credits in India?"
+        ]
+      };
+    }
+
+    if (q.includes("plastic") || q.includes("pet") || q.includes("bottle") || q.includes("hdpe")) {
+      return {
+        reply: `**Plastic Scrap & EPR Rules in India:**
+• **Bottle-to-Fibre / Packaging:** PET scrap bottles are washed, shredded into transparent flakes, and spun into recycled polyester (rPSF) for garments or extruded into new bottles.
+• **CPCB EPR Portal:** Under Ministry of Environment (MoEFCC) Plastic Waste Management Rules, brand owners must purchase Extended Producer Responsibility (EPR) recycling credits.
+• **HSN & Tax:** HSN 3915 (Plastic waste & scrap) with 18% GST.
+• **Avoided Carbon:** Recycling 1 ton of PET flakes avoids **1,720 kg of greenhouse gas emissions** compared to virgin crude-oil naphtha polymers.`,
+        followUps: [
+          "What are the 4 EPR categories for plastic in India?",
+          "What is the difference between Category I and Category II plastic scrap?",
+          "How much does 1 MT of clean PET flakes sell for?"
+        ]
+      };
+    }
+
+    if (q.includes("rule") || q.includes("law") || q.includes("government") || q.includes("spcb") || q.includes("cpcb") || q.includes("gst")) {
+      return {
+        reply: `**Indian Government Rules for Selling Industrial Scrap:**
+1. **Consent to Operate (CTO):** Every scrap storage or recycling facility must hold a valid CTO from their State Pollution Control Board (e.g. GPCB, MPCB, UPPCB).
+2. **GST Invoicing:** Scrap sales must carry an active GSTIN invoice with correct HSN codes (e.g. 7204 for Steel, 7602 for Aluminium, 3915 for Plastic).
+3. **Hazardous Waste Manifest:** If selling used batteries, paint sludge, or e-waste, Form 10 manifest and GPS-tracked transport are mandatory under Hazardous Waste Rules 2016.
+4. **CIRCULUS Digital Aadhaar:** Provides full digital chain-of-custody and QR passport to prove to auditors that scrap was recycled responsibly.`,
+        followUps: [
+          "How do I check if a scrap buyer has an SPCB permit?",
+          "What is Form 10 hazardous waste manifest?",
+          "Is GST Reverse Charge Mechanism (RCM) applied to scrap?"
+        ]
+      };
+    }
+
+    // General industrial scrap response
+    const matName = contextObj?.passport?.title || contextObj?.materialType || "industrial scrap";
+    return {
+      reply: `**Recycling Advice for ${matName}:**
+• **Circular Value:** Keeping this material in closed-loop secondary manufacturing saves valuable electricity, cuts raw ore mining, and prevents dumping in landfills.
+• **Smart Matching:** CIRCULUS automatically connects your batch to certified smelters and recyclers within your logistics cluster (e.g., Sanand, Changodar, Bhiwandi, Peenya) to minimize truck diesel emissions.
+• **Safe Tracking:** Every batch receives a unique tamper-proof Digital ID with verifiable carbon savings and SPCB compliance records.`,
+      followUps: [
+        "What new products can be manufactured from scrap?",
+        "How much smoke and coal is saved by recycling?",
+        "What government rules apply when selling scrap in India?"
+      ]
+    };
+  }
+
   // API: CirculAI Reuse Copilot
   app.post("/api/copilot", async (req, res) => {
     try {
-      const { prompt, contextPassport } = req.body;
-      const ai = getGeminiClient();
+      const userPrompt = req.body.query || req.body.prompt || req.body.message || "";
+      const contextPassport = req.body.context?.passport || req.body.contextPassport || req.body.context;
+      const activeRoleName = req.body.context?.activeRole || req.body.context?.orgName || "Facility User";
 
-      if (!ai) {
+      if (!userPrompt.trim()) {
         return res.json({
-          reply: `[CIRCULUS Copilot Engine]: For ${contextPassport?.materialType || "this industrial batch"} (${contextPassport?.grade || "Standard Grade"}), the top circular strategy in ${contextPassport?.locationState || "India"} is direct remelting/reprocessing. This prevents landfill accumulation, generates CPCB/SPCB compliant compliance evidence, and saves approximately ${contextPassport?.carbonImpact?.co2eAvoidedKg ? Math.round(contextPassport.carbonImpact.co2eAvoidedKg / 1000) : "several"} tCO2e. Freight within 50 km logistics radius keeps net transport emissions below 2%.`,
+          success: true,
+          reply: "Namaste! Please ask any question about scrap recycling, material testing, government green rules, or carbon savings in simple words.",
+          followUps: [
+            "What new products can be manufactured from aluminium scrap?",
+            "How much smoke and coal is saved by recycling 18 tons of metal?",
+            "What government rules apply when selling scrap in India?"
+          ]
         });
       }
 
-      const systemPrompt = `You are CirculAI Copilot, the intelligent material and circular economy advisor for CIRCULUS in India.
-Current material context:
-- Material: ${contextPassport?.materialType || "General industrial material"}
-- Grade: ${contextPassport?.grade || "N/A"}
-- Quantity: ${contextPassport?.quantityMT || 10} MT
-- State/SPCB: ${contextPassport?.locationState || "India"} / ${contextPassport?.spcbJurisdiction || "SPCB"}
-- Reusability Score: ${contextPassport?.reusabilityScore || 90}%
-- Carbon Avoidance: ${contextPassport?.carbonImpact?.co2eAvoidedKg || 0} kg CO2e
-- Estimated Value: INR ${contextPassport?.valuation?.estimatedTotalInr || "Market Rate"}
+      const ai = getGeminiClient();
 
-Answer the user's inquiry clearly, objectively, with high industrial domain precision in Indian context (SPCB rules, HSN codes, freight corridors, metallurgy, polymer chemistry, or cement pozzolanic reactions). Keep answers concise (2-4 punchy paragraphs or bullet points).`;
+      if (!ai) {
+        // High quality, domain-specific fallback generator
+        const fallback = generateCopilotFallbackReply(userPrompt, contextPassport);
+        return res.json({
+          success: true,
+          reply: fallback.reply,
+          followUps: fallback.followUps,
+          source: "circulus_domain_engine",
+        });
+      }
+
+      const systemPrompt = `You are CirculAI Copilot, the intelligent material, recycling, and circular economy assistant for CIRCULUS in India.
+User: ${activeRoleName}
+Selected material batch context:
+- Name/Type: ${contextPassport?.title || contextPassport?.materialType || "General industrial scrap"}
+- Grade: ${contextPassport?.grade || "Standard Recyclable Grade"}
+- Quantity: ${contextPassport?.quantityMT || "Batch"} MT
+- Location/State: ${contextPassport?.location || contextPassport?.locationState || "India"}
+- Reusability Score: ${contextPassport?.reusabilityScore || 90}%
+
+Guidelines:
+1. Explain recycling concepts clearly using simple, professional words that even a 10th-grade student or busy factory supervisor can understand easily.
+2. Provide concrete facts on energy savings (e.g. 95% electricity saved for aluminium), CO₂ avoidance, Indian SPCB/CPCB green rules, and high-value product reuse pathways.
+3. Structure your response with clean bullet points and bold highlights.
+4. Keep the answer concise (2-4 clear paragraphs/bullets).
+5. At the very end of your response, on a new line, suggest 2 or 3 short follow-up questions formatted as:
+FOLLOW_UPS:
+- Question 1
+- Question 2`;
 
       const response = await ai.models.generateContent({
         model: "gemini-3.7-flash",
         contents: [
           { text: systemPrompt },
-          { text: prompt || "What is the best circular reuse path for this material in India?" },
+          { text: userPrompt },
         ],
       });
 
+      const fullText = response.text || "";
+      let replyText = fullText;
+      const followUps: string[] = [];
+
+      if (fullText.includes("FOLLOW_UPS:")) {
+        const parts = fullText.split("FOLLOW_UPS:");
+        replyText = parts[0].trim();
+        const lines = parts[1].split("\n").map(l => l.replace(/^[-*•\d.]+\s*/, "").trim()).filter(Boolean);
+        lines.slice(0, 3).forEach(l => followUps.push(l));
+      }
+
+      if (followUps.length === 0) {
+        followUps.push(
+          "How much CO₂ emissions are avoided by recycling this batch?",
+          "What SPCB pollution permits are required for transport?",
+          "What are the best secondary buyers for this material in India?"
+        );
+      }
+
       return res.json({
-        reply: response.text || "No response generated from AI.",
+        success: true,
+        reply: replyText,
+        followUps,
+        source: "gemini_copilot",
       });
     } catch (err: any) {
       console.error("Copilot Error:", sanitizeErrorMessage(err));
+      const userPrompt = req.body.query || req.body.prompt || "";
+      const contextPassport = req.body.context?.passport || req.body.contextPassport;
+      const fallback = generateCopilotFallbackReply(userPrompt, contextPassport);
       return res.json({
-        reply: `Based on CIRCULUS Indian Industrial Knowledge Base: This ${req.body?.contextPassport?.materialType || "material batch"} has high circular compatibility in Indian secondary manufacturing corridors. We recommend evaluating secondary remelting or blending with local foundries/processors within a 100 km radius to optimize both net profit and carbon avoidance.`,
+        success: true,
+        reply: fallback.reply,
+        followUps: fallback.followUps,
+        source: "fallback_on_error",
       });
     }
   });

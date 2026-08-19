@@ -197,7 +197,35 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
                   : "bg-white text-slate-800 border border-slate-200 rounded-tl-none space-y-3"
               }`}
             >
-              <div className="whitespace-pre-wrap">{msg.text}</div>
+              <div className="whitespace-pre-wrap space-y-1.5">
+                {msg.text.split("\n").map((line, lIdx) => {
+                  if (!line.trim()) return <div key={lIdx} className="h-1" />;
+                  
+                  // Render bullet items cleanly
+                  const isBullet = line.trim().startsWith("•") || line.trim().startsWith("-");
+                  const cleanLine = isBullet ? line.trim().replace(/^[-•*]\s*/, "") : line;
+                  
+                  // Parse bold markers **
+                  const parts = cleanLine.split(/(\*\*.*?\*\*)/g);
+                  const parsedContent = parts.map((part, pIdx) => {
+                    if (part.startsWith("**") && part.endsWith("**")) {
+                      return <strong key={pIdx} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
+                    }
+                    return part;
+                  });
+
+                  if (isBullet) {
+                    return (
+                      <div key={lIdx} className="flex items-start gap-2 pl-1">
+                        <span className="text-blue-500 font-bold text-sm leading-none mt-0.5">•</span>
+                        <span className="flex-1">{parsedContent}</span>
+                      </div>
+                    );
+                  }
+
+                  return <p key={lIdx}>{parsedContent}</p>;
+                })}
+              </div>
 
               {/* Suggestions chips if any */}
               {msg.suggestions && msg.suggestions.length > 0 && (

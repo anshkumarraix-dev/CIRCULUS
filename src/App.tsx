@@ -388,6 +388,20 @@ export default function App() {
         activeRole={activeRole}
       />
 
+      {/* Floating 1-Click AI Helper Launcher (visible when closed) */}
+      {!isCopilotOpen && (
+        <button
+          id="floating-copilot-launcher"
+          onClick={() => setIsCopilotOpen(true)}
+          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white pl-4 pr-5 py-3 rounded-full shadow-xl shadow-blue-600/30 flex items-center gap-2.5 transition-all duration-200 hover:scale-105 cursor-pointer font-bold text-xs border border-white/20"
+        >
+          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          </div>
+          <span>Ask AI Helper</span>
+        </button>
+      )}
+
       {/* 3-Minute Judge Demo Tour Guide Modal */}
       <DemoTourGuide
         isOpen={isDemoTourOpen}
