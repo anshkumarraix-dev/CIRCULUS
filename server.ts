@@ -1078,7 +1078,7 @@ Return strictly JSON matching this schema:
 }`;
 
       // Fast models cascade for rapid real-time video frame throughput:
-      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-3.7-flash"];
+      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-flash-latest"];
       let response = null;
 
       for (const modelName of modelsToTry) {
@@ -1372,7 +1372,7 @@ Return strictly structured JSON matching this schema:
     }
   });
 
-  // API: Real-Time Live Google Search Grounded Market & Regulatory Intelligence (Search Grounding: gemini-3.5-flash)
+  // API: Real-Time Live Google Search Grounded Market & Regulatory Intelligence (Search Grounding: gemini-3.1-flash-lite)
   app.post("/api/materials/search-grounding", async (req, res) => {
     try {
       const { materialName, category, location } = req.body;
@@ -1433,9 +1433,9 @@ Return strictly JSON with:
   "marketTrendSummary": string (2-3 sentences on domestic demand, smelter appetite, and price momentum)
 }`;
 
-      // Execute search-grounded prompt using gemini-3.5-flash with googleSearch tool
+      // Execute search-grounded prompt using gemini-3.1-flash-lite with googleSearch tool
       let response = null;
-      const searchModels = ["gemini-3.5-flash", "gemini-3.7-flash"];
+      const searchModels = ["gemini-3.1-flash-lite", "gemini-flash-latest"];
 
       for (const modelName of searchModels) {
         try {
@@ -1658,7 +1658,7 @@ FOLLOW_UPS:
 - Question 2`;
 
       // Multi-model resilience cascade: Try fast models with backup
-      const modelsToTry = ["gemini-3.7-flash", "gemini-3.1-flash-lite"];
+      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-flash-latest"];
       let response = null;
       let usedModel = "fallback";
 

@@ -127,7 +127,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
   const [analysisResult, setAnalysisResult] = useState<MaterialAnalysis | null>(null);
   const [createdPassport, setCreatedPassport] = useState<MaterialPassport | null>(null);
 
-  // Fetch real-time market data grounded with Google Search (gemini-3.5-flash)
+  // Fetch real-time market data grounded with Google Search (gemini-3.1-flash-lite)
   const fetchLiveSearchGrounding = async (matName: string, cat: string, loc: string) => {
     setIsSearchGroundingLoading(true);
     try {
