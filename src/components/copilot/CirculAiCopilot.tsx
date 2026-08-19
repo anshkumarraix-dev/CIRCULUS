@@ -129,17 +129,17 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[450px] bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between animate-slideLeft">
+    <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[450px] bg-[#12181F] border-l border-slate-700 shadow-2xl flex flex-col justify-between animate-slideLeft">
       {/* Header */}
-      <div className="bg-white p-4 border-b border-slate-200 flex items-center justify-between">
+      <div className="bg-[#12181F] p-4 border-b border-slate-700 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-blue-900/20 border border-blue-200 flex items-center justify-center">
             <Sparkles className="w-5 h-5 text-blue-600" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-1.5 font-display">
+            <h3 className="text-sm font-extrabold text-white flex items-center gap-1.5 font-display">
               CirculAI Assistant
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-emerald-900/20 text-emerald-700 border border-emerald-200">
                 Online
               </span>
             </h3>
@@ -159,8 +159,8 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
 
       {/* Active Passport Banner if attached */}
       {activePassport && (
-        <div className="bg-blue-50 px-4 py-2.5 border-b border-blue-100 flex items-center justify-between text-xs">
-          <span className="text-blue-900 font-bold truncate max-w-xs">
+        <div className="bg-blue-900/20 px-4 py-2.5 border-b border-blue-100 flex items-center justify-between text-xs">
+          <span className="text-blue-200 font-bold truncate max-w-xs">
             📄 Selected: {activePassport.title}
           </span>
           <span className="text-blue-700 font-semibold">{activePassport.quantityMT} Tons</span>
@@ -168,7 +168,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
       )}
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50">
+      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-[#0B0F13]">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -194,7 +194,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
               className={`p-4 rounded-3xl text-xs max-w-[90%] leading-relaxed shadow-xs ${
                 msg.sender === "user"
                   ? "bg-blue-600 text-white rounded-tr-none font-medium"
-                  : "bg-white text-slate-800 border border-slate-200 rounded-tl-none space-y-3"
+                  : "bg-[#12181F] text-slate-200 border border-slate-700 rounded-tl-none space-y-3"
               }`}
             >
               <div className="whitespace-pre-wrap space-y-1.5">
@@ -209,7 +209,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
                   const parts = cleanLine.split(/(\*\*.*?\*\*)/g);
                   const parsedContent = parts.map((part, pIdx) => {
                     if (part.startsWith("**") && part.endsWith("**")) {
-                      return <strong key={pIdx} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
+                      return <strong key={pIdx} className="font-bold text-white">{part.slice(2, -2)}</strong>;
                     }
                     return part;
                   });
@@ -236,7 +236,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
                       <button
                         key={idx}
                         onClick={() => handleSendMessage(s)}
-                        className="text-left text-xs text-blue-700 hover:text-blue-900 bg-slate-50 hover:bg-blue-50 p-2.5 rounded-2xl border border-slate-200 hover:border-blue-200 transition flex items-center justify-between cursor-pointer group font-medium"
+                        className="text-left text-xs text-blue-700 hover:text-blue-200 bg-[#0B0F13] hover:bg-blue-900/20 p-2.5 rounded-2xl border border-slate-700 hover:border-blue-200 transition flex items-center justify-between cursor-pointer group font-medium"
                       >
                         <span className="truncate">{s}</span>
                         <ChevronRight className="w-3.5 h-3.5 text-blue-500 group-hover:translate-x-0.5 transition shrink-0 ml-1" />
@@ -251,7 +251,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
 
         {isLoading && (
           <div className="flex items-start gap-2">
-            <div className="bg-white p-3.5 rounded-2xl rounded-tl-none border border-slate-200 text-xs text-slate-600 flex items-center gap-2 shadow-xs">
+            <div className="bg-[#12181F] p-3.5 rounded-2xl rounded-tl-none border border-slate-700 text-xs text-slate-400 flex items-center gap-2 shadow-xs">
               <RefreshCw className="w-3.5 h-3.5 text-blue-600 animate-spin" />
               <span>Thinking of the best answer...</span>
             </div>
@@ -261,7 +261,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
       </div>
 
       {/* Input Area */}
-      <div className="p-3.5 bg-white border-t border-slate-200">
+      <div className="p-3.5 bg-[#12181F] border-t border-slate-700">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -274,7 +274,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             placeholder="Type your question here in simple words..."
-            className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none transition"
+            className="flex-1 bg-[#0B0F13] border border-slate-700 rounded-2xl px-4 py-3 text-xs text-white placeholder-slate-400 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none transition"
           />
           <button
             type="submit"

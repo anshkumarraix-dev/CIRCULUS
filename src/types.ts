@@ -22,12 +22,48 @@ export type MaterialCategory =
   | "ferrous"
   | "non_ferrous"
   | "plastic"
+  | "paper_cardboard"
+  | "glass"
+  | "ewaste"
+  | "wood"
+  | "textile"
+  | "rubber"
+  | "organic"
   | "fly_ash"
   | "slag"
   | "construction_demolition"
-  | "wood"
-  | "glass"
   | "other";
+
+export interface RealtimeDetectionResult {
+  detectedObject: string;
+  category: MaterialCategory;
+  materialSubtype: string;
+  confidence: number;
+  isRecognized: boolean;
+  visualTraits: string[];
+  suggestedAction: string;
+  warning?: string;
+  timestamp?: string;
+}
+
+export interface GroundingSource {
+  title: string;
+  url: string;
+  domain?: string;
+}
+
+export interface SearchGroundingResult {
+  materialName: string;
+  category: MaterialCategory;
+  spotPricePerMT?: number;
+  priceRangeNote: string;
+  regionalHubPricing: { hub: string; priceNote: string }[];
+  cpcbEprRules: string;
+  spcbMandates: string;
+  marketTrendSummary: string;
+  lastUpdated: string;
+  groundingSources: GroundingSource[];
+}
 
 export interface IndiaMaterialMetadata {
   materialCategory: MaterialCategory;

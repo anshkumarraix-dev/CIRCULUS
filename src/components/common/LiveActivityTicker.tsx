@@ -16,7 +16,7 @@ export const LiveActivityTicker: React.FC<LiveActivityTickerProps> = ({
   const recentEvents = events.slice(0, 5);
 
   return (
-    <div className="bg-white p-3.5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+    <div className="bg-[#12181F] p-3.5 rounded-2xl border border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
       
       {/* Left indicator & latest event marquee */}
       <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
@@ -27,10 +27,10 @@ export const LiveActivityTicker: React.FC<LiveActivityTickerProps> = ({
 
         {recentEvents.length > 0 ? (
           <div className="flex items-center gap-2 overflow-hidden text-xs truncate">
-            <span className="font-semibold text-slate-900 truncate">
+            <span className="font-semibold text-white truncate">
               {recentEvents[0].actor}:
             </span>
-            <span className="text-slate-600 truncate">
+            <span className="text-slate-400 truncate">
               {recentEvents[0].notes}
             </span>
             <span className="text-[11px] font-mono text-slate-500 shrink-0">

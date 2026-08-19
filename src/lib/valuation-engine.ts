@@ -26,6 +26,41 @@ export const BASE_MATERIAL_PRICE_INDEX: Record<MaterialCategory, CategoryBasePri
     gradePurityMultiplier: { excellent: 1.05, good: 1.0, fair: 0.92, poor: 0.82 },
     regionalDemandInr: 1000,
   },
+  paper_cardboard: {
+    basePerMT: 14500,
+    gradePurityMultiplier: { excellent: 1.08, good: 1.0, fair: 0.88, poor: 0.7 },
+    regionalDemandInr: 500,
+  },
+  glass: {
+    basePerMT: 4200,
+    gradePurityMultiplier: { excellent: 1.1, good: 1.0, fair: 0.85, poor: 0.7 },
+    regionalDemandInr: 150,
+  },
+  ewaste: {
+    basePerMT: 320000,
+    gradePurityMultiplier: { excellent: 1.15, good: 1.0, fair: 0.85, poor: 0.65 },
+    regionalDemandInr: 10000,
+  },
+  wood: {
+    basePerMT: 6500,
+    gradePurityMultiplier: { excellent: 1.1, good: 1.0, fair: 0.85, poor: 0.7 },
+    regionalDemandInr: 200,
+  },
+  textile: {
+    basePerMT: 32000,
+    gradePurityMultiplier: { excellent: 1.1, good: 1.0, fair: 0.85, poor: 0.7 },
+    regionalDemandInr: 800,
+  },
+  rubber: {
+    basePerMT: 28000,
+    gradePurityMultiplier: { excellent: 1.08, good: 1.0, fair: 0.88, poor: 0.72 },
+    regionalDemandInr: 600,
+  },
+  organic: {
+    basePerMT: 3500,
+    gradePurityMultiplier: { excellent: 1.1, good: 1.0, fair: 0.85, poor: 0.7 },
+    regionalDemandInr: 100,
+  },
   fly_ash: {
     basePerMT: 900,
     gradePurityMultiplier: { excellent: 1.12, good: 1.0, fair: 0.85, poor: 0.7 },
@@ -40,16 +75,6 @@ export const BASE_MATERIAL_PRICE_INDEX: Record<MaterialCategory, CategoryBasePri
     basePerMT: 1800,
     gradePurityMultiplier: { excellent: 1.08, good: 1.0, fair: 0.92, poor: 0.8 },
     regionalDemandInr: 50,
-  },
-  wood: {
-    basePerMT: 6500,
-    gradePurityMultiplier: { excellent: 1.1, good: 1.0, fair: 0.85, poor: 0.7 },
-    regionalDemandInr: 200,
-  },
-  glass: {
-    basePerMT: 4200,
-    gradePurityMultiplier: { excellent: 1.1, good: 1.0, fair: 0.85, poor: 0.7 },
-    regionalDemandInr: 150,
   },
   other: {
     basePerMT: 15000,

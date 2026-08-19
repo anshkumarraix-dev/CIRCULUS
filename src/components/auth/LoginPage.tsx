@@ -354,20 +354,20 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-between relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-slate-800 text-white flex flex-col justify-between relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
       {/* Background soft subtle accents */}
       <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-blue-100/50 rounded-full blur-[140px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-[450px] h-[450px] bg-emerald-100/40 rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Top Navbar */}
-      <header className="px-6 py-5 border-b border-slate-200/80 bg-white/80 backdrop-blur-md flex items-center justify-between max-w-7xl w-full mx-auto relative z-10">
+      <header className="px-6 py-5 border-b border-slate-700/80 bg-[#12181F]/80 backdrop-blur-md flex items-center justify-between max-w-7xl w-full mx-auto relative z-10">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/20">
             <Recycle className="w-5 h-5 text-white stroke-[2.5]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-2xl tracking-tight text-slate-900 font-display">CIRCULUS</span>
+              <span className="font-bold text-2xl tracking-tight text-white font-display">CIRCULUS</span>
               <span className="text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200 font-semibold">
                 INDIA SD-04
               </span>
@@ -381,7 +381,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         {onExploreAsGuest && (
           <button
             onClick={onExploreAsGuest}
-            className="text-xs font-semibold text-slate-600 hover:text-blue-600 uppercase tracking-tight transition flex items-center gap-1.5 cursor-pointer bg-slate-100 hover:bg-slate-200/70 px-3.5 py-1.5 rounded-lg"
+            className="text-xs font-semibold text-slate-400 hover:text-blue-600 uppercase tracking-tight transition flex items-center gap-1.5 cursor-pointer bg-slate-100 hover:bg-slate-200/70 px-3.5 py-1.5 rounded-lg"
           >
             <span>Explore as Guest</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -394,7 +394,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         <div className="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Column: Real-Time Verification Overview & Recent Logins (5 cols) */}
-          <div className="lg:col-span-5 bg-white rounded-3xl border border-emerald-200 overflow-hidden flex flex-col justify-between shadow-md">
+          <div className="lg:col-span-5 bg-[#12181F] rounded-3xl border border-emerald-200 overflow-hidden flex flex-col justify-between shadow-md">
             {/* Visual Photo Header */}
             <div className="relative h-44 w-full overflow-hidden bg-slate-900">
               <img
@@ -419,7 +419,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
             <div className="p-6 sm:p-8 space-y-6 flex-1 flex flex-col justify-between">
               <div className="space-y-3">
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">
+                <p className="text-xs text-slate-400 leading-relaxed font-normal">
                   Direct access to real-time secondary scrap auctions, Gemini AI material classification, digital material passports, and SPCB/CPCB compliance reporting.
                 </p>
               </div>
@@ -450,14 +450,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                       key={account.gstin}
                       onClick={() => onLoginSuccess(account)}
                       disabled={isLoading}
-                      className="w-full p-3 rounded-xl bg-slate-50 hover:bg-blue-50/60 border border-slate-200/80 hover:border-blue-300 transition text-left flex items-center gap-3 cursor-pointer group"
+                      className="w-full p-3 rounded-xl bg-slate-800 hover:bg-blue-50/60 border border-slate-700/80 hover:border-blue-300 transition text-left flex items-center gap-3 cursor-pointer group"
                     >
                       <div className="w-8 h-8 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-sm shrink-0 group-hover:scale-105 transition">
                         {account.avatar || "🏭"}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs font-bold text-slate-900 truncate group-hover:text-blue-700 transition">
+                          <p className="text-xs font-bold text-white truncate group-hover:text-blue-700 transition">
                             {account.orgName}
                           </p>
                           <span className="text-[9px] font-mono uppercase text-slate-500 ml-1">
@@ -474,8 +474,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-                <p className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700/80 space-y-2">
+                <p className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
                   No Hardcoded Accounts
                 </p>
@@ -497,18 +497,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </div>
 
           {/* Right Column: Real-Time Interactive Auth Form (7 cols) */}
-          <div className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-7 bg-[#12181F] p-8 sm:p-10 rounded-3xl border border-slate-700 shadow-sm flex flex-col justify-between space-y-6">
             
             <div>
               {/* Form Mode Selector Tabs */}
-              <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200/80 mb-6">
+              <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-700/80 mb-6">
                 <button
                   type="button"
                   onClick={() => { setAuthMode("login"); setErrorMsg(null); setSuccessMsg(null); }}
                   className={`flex-1 py-2 rounded-lg text-xs font-semibold uppercase tracking-tight transition cursor-pointer ${
                     authMode === "login"
-                      ? "bg-white text-blue-700 shadow-sm border border-slate-200/80 font-bold"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-[#12181F] text-blue-700 shadow-sm border border-slate-700/80 font-bold"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
                   GSTIN / Email
@@ -518,8 +518,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   onClick={() => { setAuthMode("otp"); setErrorMsg(null); setSuccessMsg(null); }}
                   className={`flex-1 py-2 rounded-lg text-xs font-semibold uppercase tracking-tight transition cursor-pointer ${
                     authMode === "otp"
-                      ? "bg-white text-blue-700 shadow-sm border border-slate-200/80 font-bold"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-[#12181F] text-blue-700 shadow-sm border border-slate-700/80 font-bold"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
                   Mobile OTP
@@ -529,8 +529,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   onClick={() => { setAuthMode("register"); setErrorMsg(null); setSuccessMsg(null); }}
                   className={`flex-1 py-2 rounded-lg text-xs font-semibold uppercase tracking-tight transition cursor-pointer ${
                     authMode === "register"
-                      ? "bg-white text-blue-700 shadow-sm border border-slate-200/80 font-bold"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-[#12181F] text-blue-700 shadow-sm border border-slate-700/80 font-bold"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
                   Register Plant
@@ -577,7 +577,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 <form onSubmit={handleGstinLogin} className="space-y-4">
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-[11px] uppercase tracking-wider text-slate-600 font-semibold">
+                      <label className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
                         GSTIN or Corporate Work Email
                       </label>
                       {detectedStateFromGstin(gstinOrEmail) && (
@@ -595,14 +595,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         placeholder="e.g. 24AAACA1234B1Z5 or factory@company.com"
                         required
                         autoFocus
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none font-mono"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono"
                       />
                     </div>
                   </div>
 
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-[11px] uppercase tracking-wider text-slate-600 font-semibold">
+                      <label className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
                         Facility Portal Password
                       </label>
                       <button
@@ -621,12 +621,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter your password"
                         required
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-10 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-10 pr-10 py-2.5 text-xs text-white placeholder-slate-400 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 cursor-pointer"
+                        className="absolute right-3 top-3 text-slate-400 hover:text-slate-400 cursor-pointer"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -657,7 +657,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               {authMode === "otp" && (
                 <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="space-y-4">
                   <div>
-                    <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1.5">
+                    <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">
                       Registered Plant Mobile Number (+91)
                     </label>
                     <div className="relative">
@@ -670,7 +670,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         required
                         disabled={otpSent && otpCountdown > 0}
                         autoFocus
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none font-mono"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono"
                       />
                     </div>
                   </div>
@@ -678,7 +678,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   {otpSent && (
                     <div className="space-y-2 animate-fadeIn">
                       <div className="flex items-center justify-between">
-                        <label className="text-[11px] uppercase tracking-wider text-slate-600 font-semibold">
+                        <label className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
                           Enter 6-Digit SMS OTP
                         </label>
                         {otpCountdown > 0 ? (
@@ -704,7 +704,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         placeholder="000000"
                         autoFocus
                         required
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-center text-lg tracking-[0.5em] text-blue-700 focus:border-blue-500 focus:bg-white focus:outline-none font-mono font-bold"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-center text-lg tracking-[0.5em] text-blue-700 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono font-bold"
                       />
                     </div>
                   )}
@@ -739,7 +739,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 <form onSubmit={handleRegister} className="space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                      <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                         Facility / Enterprise Name *
                       </label>
                       <input
@@ -749,13 +749,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         placeholder="e.g. Mahavir PolyRecycle Pvt Ltd"
                         required
                         autoFocus
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
                       />
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <label className="text-[11px] uppercase tracking-wider text-slate-600 font-semibold">
+                        <label className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
                           GSTIN (15-digit) *
                         </label>
                         {detectedStateFromGstin(regGstin) && (
@@ -771,12 +771,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         onChange={(e) => handleRegisterGstinChange(e.target.value)}
                         placeholder="24AABCM1234F1Z8"
                         required
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-mono uppercase"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono uppercase"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                      <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                         Authorized Signatory Name
                       </label>
                       <input
@@ -784,12 +784,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         value={regSignatory}
                         onChange={(e) => setRegSignatory(e.target.value)}
                         placeholder="e.g. Ramesh Patel"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                      <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                         Mobile Number (+91)
                       </label>
                       <input
@@ -797,12 +797,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         value={regMobile}
                         onChange={(e) => setRegMobile(e.target.value)}
                         placeholder="e.g. 9876543210"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-mono"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                      <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                         Industrial Cluster City
                       </label>
                       <input
@@ -810,18 +810,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         value={regCity}
                         onChange={(e) => setRegCity(e.target.value)}
                         placeholder="e.g. Sanand (Ahmedabad)"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                      <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                         State
                       </label>
                       <select
                         value={regState}
                         onChange={(e) => setRegState(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-medium"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
                       >
                         {Object.values(GSTIN_STATE_NAMES).map((s) => (
                           <option key={s} value={s}>{s}</option>
@@ -830,7 +830,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                      <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                         Facility Portal Password
                       </label>
                       <input
@@ -838,12 +838,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         value={regPassword}
                         onChange={(e) => setRegPassword(e.target.value)}
                         placeholder="Create a password for your account"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
                       />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                      <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                         Primary Facility Role
                       </label>
                       <div className="grid grid-cols-3 gap-2">
@@ -859,7 +859,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                             className={`py-2 px-2 rounded-lg text-[11px] font-semibold uppercase tracking-tight transition text-center cursor-pointer border ${
                               regRole === r.id
                                 ? "bg-blue-50 text-blue-700 border-blue-300 font-bold"
-                                : "bg-slate-50 text-slate-600 border-slate-200 hover:text-slate-900"
+                                : "bg-slate-800 text-slate-400 border-slate-700 hover:text-white"
                             }`}
                           >
                             {r.label}
@@ -898,7 +898,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="px-6 py-4 border-t border-slate-200 bg-white text-center text-xs text-slate-500 font-mono">
+      <footer className="px-6 py-4 border-t border-slate-700 bg-[#12181F] text-center text-xs text-slate-500 font-mono">
         CIRCULUS INDIA PROTOCOL • ENABLING SECONDARY RESOURCE CIRCULARITY ACROSS 28 STATES
       </footer>
     </div>

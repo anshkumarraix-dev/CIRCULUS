@@ -27,22 +27,35 @@ interface RealTimeEntryModalProps {
 const CATEGORY_OPTIONS: { id: MaterialCategory; label: string; defaultHsn: string; defaultPrice: number }[] = [
   { id: "non_ferrous", label: "Non-Ferrous (Aluminium 6063 / Copper)", defaultHsn: "76020010", defaultPrice: 198000 },
   { id: "plastic", label: "Industrial Plastic (rPET / HDPE / PP)", defaultHsn: "39159000", defaultPrice: 82000 },
+  { id: "paper_cardboard", label: "Paper & Cardboard (Kraft Bales)", defaultHsn: "47071000", defaultPrice: 15500 },
+  { id: "ewaste", label: "E-Waste (Printed Circuit Boards)", defaultHsn: "85480000", defaultPrice: 320000 },
+  { id: "glass", label: "Glass Cullet (Soda-Lime Flint)", defaultHsn: "70010000", defaultPrice: 4200 },
+  { id: "wood", label: "Wood / Timber (Pallet Planks)", defaultHsn: "44013900", defaultPrice: 6500 },
+  { id: "textile", label: "Textile Waste (Cotton Fabric)", defaultHsn: "63109010", defaultPrice: 31000 },
+  { id: "rubber", label: "Rubber Crumb (Tire Granules)", defaultHsn: "40040000", defaultPrice: 28500 },
+  { id: "organic", label: "Organic / Biomass Pellets", defaultHsn: "14049090", defaultPrice: 3800 },
   { id: "ferrous", label: "Ferrous Metal (HMS 1/2 Steel Scrap)", defaultHsn: "72044900", defaultPrice: 38500 },
   { id: "fly_ash", label: "Fly Ash (IS 3812 Class F Pozzolanic)", defaultHsn: "26219000", defaultPrice: 900 },
   { id: "construction_demolition", label: "C&D Recycled Aggregate (IS 383)", defaultHsn: "25171010", defaultPrice: 600 },
   { id: "slag", label: "GBFS Blast Furnace Slag", defaultHsn: "26190010", defaultPrice: 1800 },
+  { id: "other", label: "Other Circular Byproduct", defaultHsn: "99999999", defaultPrice: 10000 },
 ];
 
 const PRESET_IMAGES: Record<MaterialCategory, string> = {
-  non_ferrous: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=800&q=80",
-  plastic: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=800&q=80",
+  non_ferrous: "https://images.unsplash.com/photo-1535813547-99c456a41d4a?auto=format&fit=crop&w=800&q=80",
+  plastic: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80",
+  paper_cardboard: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=800&q=80",
+  ewaste: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+  glass: "https://images.unsplash.com/photo-1577705998148-6da4f3963bc8?auto=format&fit=crop&w=800&q=80",
+  wood: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
+  textile: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=800&q=80",
+  rubber: "https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&w=800&q=80",
+  organic: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80",
   ferrous: "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80",
-  fly_ash: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
-  construction_demolition: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=800&q=80",
-  slag: "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=800&q=80",
-  wood: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=800&q=80",
-  glass: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=800&q=80",
-  other: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=800&q=80",
+  fly_ash: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=800&q=80",
+  construction_demolition: "https://images.unsplash.com/photo-1578885136359-16c8bd4d3a8e?auto=format&fit=crop&w=800&q=80",
+  slag: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+  other: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
 };
 
 export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
@@ -226,7 +239,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl border border-slate-200 max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
+      <div className="bg-[#12181F] rounded-3xl border border-slate-700 max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
         
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
@@ -235,7 +248,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
               <Plus className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-900 uppercase tracking-tight font-display">
+              <h2 className="text-xl font-bold text-white uppercase tracking-tight font-display">
                 Add Real-Time Material Entry
               </h2>
               <p className="text-[10px] uppercase tracking-wider font-mono text-slate-500">
@@ -246,7 +259,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition cursor-pointer"
+            className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-white flex items-center justify-center transition cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -257,13 +270,13 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           
           {/* Category Dropdown */}
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1.5">
+            <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">
               Material Stream Category
             </label>
             <select
               value={category}
               onChange={(e) => handleCategoryChange(e.target.value as MaterialCategory)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-semibold"
+              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-semibold"
             >
               {CATEGORY_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -274,7 +287,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           {/* Title & Grade */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Material Name / Batch Title
               </label>
               <input
@@ -282,12 +295,12 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Standard Alloy / Polymer Grade
               </label>
               <input
@@ -295,7 +308,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={grade}
                 onChange={(e) => setGrade(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-mono"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono"
               />
             </div>
           </div>
@@ -303,7 +316,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           {/* Volume, Price & Circularity */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Batch Volume (MT)
               </label>
               <input
@@ -313,12 +326,12 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={quantityMT}
                 onChange={(e) => setQuantityMT(parseFloat(e.target.value) || 1)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-mono font-bold"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono font-bold"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Unit Price (₹/MT)
               </label>
               <input
@@ -328,12 +341,12 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={pricePerMT}
                 onChange={(e) => setPricePerMT(parseFloat(e.target.value) || 100)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-blue-700 focus:border-blue-500 focus:bg-white focus:outline-none font-mono font-bold"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-blue-700 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono font-bold"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Circularity Score (0-100)
               </label>
               <input
@@ -342,7 +355,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 max="100"
                 value={reusabilityScore}
                 onChange={(e) => setReusabilityScore(parseInt(e.target.value) || 90)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-mono font-bold"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono font-bold"
               />
             </div>
           </div>
@@ -350,7 +363,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           {/* Location & HSN */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 City / Industrial Cluster
               </label>
               <input
@@ -358,18 +371,18 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 State
               </label>
               <select
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-medium"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
               >
                 <option value="Gujarat">Gujarat</option>
                 <option value="Maharashtra">Maharashtra</option>
@@ -381,7 +394,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 GST HSN (8-digit)
               </label>
               <input
@@ -389,13 +402,13 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={hsnCode}
                 onChange={(e) => setHsnCode(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none font-mono"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono"
               />
             </div>
           </div>
 
           {/* Live Calculated Impact Strip */}
-          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-2 gap-4 text-xs font-mono">
+          <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700 grid grid-cols-2 gap-4 text-xs font-mono">
             <div>
               <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Live Total Lot Value</span>
               <p className="text-lg font-bold text-blue-700 mt-0.5">{formatInrCurrency(totalValueInr, true)}</p>

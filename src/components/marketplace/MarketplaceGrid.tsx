@@ -27,6 +27,7 @@ import {
 import { MarketplaceListing, MaterialPassport, OwnershipEvent, UserRole, MaterialCategory } from "../../types";
 import { formatInrCurrency } from "../../lib/valuation-engine";
 import { calculateMaterialCarbonImpact } from "../../lib/carbon-engine";
+import { generateSimpleRecordHash } from "../../lib/ledger-adapter";
 import { ListingDetailModal } from "./ListingDetailModal";
 import { LiveActivityTicker } from "../common/LiveActivityTicker";
 
@@ -210,7 +211,13 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
       hsnCode: "76020010",
       hazardousFlag: false,
       verificationStatus: "verified_onchain",
-      recordHash: `sha256:${Math.random().toString(16).substring(2, 14)}`,
+      recordHash: generateSimpleRecordHash({
+        passportId,
+        materialType: sample.materialType,
+        quantityMT: sample.quantityMT,
+        ownerOrg: activeRole.orgName,
+        timestamp: new Date().toISOString()
+      }),
       imageUrl: sample.imageUrl,
       suggestedApplications: sample.suggestedApplications,
       processingNeeded: ["Secondary segregation", "Clean melting"],
@@ -269,7 +276,12 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
       actorRole: "SCRAP_GENERATOR",
       location: `${sample.city}, ${sample.state}`,
       eventType: "CREATED",
-      recordHash: `sha256:${Math.random().toString(16).substring(2, 14)}`,
+      recordHash: generateSimpleRecordHash({
+        eventId: `EVT-${Date.now()}`,
+        passportId: passportId,
+        actor: activeRole.orgName,
+        timestamp: new Date().toISOString()
+      }),
       notes: `1-Click fast factory dispatch under ${sample.state} SPCB norms.`,
       evidenceType: "lab_verified"
     };
@@ -375,7 +387,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
               <Sparkles className="w-5 h-5" />
             </div>
             <div className="space-y-2 text-xs">
-              <h4 className="font-extrabold text-sm sm:text-base text-slate-900 flex items-center gap-2">
+              <h4 className="font-extrabold text-sm sm:text-base text-white flex items-center gap-2">
                 What is this Marketplace? (Clean Factory-to-Factory Trading)
               </h4>
               <p className="text-slate-600 leading-relaxed">
@@ -399,7 +411,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
       )}
 
       {/* Search & Dynamic Interactive Filters */}
-      <div className="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+      <div className="bg-[#12181F] p-5 sm:p-6 rounded-3xl border border-slate-700 space-y-4 shadow-xs">
         <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
           <div className="relative flex-1 w-full">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
@@ -408,7 +420,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search materials (e.g. Aluminium, Plastic Bottles, Copper Wire, Steel, Fly Ash, Sanand)..."
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none font-medium"
+              className="w-full bg-slate-800 border border-slate-700 rounded-2xl pl-10 pr-4 py-3 text-xs text-white placeholder-slate-400 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
             />
           </div>
 
@@ -416,7 +428,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
             <select
               value={selectedState}
               onChange={(e) => setSelectedState(e.target.value)}
-              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs text-slate-700 focus:border-blue-500 font-bold cursor-pointer"
+              className="bg-slate-800 border border-slate-700 rounded-2xl px-4 py-3 text-xs text-slate-700 focus:border-blue-500 font-bold cursor-pointer"
             >
               {STATES.map((s) => (
                 <option key={s} value={s}>{s}</option>
@@ -426,7 +438,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs text-slate-700 focus:border-blue-500 font-bold cursor-pointer"
+              className="bg-slate-800 border border-slate-700 rounded-2xl px-4 py-3 text-xs text-slate-700 focus:border-blue-500 font-bold cursor-pointer"
             >
               <option value="circularity">Sort: Highest Purity Grade</option>
               <option value="price_asc">Sort: Price (Lowest First)</option>
@@ -447,13 +459,13 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                 className={`px-4 py-2.5 rounded-2xl text-xs whitespace-nowrap font-extrabold transition cursor-pointer flex items-center gap-2 ${
                   isSelected
                     ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
-                    : "bg-slate-100 text-slate-700 hover:text-slate-900 hover:bg-slate-200/80 border border-slate-200/60"
+                    : "bg-slate-100 text-slate-700 hover:text-white hover:bg-slate-200/80 border border-slate-700/60"
                 }`}
               >
                 <span>{cat.label}</span>
                 {cat.buyersCount > 0 && (
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
-                    isSelected ? "bg-white/20 text-white" : "bg-emerald-100 text-emerald-800"
+                    isSelected ? "bg-[#12181F]/20 text-white" : "bg-emerald-100 text-emerald-800"
                   }`}>
                     {cat.buyersCount} Buyers
                   </span>
@@ -466,131 +478,87 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
 
       {/* Main Grid: Listings OR Interactive Playground Empty State */}
       {filteredListings.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredListings.map((listing) => {
-            const passport = passports.find((p) => p.id === listing.passportId);
-            const treesPlantedEquivalent = Math.round(listing.co2eAvoidedKg / 60);
-
-            return (
-              <div
-                key={listing.id}
-                className="bg-white rounded-3xl border border-slate-200/80 hover:border-blue-400 transition duration-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl group"
-              >
-                {/* Product Photo & Clean Badges */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
-                  <img
-                    src={listing.imageUrl}
-                    alt={listing.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  
-                  {/* Quantity Badge */}
-                  <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                    <span className="px-3 py-1 rounded-xl bg-white/95 backdrop-blur-md text-slate-900 font-extrabold text-xs border border-slate-200 shadow-sm">
-                      ⚖️ {listing.quantityMT} Tons ({listing.quantityMT * 1000} kg)
-                    </span>
-                  </div>
-
-                  {/* Cleanliness Grade Badge */}
-                  <div className="absolute top-3 right-3 bg-emerald-600 text-white px-2.5 py-1 rounded-xl text-xs font-bold shadow-md flex items-center gap-1">
-                    <Award className="w-3.5 h-3.5" />
-                    <span>{listing.reusabilityScore}% Purity</span>
-                  </div>
-
-                  {/* Location strip over bottom image with backdrop blur */}
-                  <div className="absolute bottom-3 left-3 right-3 bg-slate-900/80 backdrop-blur-md text-white px-3.5 py-2 rounded-xl text-xs flex items-center justify-between">
-                    <span className="flex items-center gap-1 font-medium truncate">
-                      <MapPin className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                      {listing.city}, {listing.state}
-                    </span>
-                    <span className="text-[11px] text-emerald-300 font-bold shrink-0">
-                      ✓ SPCB Ready
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card Body with Simple Language */}
-                <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                  <div>
-                    {/* Seller Name */}
-                    <div className="flex items-center justify-between text-xs text-slate-500 mb-1">
-                      <span className="font-semibold text-slate-700 truncate max-w-[200px]">
-                        🏢 {listing.sellerOrg}
-                      </span>
-                      <span className="text-[11px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">
-                        {listing.grade}
-                      </span>
-                    </div>
-
-                    {/* Material Title */}
-                    <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-blue-600 transition leading-snug tracking-tight">
-                      {listing.title}
-                    </h3>
-
-                    {/* What Can We Make From It? */}
-                    {passport && passport.suggestedApplications && passport.suggestedApplications.length > 0 && (
-                      <div className="mt-2.5 bg-blue-50/70 p-2.5 rounded-xl border border-blue-100 text-xs text-blue-900">
-                        <p className="font-bold text-[11px] text-blue-700 uppercase tracking-wider mb-0.5">
-                          ✨ What this scrap becomes:
-                        </p>
-                        <p className="line-clamp-2 leading-relaxed">
-                          {passport.suggestedApplications.join(", ")}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Price & Green Impact Strip */}
-                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
-                    {/* Price in Rupees */}
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-xs text-slate-600 font-semibold">Price per Ton:</span>
-                      <span className="text-xs font-bold text-slate-900 font-mono">
-                        ₹{listing.pricePerMT.toLocaleString("en-IN")} / Ton
-                      </span>
-                    </div>
-
-                    <div className="flex items-baseline justify-between pt-1 border-t border-slate-200">
-                      <span className="text-xs text-slate-700 font-bold">Total Batch Value:</span>
-                      <span className="text-lg font-extrabold text-blue-700 font-mono">
-                        {formatInrCurrency(listing.totalValueInr, true)}
-                      </span>
-                    </div>
-                    
-                    {/* Plain English Green Fact */}
-                    <div className="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 text-xs text-emerald-800 flex items-center justify-between font-medium">
-                      <span className="flex items-center gap-1.5 font-bold">
-                        🌱 Air Smoke Prevented:
-                      </span>
-                      <span className="font-extrabold">
-                        {(listing.co2eAvoidedKg / 1000).toFixed(1)} Tons of CO₂
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Clear Action Buttons */}
-                  <div className="grid grid-cols-2 gap-2 pt-1">
-                    <button
-                      onClick={() => onViewPassport(listing.passportId)}
-                      className="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer"
-                      title="View Digital Aadhaar passport"
-                    >
-                      <Layers className="w-4 h-4 text-blue-600" />
-                      Digital Aadhaar
-                    </button>
-
-                    <button
-                      onClick={() => setSelectedListingForModal(listing)}
-                      className="py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
-                    >
-                      <span>Buy / Send Offer</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="bg-[#12181F] rounded-2xl border border-slate-700/80 overflow-hidden shadow-lg">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="text-[10px] uppercase bg-[#1E2630] border-b border-slate-700 text-slate-400 font-bold">
+                <tr>
+                  <th className="px-4 py-3">Asset Hash / Digital ID</th>
+                  <th className="px-4 py-3">Material & Grade</th>
+                  <th className="px-4 py-3">Volume</th>
+                  <th className="px-4 py-3">Purity</th>
+                  <th className="px-4 py-3">Origin</th>
+                  <th className="px-4 py-3">Spot Value</th>
+                  <th className="px-4 py-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-700/50">
+                {filteredListings.map((listing) => {
+                  const passport = passports.find((p) => p.id === listing.passportId);
+                  return (
+                    <tr key={listing.id} className="hover:bg-[#1E2630]/50 transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <img src={listing.imageUrl} alt="" className="w-8 h-8 rounded bg-slate-800 object-cover border border-slate-700" />
+                          <div>
+                            <span className="font-mono text-[10px] text-slate-500 block">
+                              {passport?.recordHash?.substring(0, 16) || listing.passportId}
+                            </span>
+                            <span className="font-bold text-[#00E676] flex items-center gap-1 mt-0.5">
+                              <ShieldCheck className="w-3 h-3" />
+                              Lab Verified
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 max-w-[200px]">
+                        <p className="font-bold text-slate-100 truncate">{listing.title}</p>
+                        <p className="text-[10px] text-slate-400 truncate mt-0.5">{listing.grade}</p>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="font-mono font-bold text-slate-200">{listing.quantityMT} MT</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-full bg-slate-700 rounded-full h-1.5 max-w-[40px]">
+                            <div className="bg-[#00E676] h-1.5 rounded-full" style={{ width: `${listing.reusabilityScore}%` }}></div>
+                          </div>
+                          <span className="font-mono text-slate-200">{listing.reusabilityScore}%</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1 text-slate-300">
+                          <MapPin className="w-3 h-3 text-slate-500" />
+                          <span>{listing.city}, {listing.state}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <p className="font-mono font-bold text-white">₹{listing.pricePerMT.toLocaleString("en-IN")}/MT</p>
+                        <p className="font-mono text-[10px] text-slate-400 mt-0.5">{formatInrCurrency(listing.totalValueInr, true)}</p>
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => onViewPassport(listing.passportId)}
+                            className="p-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                            title="View Passport"
+                          >
+                            <Layers className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setSelectedListingForModal(listing)}
+                            className="px-3 py-1.5 rounded bg-[#FF6D00] hover:bg-[#E65C00] text-white font-bold text-[11px] transition shadow-md shadow-[#FF6D00]/20"
+                          >
+                            Buy / Offer
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         
@@ -598,24 +566,24 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
         <div className="space-y-6">
           
           {/* Section 1: 1-Click Fast Broadcast Batches */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-6 shadow-xs">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-150">
+          <div className="bg-[#12181F] p-6 sm:p-8 rounded-3xl border border-slate-700 space-y-6 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-50 text-blue-700 text-xs font-extrabold">
-                  <Zap className="w-4 h-4 text-blue-600" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-500/10 text-blue-400 text-xs font-extrabold border border-blue-500/20">
+                  <Zap className="w-4 h-4" />
                   Instant 1-Click Scrap Launchers
                 </div>
-                <h3 className="text-xl font-extrabold text-slate-900 font-display">
+                <h3 className="text-xl font-extrabold text-white font-display">
                   Click Any Real Indian Factory Scrap Lot Below to Broadcast Instantly
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-400">
                   Select a pre-verified batch to automatically issue its Digital Aadhaar, calculate carbon savings, and find nearby buyer factories.
                 </p>
               </div>
 
               <button
                 onClick={onOpenRealTimeEntryModal}
-                className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition cursor-pointer flex items-center gap-2 shadow-sm shrink-0"
+                className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs transition cursor-pointer flex items-center gap-2 shadow-sm shrink-0"
               >
                 <Plus className="w-4 h-4 stroke-[3]" />
                 <span>+ Custom Real-Time Entry</span>
@@ -629,37 +597,37 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                 return (
                   <div
                     key={batch.key}
-                    className="relative rounded-2xl border border-slate-200/90 hover:border-blue-400 overflow-hidden bg-slate-50/50 hover:bg-white transition-all duration-300 p-4 space-y-3 flex flex-col justify-between shadow-2xs hover:shadow-md group"
+                    className="relative rounded-2xl border border-slate-700 hover:border-blue-500/50 overflow-hidden bg-[#1E2630] transition-all duration-300 p-4 space-y-3 flex flex-col justify-between shadow-2xs hover:shadow-md group"
                   >
                     {/* Thumbnail */}
-                    <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-slate-200">
+                    <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-slate-800">
                       <img
                         src={batch.imageUrl}
                         alt={batch.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                       />
-                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded-lg bg-black/70 backdrop-blur-md text-white font-mono font-bold text-[10px]">
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded-lg bg-[#0B0F13]/70 backdrop-blur-md text-white font-mono font-bold text-[10px] border border-slate-700">
                         {batch.quantityMT} MT
                       </span>
-                      <span className="absolute top-2 right-2 px-2 py-0.5 rounded-lg bg-emerald-600 text-white font-bold text-[10px]">
+                      <span className="absolute top-2 right-2 px-2 py-0.5 rounded-lg bg-[#00E676] text-[#0B0F13] font-bold text-[10px]">
                         {batch.purity}% Clean
                       </span>
                     </div>
 
                     <div className="space-y-1">
-                      <h4 className="font-extrabold text-slate-900 text-xs leading-snug group-hover:text-blue-600 transition">
+                      <h4 className="font-extrabold text-white text-xs leading-snug group-hover:text-blue-400 transition">
                         {batch.title}
                       </h4>
-                      <p className="text-[11px] text-slate-500 flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-slate-400" />
+                      <p className="text-[11px] text-slate-400 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-slate-500" />
                         <span>{batch.city}, {batch.state}</span>
                       </p>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between text-xs">
+                    <div className="pt-2 border-t border-slate-700 flex items-center justify-between text-xs">
                       <div>
-                        <span className="text-[10px] text-slate-400 uppercase font-bold">Value:</span>
-                        <p className="font-mono font-extrabold text-blue-700 text-xs">
+                        <span className="text-[10px] text-slate-500 uppercase font-bold">Value:</span>
+                        <p className="font-mono font-extrabold text-blue-400 text-xs">
                           {formatInrCurrency(batch.quantityMT * batch.pricePerMT, true)}
                         </p>
                       </div>
@@ -668,8 +636,8 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                         onClick={() => handleQuickBroadcastSample(batch)}
                         className={`px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
                           isCreated
-                            ? "bg-emerald-600 text-white"
-                            : "bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200/60"
+                            ? "bg-[#00E676] text-[#0B0F13]"
+                            : "bg-[#12181F] hover:bg-blue-600 hover:text-white text-blue-400 border border-blue-500/30"
                         }`}
                       >
                         {isCreated ? (
@@ -692,7 +660,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
           </div>
 
           {/* Section 2: Interactive Live Scrap Payout & Carbon Estimator */}
-          <div className="relative rounded-3xl overflow-hidden border border-slate-200/80 bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white p-6 sm:p-8 shadow-lg space-y-6">
+          <div className="relative rounded-3xl overflow-hidden border border-slate-700/80 bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white p-6 sm:p-8 shadow-lg space-y-6">
             
             {/* Background Blur Overlay */}
             <div 
@@ -715,14 +683,14 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                 </div>
 
                 {/* Material Buttons */}
-                <div className="flex flex-wrap items-center gap-1.5 bg-white/10 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 shrink-0">
+                <div className="flex flex-wrap items-center gap-1.5 bg-[#12181F]/10 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 shrink-0">
                   {(["aluminium", "plastic", "steel", "copper", "flyash"] as const).map((mat) => (
                     <button
                       key={mat}
                       onClick={() => setSimMaterial(mat)}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition cursor-pointer ${
                         simMaterial === mat
-                          ? "bg-white text-slate-900 shadow-sm"
+                          ? "bg-[#12181F] text-white shadow-sm"
                           : "text-slate-200 hover:text-white"
                       }`}
                     >
@@ -733,7 +701,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
               </div>
 
               {/* Slider Row */}
-              <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/15 space-y-3">
+              <div className="bg-[#12181F]/10 backdrop-blur-md p-5 rounded-2xl border border-white/15 space-y-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-extrabold text-slate-200 uppercase tracking-wider">
                     Select Batch Weight to Sell:
@@ -750,7 +718,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                   step={5}
                   value={simTonnage}
                   onChange={(e) => setSimTonnage(Number(e.target.value))}
-                  className="w-full h-2.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+                  className="w-full h-2.5 bg-[#12181F]/20 rounded-lg appearance-none cursor-pointer accent-emerald-400"
                 />
 
                 <div className="flex justify-between text-[11px] text-slate-400 font-mono">
@@ -764,7 +732,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 
                 {/* Rupee Payout Card */}
-                <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 space-y-1">
+                <div className="bg-[#12181F]/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 space-y-1">
                   <span className="text-[11px] text-blue-300 font-bold uppercase flex items-center gap-1">
                     <IndianRupee className="w-3.5 h-3.5" />
                     Estimated Factory Revenue
@@ -792,7 +760,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                 </div>
 
                 {/* Broadcast from Calc Button */}
-                <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex flex-col justify-between space-y-2">
+                <div className="bg-[#12181F]/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex flex-col justify-between space-y-2">
                   <div>
                     <span className="text-[11px] text-slate-300 font-bold uppercase">Immediate Next Action</span>
                     <p className="text-xs text-slate-200 font-medium">Ready to list this exact batch?</p>
@@ -812,39 +780,39 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
           </div>
 
           {/* Section 3: Interactive Process Steps */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-            <h4 className="font-extrabold text-base text-slate-900 flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-blue-600" />
+          <div className="bg-[#12181F] p-6 sm:p-8 rounded-3xl border border-slate-700 space-y-4 shadow-xs">
+            <h4 className="font-extrabold text-base text-white flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-[#00E676]" />
               How Industrial Scrap Flows in CIRCULUS (3 Simple Steps)
             </h4>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+              <div className="bg-[#1E2630] p-4 rounded-2xl border border-slate-700 space-y-2">
                 <div className="w-8 h-8 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center">
                   1
                 </div>
-                <h5 className="font-extrabold text-slate-900 text-sm">Log Scrap Photo & Tonnage</h5>
-                <p className="text-slate-600 leading-relaxed">
+                <h5 className="font-extrabold text-white text-sm">Log Scrap Photo & Tonnage</h5>
+                <p className="text-slate-400 leading-relaxed">
                   Your factory takes a picture or enters scrap weight. Our AI automatically scans material purity and issues an official Digital Aadhaar ID card.
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
-                <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white font-extrabold flex items-center justify-center">
+              <div className="bg-[#1E2630] p-4 rounded-2xl border border-slate-700 space-y-2">
+                <div className="w-8 h-8 rounded-xl bg-[#00E676] text-[#0B0F13] font-extrabold flex items-center justify-center">
                   2
                 </div>
-                <h5 className="font-extrabold text-slate-900 text-sm">Smart Matching with Nearby Plants</h5>
-                <p className="text-slate-600 leading-relaxed">
+                <h5 className="font-extrabold text-white text-sm">Smart Matching with Nearby Plants</h5>
+                <p className="text-slate-400 leading-relaxed">
                   Our system matches your batch with verified melting plants & recyclers located closest to you to save diesel freight and get highest rates.
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+              <div className="bg-[#1E2630] p-4 rounded-2xl border border-slate-700 space-y-2">
                 <div className="w-8 h-8 rounded-xl bg-teal-600 text-white font-extrabold flex items-center justify-center">
                   3
                 </div>
-                <h5 className="font-extrabold text-slate-900 text-sm">Transfer Custody & Save Nature</h5>
-                <p className="text-slate-600 leading-relaxed">
+                <h5 className="font-extrabold text-white text-sm">Transfer Custody & Save Nature</h5>
+                <p className="text-slate-400 leading-relaxed">
                   Generate GST e-Way bills and SPCB manifests. Download official Green Audit certificates showing verified clean air and trees preserved.
                 </p>
               </div>

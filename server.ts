@@ -39,10 +39,10 @@ function getGeminiClient(): GoogleGenAI | null {
 
 // Comprehensive Indian Industrial Material Training Dataset & Fallback Engine
 function generateFallbackAnalysis(categoryHint?: string, quantityHint?: number) {
-  const category = (categoryHint || "non_ferrous").toLowerCase();
-  const qty = quantityHint || (category === "fly_ash" || category === "slag" ? 100 : category === "ferrous" ? 65 : category === "plastic" ? 24 : 18.5);
+  const rawCat = (categoryHint || "other").toLowerCase();
+  const qty = quantityHint || (rawCat === "fly_ash" || rawCat === "slag" ? 100 : rawCat === "ferrous" ? 65 : rawCat === "plastic" ? 24 : 18.5);
 
-  if (category === "plastic" || category.includes("pet") || category.includes("polymer") || category.includes("hdpe")) {
+  if (rawCat === "plastic" || rawCat.includes("pet") || rawCat.includes("polymer") || rawCat.includes("hdpe") || rawCat.includes("bottle")) {
     return {
       materialType: "Clear rPET Washed Flakes",
       subtype: "Post-Consumer PET Bottle Flakes (Grade AA)",
@@ -93,7 +93,356 @@ function generateFallbackAnalysis(categoryHint?: string, quantityHint?: number) 
     };
   }
 
-  if (category === "ferrous" || category.includes("steel") || category.includes("iron") || category.includes("hms")) {
+  if (rawCat === "paper_cardboard" || rawCat.includes("cardboard") || rawCat.includes("paper") || rawCat.includes("carton") || rawCat.includes("kraft")) {
+    return {
+      materialType: "Recycled Corrugated Cardboard Bales (OCC-11)",
+      subtype: "Post-Industrial Kraft Cardboard & Box Cutoffs",
+      grade: "Grade OCC-11 (Dry & Baled)",
+      condition: "excellent",
+      confidence: 94,
+      quantityEstimate: {
+        value: qty,
+        unit: "MT",
+      },
+      reusabilityScore: 91,
+      contaminationRisk: "low",
+      visualEvidence: [
+        "High-density dry rectangular compressed kraft cardboard bales",
+        "Zero oil soaking, plastic lamination film, or metallic wire contamination",
+        "Long-fiber virgin kraft fluting with high burst factor (>18 BF)",
+      ],
+      suggestedApplications: [
+        "Hydropulper recycling into new high-strength corrugated carton packaging",
+        "Kraft linerboard and testliner papermaking",
+        "Molded fiber egg trays and protective industrial packaging",
+      ],
+      processingNeeded: [
+        "Continuous hydropulping and coarse screening",
+        "Centrifugal cleaning and fiber fractionating",
+      ],
+      estimatedValueRange: {
+        min: 14000,
+        max: 16500,
+        currency: "INR",
+      },
+      carbonImpact: {
+        landfillAvoidanceKgCO2e: Math.round(qty * 1100),
+        reuseAvoidanceKgCO2e: Math.round(qty * 1100),
+        methodologyNote: "Forest conservation baseline (1.10 t CO2e saved per MT recycled paper pulp vs virgin timber logging).",
+      },
+      warnings: ["Store under covered sheds to prevent rain moisture absorption >12%."],
+      indiaMetadata: {
+        materialCategory: "paper_cardboard",
+        state: "Haryana",
+        city: "Gurugram / Manesar",
+        spcbJurisdiction: "Haryana State Pollution Control Board (HSPCB)",
+        eprCategory: "Paper & Packaging Circular Stream",
+        hsnCode: "47071000",
+        hazardousFlag: false,
+      },
+    };
+  }
+
+  if (rawCat === "ewaste" || rawCat.includes("pcb") || rawCat.includes("circuit") || rawCat.includes("electronic")) {
+    return {
+      materialType: "High-Grade Printed Circuit Boards (E-Waste PCBs)",
+      subtype: "Telecom & Computer Server Motherboard Scraps",
+      grade: "Class 1 High-Grade Gold/Copper Plated PCBs",
+      condition: "good",
+      confidence: 96,
+      quantityEstimate: {
+        value: qty,
+        unit: "MT",
+      },
+      reusabilityScore: 95,
+      contaminationRisk: "medium",
+      visualEvidence: [
+        "Multi-layer FR4 epoxy substrate boards with gold-plated contact edge fingers",
+        "Surface mount integrated circuits (ICs), electrolytic capacitors, and solder joints intact",
+        "Batteries and hazardous mercury relays depopulated in accordance with E-Waste Rules",
+      ],
+      suggestedApplications: [
+        "Hydrometallurgical extraction of gold, silver, palladium, and copper",
+        "Secondary copper smelting and precious metal refinery feed",
+      ],
+      processingNeeded: [
+        "Mechanical dismantling of heatsinks and large capacitors",
+        "Fine shredding and electrostatic copper/fiberglass separation",
+      ],
+      estimatedValueRange: {
+        min: 280000,
+        max: 360000,
+        currency: "INR",
+      },
+      carbonImpact: {
+        landfillAvoidanceKgCO2e: Math.round(qty * 5400),
+        reuseAvoidanceKgCO2e: Math.round(qty * 5400),
+        methodologyNote: "E-Waste Critical Metal LCA model (5.40 t CO2e saved per MT recycled PCB vs deep open-pit ore mining).",
+      },
+      warnings: ["Requires CPCB/SPCB authorized E-Waste Recycler Certificate for transport and processing."],
+      indiaMetadata: {
+        materialCategory: "ewaste",
+        state: "Karnataka",
+        city: "Bengaluru (Peenya)",
+        spcbJurisdiction: "Karnataka State Pollution Control Board (KSPCB)",
+        eprCategory: "CPCB E-Waste Schedule I",
+        hsnCode: "85480000",
+        hazardousFlag: false,
+      },
+    };
+  }
+
+  if (rawCat === "glass" || rawCat.includes("cullet") || rawCat.includes("bottle_glass")) {
+    return {
+      materialType: "Clean Color-Sorted Glass Cullet",
+      subtype: "Container Glass & Beverage Bottle Shards",
+      grade: "IS 5623 Soda-Lime Flint Cullet (Clean)",
+      condition: "excellent",
+      confidence: 93,
+      quantityEstimate: {
+        value: qty,
+        unit: "MT",
+      },
+      reusabilityScore: 97,
+      contaminationRisk: "low",
+      visualEvidence: [
+        "Color-sorted transparent flint glass fragments (10-40mm size)",
+        "Zero ceramic, porcelain, stones, or heat-resistant Pyrex inclusions",
+        "Metallic bottle crowns and aluminum screw caps magnetically removed",
+      ],
+      suggestedApplications: [
+        "Direct furnace remelting into new glass bottles and jars",
+        "Fiberglass insulation manufacturing",
+        "Reflective road-marking micro-glass beads",
+      ],
+      processingNeeded: [
+        "Color optical camera sorting",
+        "Ceramic & stone sensor ejection",
+      ],
+      estimatedValueRange: {
+        min: 3800,
+        max: 4600,
+        currency: "INR",
+      },
+      carbonImpact: {
+        landfillAvoidanceKgCO2e: Math.round(qty * 650),
+        reuseAvoidanceKgCO2e: Math.round(qty * 650),
+        methodologyNote: "Glass cullet remelting saves 650 kg CO2e / MT by lowering furnace temperature by 200°C.",
+      },
+      warnings: ["Keep free of porcelain or earthen crockery to prevent furnace nozzle clogging."],
+      indiaMetadata: {
+        materialCategory: "glass",
+        state: "Gujarat",
+        city: "Jhagadia (Bharuch)",
+        spcbJurisdiction: "Gujarat Pollution Control Board (GPCB)",
+        eprCategory: "Container Glass Circular Stream",
+        hsnCode: "70010000",
+        hazardousFlag: false,
+      },
+    };
+  }
+
+  if (rawCat === "wood" || rawCat.includes("pallet") || rawCat.includes("timber")) {
+    return {
+      materialType: "Reclaimed Pine & Hardwood Pallet Scrap",
+      subtype: "Industrial Logistics Euro & IS Pallet Cutoffs",
+      grade: "Grade A Reusable Industrial Timber",
+      condition: "good",
+      confidence: 91,
+      quantityEstimate: {
+        value: qty,
+        unit: "MT",
+      },
+      reusabilityScore: 89,
+      contaminationRisk: "low",
+      visualEvidence: [
+        "Dry debarked seasoned softwood/hardwood timber planks",
+        "Clean surface free of chemical creosote or toxic pest-preservative stains",
+        "Uniform structural thickness (18-22mm) with minimal nail holes",
+      ],
+      suggestedApplications: [
+        "Refurbishment into heavy-duty logistics transport pallets",
+        "Engineered particle board, MDF, and wooden packaging crates",
+        "High-calorific clean industrial biomass briquettes",
+      ],
+      processingNeeded: [
+        "Metal nail extraction and magnetic detection",
+        "Wood planer sizing or heavy chipper processing",
+      ],
+      estimatedValueRange: {
+        min: 5800,
+        max: 7200,
+        currency: "INR",
+      },
+      carbonImpact: {
+        landfillAvoidanceKgCO2e: Math.round(qty * 900),
+        reuseAvoidanceKgCO2e: Math.round(qty * 900),
+        methodologyNote: "Deforestation offset model (900 kg CO2e / MT sequestered carbon preserved).",
+      },
+      warnings: ["Confirm absence of chemical pesticide treatment (ISPM 15 heat treated only)."],
+      indiaMetadata: {
+        materialCategory: "wood",
+        state: "Maharashtra",
+        city: "Bhiwandi (Thane)",
+        spcbJurisdiction: "Maharashtra Pollution Control Board (MPCB)",
+        eprCategory: "Bio-Based Logistics Stream",
+        hsnCode: "44013900",
+        hazardousFlag: false,
+      },
+    };
+  }
+
+  if (rawCat === "textile" || rawCat.includes("fabric") || rawCat.includes("cotton")) {
+    return {
+      materialType: "Pre-Consumer Cotton & Synthetic Fabric Cutoffs",
+      subtype: "Garment Factory Knitted Cutting Waste (Chindi)",
+      grade: "100% Combed Cotton Single Jersey (Color Sorted)",
+      condition: "excellent",
+      confidence: 92,
+      quantityEstimate: {
+        value: qty,
+        unit: "MT",
+      },
+      reusabilityScore: 93,
+      contaminationRisk: "low",
+      visualEvidence: [
+        "Clean unsoiled virgin fabric trimmings from garment cutting tables",
+        "Sorted by color shade without zipper hardware, metal buttons, or fusible interlinings",
+        "High staple fiber length (>24mm) suitable for mechanical rag tearing",
+      ],
+      suggestedApplications: [
+        "Rag tearing and garnetting into recycled cotton yarn",
+        "Automotive soundproof acoustic underlay and non-woven felt insulation",
+        "Premium industrial absorbent wiping rags",
+      ],
+      processingNeeded: [
+        "Mechanical rotary cutter shredding",
+        "High-capacity garnett / rag opening carding line",
+      ],
+      estimatedValueRange: {
+        min: 28000,
+        max: 35000,
+        currency: "INR",
+      },
+      carbonImpact: {
+        landfillAvoidanceKgCO2e: Math.round(qty * 3200),
+        reuseAvoidanceKgCO2e: Math.round(qty * 3200),
+        methodologyNote: "Avoidance of water-intensive raw cotton agriculture & dye processing (3.20 t CO2e / MT).",
+      },
+      warnings: ["Keep stored in dry fire-safe bales away from open sparks."],
+      indiaMetadata: {
+        materialCategory: "textile",
+        state: "Tamil Nadu",
+        city: "Tiruppur",
+        spcbJurisdiction: "Tamil Nadu Pollution Control Board (TNPCB)",
+        eprCategory: "Pre-Consumer Textile Circular Stream",
+        hsnCode: "63109010",
+        hazardousFlag: false,
+      },
+    };
+  }
+
+  if (rawCat === "rubber" || rawCat.includes("tire") || rawCat.includes("tyre")) {
+    return {
+      materialType: "End-of-Life Truck Tire Rubber Crumbs (ELT)",
+      subtype: "Ambient Mechanical Shredded Tire Granules (30 Mesh)",
+      grade: "Grade 30-Mesh Steel-Free Rubber Crumb",
+      condition: "good",
+      confidence: 93,
+      quantityEstimate: {
+        value: qty,
+        unit: "MT",
+      },
+      reusabilityScore: 90,
+      contaminationRisk: "low",
+      visualEvidence: [
+        "Uniform black vulcanized elastomeric rubber granules (0.6mm - 1.2mm)",
+        "Over 99.8% steel bead wire extracted via multi-stage rare-earth cross-belt magnets",
+        "Zero nylon/polyester textile fluff residue observed (<0.2%)",
+      ],
+      suggestedApplications: [
+        "Crumb Rubber Modified Bitumen (CRMB 55/60) for long-life highway asphalt",
+        "Interlocking athletic running tracks, playground safety tiles, and gym floor mats",
+        "Molded solid rubber trolley wheels and conveyor skirtboard rubber",
+      ],
+      processingNeeded: [
+        "Secondary magnetic de-ironing",
+        "Air classification fluff separation",
+      ],
+      estimatedValueRange: {
+        min: 26000,
+        max: 31000,
+        currency: "INR",
+      },
+      carbonImpact: {
+        landfillAvoidanceKgCO2e: Math.round(qty * 1800),
+        reuseAvoidanceKgCO2e: Math.round(qty * 1800),
+        methodologyNote: "Tire circularity standard (1.80 t CO2e / MT saved vs virgin synthetic SBR rubber).",
+      },
+      warnings: ["Store under sprinkler-equipped sheds to prevent spontaneous heat buildup."],
+      indiaMetadata: {
+        materialCategory: "rubber",
+        state: "Gujarat",
+        city: "Vapi (Valsad)",
+        spcbJurisdiction: "Gujarat Pollution Control Board (GPCB)",
+        eprCategory: "CPCB Tyre EPR Waste Management",
+        hsnCode: "40040000",
+        hazardousFlag: false,
+      },
+    };
+  }
+
+  if (rawCat === "organic" || rawCat.includes("biomass") || rawCat.includes("agro") || rawCat.includes("food")) {
+    return {
+      materialType: "Agricultural Biomass & Crop Residue Pellets",
+      subtype: "Sugarcane Bagasse & Rice Straw Compressed Feedstock",
+      grade: "Clean Industrial Biofuel Grade A",
+      condition: "good",
+      confidence: 90,
+      quantityEstimate: {
+        value: qty,
+        unit: "MT",
+      },
+      reusabilityScore: 91,
+      contaminationRisk: "low",
+      visualEvidence: [
+        "Compressed fibrous biomass pellets with low surface moisture (<10%)",
+        "Zero non-biodegradable plastic packaging or soil clods",
+        "High gross calorific value (GCV >3,600 kcal/kg)",
+      ],
+      suggestedApplications: [
+        "Thermal power plant co-firing replacing coal (Ministry of Power 5% mandate)",
+        "Compressed Biogas (CBG) SATAT green fuel digesters",
+        "Biodegradable disposable molded tableware packaging",
+      ],
+      processingNeeded: [
+        "Fine hammer mill pulverizing",
+        "Ring-die pellet mill densification",
+      ],
+      estimatedValueRange: {
+        min: 3200,
+        max: 4200,
+        currency: "INR",
+      },
+      carbonImpact: {
+        landfillAvoidanceKgCO2e: Math.round(qty * 850),
+        reuseAvoidanceKgCO2e: Math.round(qty * 850),
+        methodologyNote: "Avoidance of open farm stubble burning (850 kg CO2e / MT carbon neutral offset).",
+      },
+      warnings: ["Keep in dry ventilated storage to avoid mold and moisture degradation."],
+      indiaMetadata: {
+        materialCategory: "organic",
+        state: "Punjab",
+        city: "Ludhiana",
+        spcbJurisdiction: "Punjab Pollution Control Board (PPCB)",
+        eprCategory: "Agro-Biomass Renewable Resource",
+        hsnCode: "14049090",
+        hazardousFlag: false,
+      },
+    };
+  }
+
+  if (rawCat === "ferrous" || rawCat.includes("steel") || rawCat.includes("iron") || rawCat.includes("hms")) {
     return {
       materialType: "Heavy Melting Steel Scrap (HMS 1/2)",
       subtype: "Structural Steel Cutoffs & Flanges",
@@ -143,7 +492,7 @@ function generateFallbackAnalysis(categoryHint?: string, quantityHint?: number) 
     };
   }
 
-  if (category === "fly_ash" || category.includes("ash") || category.includes("pozzolan")) {
+  if (rawCat === "fly_ash" || rawCat.includes("ash") || rawCat.includes("pozzolan")) {
     return {
       materialType: "Class F Dry Fly Ash Powder",
       subtype: "Thermal Power Electrostatic Precipitator (ESP) Fly Ash",
@@ -193,7 +542,7 @@ function generateFallbackAnalysis(categoryHint?: string, quantityHint?: number) 
     };
   }
 
-  if (category === "slag" || category.includes("gbfs")) {
+  if (rawCat === "slag" || rawCat.includes("gbfs")) {
     return {
       materialType: "Granulated Blast Furnace Slag (GBFS)",
       subtype: "Vitreous Water-Quenched Slag Sand",
@@ -242,7 +591,7 @@ function generateFallbackAnalysis(categoryHint?: string, quantityHint?: number) 
     };
   }
 
-  if (category === "construction_demolition" || category.includes("concrete") || category.includes("c&d")) {
+  if (rawCat === "construction_demolition" || rawCat.includes("concrete") || rawCat.includes("c&d")) {
     return {
       materialType: "Recycled Concrete Aggregate (RCA)",
       subtype: "Crushed Structural Concrete Fraction (10-20mm)",
@@ -292,101 +641,103 @@ function generateFallbackAnalysis(categoryHint?: string, quantityHint?: number) 
     };
   }
 
-  if (category.includes("copper") || category.includes("wire")) {
+  if (rawCat === "non_ferrous" || rawCat.includes("aluminium") || rawCat.includes("aluminum") || rawCat.includes("6063")) {
     return {
-      materialType: "Bright Bare Copper Scrap (Berry / Barley)",
-      subtype: "Industrial Armature & Cable Strippings",
-      grade: "ISRI Berry / Millberry (99.9% Electrolytic Copper)",
+      materialType: "Aluminium Extrusion Scrap (Grade 6063)",
+      subtype: "Architectural Profile Cutoffs & Solar Framing",
+      grade: "Grade 6063-T6 / HE9 Clean (ISRI Toto)",
       condition: "excellent",
-      confidence: 97,
+      confidence: 96,
       quantityEstimate: {
         value: qty,
         unit: "MT",
       },
-      reusabilityScore: 98,
+      reusabilityScore: 94,
       contaminationRisk: "low",
       visualEvidence: [
-        "High metallic luster bright salmon-pink copper wire strands",
-        "Zero PVC insulation skin, solder tinning, or lacquer coating residue",
-        "Heavy gauge stranded wire (>1.2mm diameter) free of oxidation patina",
+        "Clean silvery-metallic extrusion profile cross-sections with sharp shear edges",
+        "No heavy paint coatings, thermal-break nylon inserts, or bitumen sealants",
+        "Micro-oxide passivation layer only; uncorroded alloy surface free of iron screws",
       ],
       suggestedApplications: [
-        "Electric vehicle high-torque motor windings and stator coils",
-        "Power transformer copper busbars and distribution strips",
-        "Continuous cast electrolytic copper rod (99.99% purity)",
+        "Direct secondary remelting into 6063 extrusion billets for solar panel frames",
+        "Automotive lightweight crash management systems & EV battery trays",
+        "High-precision architectural doors, curtain walls, and window systems",
       ],
       processingNeeded: [
-        "High-density hydraulic briquetting",
-        "Induction furnace melt refining under protective flux",
+        "Magnetic tramp-iron separation to ensure Fe <0.25%",
+        "Hydraulic bale compaction for high furnace charging density",
       ],
       estimatedValueRange: {
-        min: 730000,
-        max: 765000,
+        min: 202000,
+        max: 215000,
         currency: "INR",
       },
       carbonImpact: {
-        landfillAvoidanceKgCO2e: Math.round(qty * 4800),
-        reuseAvoidanceKgCO2e: Math.round(qty * 4800),
-        methodologyNote: "International Copper Association LCA Model (4.80 t CO2e / MT recycled copper avoided vs low-grade chalcopyrite open-pit mining).",
+        landfillAvoidanceKgCO2e: Math.round(qty * 8200),
+        reuseAvoidanceKgCO2e: Math.round(qty * 8200),
+        methodologyNote: "International Aluminium Institute (IAI) Factor (8.20 kg CO2e / kg Al avoided vs Hall-Héroult bauxite smelting consuming 14,000 kWh/MT).",
       },
-      warnings: ["Keep in dry secure storage to prevent surface tarnishing."],
+      warnings: ["Confirm absence of stainless steel fasteners before charging into induction crucible."],
       indiaMetadata: {
         materialCategory: "non_ferrous",
-        state: "Tamil Nadu",
-        city: "Hosur (Bangalore Border)",
-        spcbJurisdiction: "Tamil Nadu Pollution Control Board (TNPCB)",
-        eprCategory: "High-Value Non-Ferrous Metal",
-        hsnCode: "74040012",
+        state: "Gujarat",
+        city: "Sanand (Ahmedabad)",
+        spcbJurisdiction: "Gujarat Pollution Control Board (GPCB)",
+        eprCategory: "Non-Ferrous Industrial Stream",
+        hsnCode: "76020010",
         hazardousFlag: false,
       },
     };
   }
 
-  // Default / Aluminium 6063
+  // Generic / Unidentified / Low-confidence fallback
   return {
-    materialType: "Aluminium Extrusion Scrap (Grade 6063)",
-    subtype: "Architectural Profile Cutoffs & Solar Framing",
-    grade: "Grade 6063-T6 / HE9 Clean (ISRI Toto)",
-    condition: "excellent",
-    confidence: 96,
+    materialType: "Mixed / Unidentified Material",
+    subtype: "Non-standard or multi-material stream",
+    grade: "Ungraded (Requires Physical Verification)",
+    condition: "fair",
+    confidence: 35,
     quantityEstimate: {
       value: qty,
       unit: "MT",
     },
-    reusabilityScore: 94,
-    contaminationRisk: "low",
+    reusabilityScore: 50,
+    contaminationRisk: "medium",
     visualEvidence: [
-      "Clean silvery-metallic extrusion profile cross-sections with sharp shear edges",
-      "No heavy paint coatings, thermal-break nylon inserts, or bitumen sealants",
-      "Micro-oxide passivation layer only; uncorroded alloy surface free of iron screws",
+      "Visual characteristics require higher-resolution inspection or manual spectroscopic analysis",
+      "Heterogeneous surface structure with mixed visual signatures",
+      "Unable to automatically confirm single-stream polymer or metal alloy purity",
     ],
     suggestedApplications: [
-      "Direct secondary remelting into 6063 extrusion billets for solar panel frames",
-      "Automotive lightweight crash management systems & EV battery trays",
-      "High-precision architectural doors, curtain walls, and window systems",
+      "Optical and magnetic sorting facility triage",
+      "Secondary shredding and density separation",
     ],
     processingNeeded: [
-      "Magnetic tramp-iron separation to ensure Fe <0.25%",
-      "Hydraulic bale compaction for high furnace charging density",
+      "Manual sorting",
+      "Magnetic Tramp Separation",
+      "Density Float-Sink separation",
     ],
     estimatedValueRange: {
-      min: 202000,
-      max: 215000,
+      min: 5000,
+      max: 12000,
       currency: "INR",
     },
     carbonImpact: {
-      landfillAvoidanceKgCO2e: Math.round(qty * 8200),
-      reuseAvoidanceKgCO2e: Math.round(qty * 8200),
-      methodologyNote: "International Aluminium Institute (IAI) Factor (8.20 kg CO2e / kg Al avoided vs Hall-Héroult bauxite smelting consuming 14,000 kWh/MT).",
+      landfillAvoidanceKgCO2e: Math.round(qty * 500),
+      reuseAvoidanceKgCO2e: Math.round(qty * 500),
+      methodologyNote: "Generic industrial circularity baseline (500 kg CO2e / MT diverted from unscientific landfilling).",
     },
-    warnings: ["Confirm absence of stainless steel fasteners before charging into induction crucible."],
+    warnings: [
+      "Unable to confidently identify material purity. Laboratory verification or physical lot sampling recommended.",
+    ],
     indiaMetadata: {
-      materialCategory: "non_ferrous",
+      materialCategory: "other",
       state: "Gujarat",
-      city: "Sanand (Ahmedabad)",
+      city: "Sanand",
       spcbJurisdiction: "Gujarat Pollution Control Board (GPCB)",
-      eprCategory: "Non-Ferrous Industrial Stream",
-      hsnCode: "76020010",
+      eprCategory: "Mixed Secondary Feedstock",
+      hsnCode: "99999999",
       hazardousFlag: false,
     },
   };
@@ -646,7 +997,164 @@ async function startServer() {
     });
   });
 
-  // API: Material Classification (Gemini Multimodal)
+  // API: Real-Time Live Camera Object & Material Detection (Fast Task: gemini-3.1-flash-lite)
+  app.post("/api/materials/realtime-detect", async (req, res) => {
+    try {
+      const { imageBase64, imageUrl, mimeType } = req.body;
+      const rawImage = imageBase64 || imageUrl || "";
+      if (!rawImage) {
+        return res.status(400).json({
+          success: false,
+          error: "No image payload provided for real-time detection.",
+        });
+      }
+
+      const ai = getGeminiClient();
+      const cleanData = rawImage.replace(/^data:image\/[a-z]+;base64,/, "");
+      const imageMime = mimeType || (rawImage.startsWith("data:image/png") ? "image/png" : "image/jpeg");
+
+      if (!ai) {
+        return res.json({
+          success: true,
+          detection: {
+            detectedObject: "Visual Stream Active (Neural Vision Standby)",
+            category: "other",
+            materialSubtype: "Manual selection or API key required",
+            confidence: 50,
+            isRecognized: false,
+            visualTraits: [
+              "Camera stream active and rendering video feed",
+              "Connect Gemini API key for live real-time visual neural classification",
+            ],
+            suggestedAction: "Point camera directly at a material item or use manual industrial catalog",
+            warning: "Real-time AI vision requires active Gemini API key.",
+            timestamp: new Date().toISOString(),
+          },
+          source: "stream_ready_mode",
+        });
+      }
+
+      const prompt = `You are a real-time computer vision object detector and material classifier for CIRCULUS.
+Analyze the image frame in real time.
+Identify the primary physical object and material shown in the image.
+
+Accurately classify into ONE of these categories:
+- "ferrous" (Iron, Steel, Heavy Melting Steel HMS, Rebar, Iron pipes, Cast iron)
+- "non_ferrous" (Aluminium extrusion/cans, Copper wires/pipes, Brass, Bronze, Zinc)
+- "plastic" (PET Bottles, HDPE jugs/drums, plastic containers, LDPE film, PVC, polymer scrap)
+- "paper_cardboard" (Corrugated cardboard boxes, cartons, Kraft paper bales, office paper, books, newspaper)
+- "glass" (Glass bottles, jars, glass cullet, sheet glass, broken glassware)
+- "ewaste" (Printed Circuit Boards PCBs, motherboards, computer chips, electronics, cables, lithium-ion batteries, phone parts)
+- "wood" (Wooden pallets, timber planks, logs, woodcutoff, sawdust, wooden boxes)
+- "textile" (Cotton clothes, fabric remnants, rags, denim scraps, yarn, jute bags)
+- "rubber" (Tires, rubber belts, shredded rubber, rubber tubes, seals)
+- "organic" (Food items, fruit peels, vegetables, agricultural biomass, leaves, compost)
+- "construction_demolition" (Concrete chunks, bricks, gravel, tiles, plaster rubble)
+- "fly_ash" (Fine grey mineral ash powder)
+- "slag" (Glassy furnace slag sand)
+- "other" (If the camera is showing a human face/body, room walls/ceiling with no clear material, blurry motion, hand, or non-recyclable object)
+
+CRITICAL INSTRUCTIONS:
+1. NEVER default or assume metal scrap unless metallic visual features are clearly visible.
+2. If you see a plastic bottle or bag, classify as "plastic".
+3. If you see a cardboard box or paper, classify as "paper_cardboard".
+4. If you see an electronic circuit board or wire cable, classify as "ewaste".
+5. If you see a glass bottle or glassware, classify as "glass".
+6. If you see a wooden object or pallet, classify as "wood".
+7. If you see clothing or fabric, classify as "textile".
+8. If the image is blurry, blank, dark, or shows a person/face/wall, set confidence < 40 and isRecognized to false.
+9. Provide honest confidence score (0-100). If confidence < 45, isRecognized MUST be false and detectedObject should be "Unable to confidently identify material".
+
+Return strictly JSON matching this schema:
+{
+  "detectedObject": string (e.g. "PET Plastic Water Bottle", "Corrugated Shipping Box", "Printed Circuit Board PCB", "HMS Heavy Steel Scrap", "Aluminium Window Extrusion", "Cotton Garment Scrap"),
+  "category": string (one of the categories above),
+  "materialSubtype": string,
+  "confidence": number (0-100),
+  "isRecognized": boolean,
+  "visualTraits": string[] (2-3 concise observations),
+  "suggestedAction": string,
+  "warning": string
+}`;
+
+      // Fast models cascade for rapid real-time video frame throughput:
+      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-3.7-flash"];
+      let response = null;
+
+      for (const modelName of modelsToTry) {
+        try {
+          response = await ai.models.generateContent({
+            model: modelName,
+            contents: {
+              parts: [
+                {
+                  inlineData: {
+                    data: cleanData,
+                    mimeType: imageMime,
+                  },
+                },
+                { text: prompt },
+              ],
+            },
+            config: {
+              responseMimeType: "application/json",
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  detectedObject: { type: Type.STRING },
+                  category: { type: Type.STRING },
+                  materialSubtype: { type: Type.STRING },
+                  confidence: { type: Type.INTEGER },
+                  isRecognized: { type: Type.BOOLEAN },
+                  visualTraits: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
+                  suggestedAction: { type: Type.STRING },
+                  warning: { type: Type.STRING },
+                },
+                required: [
+                  "detectedObject",
+                  "category",
+                  "confidence",
+                  "isRecognized",
+                  "visualTraits",
+                ],
+              },
+            },
+          });
+          break;
+        } catch (err: any) {
+          console.warn(`[Realtime Vision] Model ${modelName} notice:`, sanitizeErrorMessage(err).slice(0, 80));
+        }
+      }
+
+      if (response && response.text) {
+        const parsed = JSON.parse(response.text || "{}");
+        return res.json({
+          success: true,
+          detection: {
+            ...parsed,
+            timestamp: new Date().toISOString(),
+          },
+          source: "gemini_realtime_vision",
+        });
+      }
+
+      return res.status(503).json({
+        success: false,
+        error: "Real-time AI vision service temporarily busy. Please retry.",
+      });
+    } catch (err: any) {
+      console.error("[Realtime Vision Error]:", sanitizeErrorMessage(err));
+      return res.status(500).json({
+        success: false,
+        error: "Error processing real-time video frame.",
+      });
+    }
+  });
+
+  // API: Complex Material Image Understanding & Passport Analysis (Complex Task: gemini-3.1-pro-preview)
   app.post("/api/materials/analyze", async (req, res) => {
     try {
       const { 
@@ -663,7 +1171,7 @@ async function startServer() {
       } = req.body;
 
       const rawImage = imageBase64 || imageUrl || "";
-      const effectiveCategory = materialCategoryHint || category || "non_ferrous";
+      const effectiveCategory = materialCategoryHint || category || "other";
       const effectiveQuantity = quantityHint || quantityMT;
       const effectiveLocation = locationHint || (originCity ? `${originCity}, ${originState || "India"}` : "India industrial corridor");
 
@@ -684,30 +1192,33 @@ async function startServer() {
       const cleanData = rawImage.replace(/^data:image\/[a-z]+;base64,/, "");
 
       const prompt = `You are the material-intelligence engine for CIRCULUS, an industrial circular-economy marketplace operating in India.
-Analyze this industrial material / scrap imagery conservatively.
-Never invent measurements that cannot be visually inferred. Separate observation from estimation.
+Analyze this industrial material / scrap imagery conservatively and objectively.
+Identify the true material shown in the image.
+Do NOT default to metal scrap if the image contains other materials like plastic, cardboard, paper, electronics/e-waste, glass, wood, rubber, textiles, or organic matter.
+If the image shows a non-industrial object (e.g. human face/hand, room background, animal), return low confidence (<40) and state "Unable to confidently verify industrial material" in warnings.
+
 Context hints:
-Category hint: ${effectiveCategory}
+Category hint: ${effectiveCategory !== "other" ? effectiveCategory : "auto (visually detect from image pixels)"}
 Location hint: ${effectiveLocation}
 Quantity hint: ${effectiveQuantity ? `${effectiveQuantity} MT` : "estimate conservatively"}
 
 Return strictly structured JSON matching this schema:
-- materialType (string, e.g. Aluminium Extrusion Scrap 6063, Clear rPET Flakes, HMS 1/2 Steel, Fly Ash IS 3812)
+- materialType (string, e.g. Clear rPET Washed Flakes, Recycled Corrugated Cardboard OCC-11, Printed Circuit Boards E-Waste, Aluminium Extrusion Scrap 6063, HMS 1/2 Steel, Fly Ash IS 3812)
 - subtype (string)
-- grade (string, e.g. Grade 6063 T6 Clean, Food-Grade Wash Class AA, IS 2549)
+- grade (string, e.g. Grade 6063 T6 Clean, Food-Grade Wash Class AA, OCC-11, IS 2549)
 - condition ("excellent" | "good" | "fair" | "poor")
 - confidence (integer 0-100)
 - quantityEstimate: { value: number, unit: "MT" }
 - reusabilityScore (integer 0-100)
 - contaminationRisk ("low" | "medium" | "high")
-- visualEvidence (array of 3 specific visual observations)
+- visualEvidence (array of 3 specific visual observations from the image)
 - suggestedApplications (array of 3 high-value Indian industrial circular reuse pathways)
 - processingNeeded (array of 2-3 required processing steps)
 - estimatedValueRange: { min: number, max: number, currency: "INR" }
 - carbonImpact: { landfillAvoidanceKgCO2e: number, reuseAvoidanceKgCO2e: number, methodologyNote: string }
-- warnings (array of practical handling/furnace safety warnings)
+- warnings (array of practical handling/verification warnings)
 - indiaMetadata: {
-    materialCategory: ("ferrous" | "non_ferrous" | "plastic" | "fly_ash" | "slag" | "construction_demolition" | "wood" | "glass" | "other"),
+    materialCategory: ("ferrous" | "non_ferrous" | "plastic" | "paper_cardboard" | "glass" | "ewaste" | "wood" | "textile" | "rubber" | "organic" | "construction_demolition" | "fly_ash" | "slag" | "other"),
     state: string,
     city: string,
     spcbJurisdiction: string,
@@ -717,8 +1228,8 @@ Return strictly structured JSON matching this schema:
   }
 `;
 
-      // Multi-model resilience cascade: Try high-throughput models with automatic fallback
-      const modelsToTry = ["gemini-2.5-flash", "gemini-3.7-flash", "gemini-2.5-flash-lite"];
+      // Complex Image Understanding: Try gemini-3.1-flash-lite first for speed and to avoid quota limits
+      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-3.1-pro-preview"];
       let response = null;
       let usedModel = "fallback";
 
@@ -861,6 +1372,161 @@ Return strictly structured JSON matching this schema:
     }
   });
 
+  // API: Real-Time Live Google Search Grounded Market & Regulatory Intelligence (Search Grounding: gemini-3.5-flash)
+  app.post("/api/materials/search-grounding", async (req, res) => {
+    try {
+      const { materialName, category, location } = req.body;
+      const cleanName = materialName || "Industrial scrap and secondary material";
+      const cleanCat = category || "general";
+      const cleanLoc = location || "India (Gujarat, Maharashtra, Delhi NCR)";
+
+      const ai = getGeminiClient();
+
+      if (!ai) {
+        return res.json({
+          success: true,
+          grounding: {
+            materialName: cleanName,
+            category: cleanCat,
+            spotPricePerMT: cleanCat === "non_ferrous" ? 205000 : cleanCat === "plastic" ? 84000 : cleanCat === "ferrous" ? 39500 : 15500,
+            priceRangeNote: "₹18,000 - ₹2,10,000 / MT according to regional industrial cluster indices.",
+            regionalHubPricing: [
+              { hub: "Mandi Gobindgarh / Ahmedabad", priceNote: "Active trading spot market rate" },
+              { hub: "Pune / Bhiwandi (MIDC)", priceNote: "Secondary processors demand high" },
+              { hub: "Chennai / Peenya Corridor", priceNote: "Automotive offcut premium +4%" },
+            ],
+            cpcbEprRules: "CPCB Extended Producer Responsibility (EPR) recycling credit trading active under Schedule I & II rules.",
+            spcbMandates: "CTO / Form 10 manifests required for hazardous transport; GSTIN & e-Way bill mandatory.",
+            marketTrendSummary: `Stable domestic demand driven by secondary manufacturing and industrial decarbonization initiatives across ${cleanLoc}.`,
+            lastUpdated: new Date().toISOString(),
+            groundingSources: [
+              { title: "Ministry of Environment, Forest and Climate Change (MoEFCC)", url: "https://moef.gov.in" },
+              { title: "Central Pollution Control Board (CPCB EPR Portal)", url: "https://cpcb.nic.in" },
+              { title: "Bureau of Indian Standards (BIS)", url: "https://bis.gov.in" },
+            ],
+          },
+          source: "domain_market_index",
+        });
+      }
+
+      const searchQuery = `Search current Indian industrial scrap prices, mandi rates, and CPCB EPR compliance for: ${cleanName} (${cleanCat}) in ${cleanLoc}. 
+Focus on:
+1. Current spot price per Metric Ton (INR) in major Indian scrap hubs (e.g. Mandi Gobindgarh, Alang, Jamnagar, Pune, Bengaluru, Raipur).
+2. Relevant CPCB EPR guidelines and SPCB transport compliance.
+3. Market demand trend (High / Moderate / Low) and secondary manufacturing reuse outlook.`;
+
+      const prompt = `You are the Search-Grounded Industrial Market Intelligence engine for CIRCULUS.
+Using the Google Search tool, find the latest real-world market intelligence for "${cleanName}" in India.
+Summarize the findings into clear, structured facts for an industrial recycler or procurement manager.
+
+Return strictly JSON with:
+{
+  "spotPriceEstimate": number (approximate price per Metric Ton in INR, e.g. 84000),
+  "priceRangeNote": string (e.g. "₹82,000 - ₹88,000 / MT across West India hubs"),
+  "regionalHubPricing": [
+    { "hub": "Mandi Gobindgarh / Punjab", "priceNote": "e.g. ₹38,500/MT (HMS 1)" },
+    { "hub": "Alang / Gujarat", "priceNote": "e.g. ₹39,200/MT (Shipbreaking scrap)" },
+    { "hub": "Pune / Maharashtra", "priceNote": "e.g. ₹84,000/MT (Clean rPET flakes)" }
+  ],
+  "cpcbEprRules": string (1-2 sentences on CPCB EPR rules / certificate trading / Schedule categorization),
+  "spcbMandates": string (1-2 sentences on SPCB State Pollution Control Board consent & e-Way bill rules),
+  "marketTrendSummary": string (2-3 sentences on domestic demand, smelter appetite, and price momentum)
+}`;
+
+      // Execute search-grounded prompt using gemini-3.5-flash with googleSearch tool
+      let response = null;
+      const searchModels = ["gemini-3.5-flash", "gemini-3.7-flash"];
+
+      for (const modelName of searchModels) {
+        try {
+          response = await ai.models.generateContent({
+            model: modelName,
+            contents: `${prompt}\n\nSearch Context: ${searchQuery}`,
+            config: {
+              tools: [{ googleSearch: {} }],
+            },
+          });
+          break;
+        } catch (err: any) {
+          console.warn(`[Search Grounding] Model ${modelName} notice:`, sanitizeErrorMessage(err).slice(0, 100));
+        }
+      }
+
+      // Extract search grounding sources and citations from candidate metadata
+      const candidate = response?.candidates?.[0];
+      const groundingChunks = (candidate as any)?.groundingMetadata?.groundingChunks || [];
+      const webQueries = (candidate as any)?.groundingMetadata?.webSearchQueries || [];
+
+      const groundingSources: { title: string; url: string; domain?: string }[] = [];
+      
+      if (Array.isArray(groundingChunks)) {
+        for (const chunk of groundingChunks) {
+          if (chunk?.web?.uri) {
+            const url = chunk.web.uri;
+            const title = chunk.web.title || (new URL(url).hostname);
+            if (!groundingSources.some((s) => s.url === url)) {
+              groundingSources.push({
+                title,
+                url,
+                domain: new URL(url).hostname.replace("www.", ""),
+              });
+            }
+          }
+        }
+      }
+
+      // If no chunks were attached, provide canonical statutory portals
+      if (groundingSources.length === 0) {
+        groundingSources.push(
+          { title: "Central Pollution Control Board (CPCB)", url: "https://cpcb.nic.in", domain: "cpcb.nic.in" },
+          { title: "Ministry of Steel & Heavy Industries", url: "https://steel.gov.in", domain: "steel.gov.in" },
+          { title: "Bureau of Indian Standards (BIS)", url: "https://bis.gov.in", domain: "bis.gov.in" }
+        );
+      }
+
+      let parsedData: any = {};
+      try {
+        const text = response?.text || "";
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsedData = JSON.parse(jsonMatch[0]);
+        }
+      } catch (parseErr) {
+        console.warn("[Search Grounding Parse Warning]:", parseErr);
+      }
+
+      const groundingResult = {
+        materialName: cleanName,
+        category: cleanCat,
+        spotPricePerMT: parsedData.spotPriceEstimate || 45000,
+        priceRangeNote: parsedData.priceRangeNote || "Live spot market pricing across regional recycling clusters.",
+        regionalHubPricing: parsedData.regionalHubPricing || [
+          { hub: "North India (Mandi Gobindgarh / Delhi)", priceNote: "Active spot trades" },
+          { hub: "West India (Ahmedabad / Pune)", priceNote: "High industrial demand" },
+          { hub: "South India (Chennai / Bengaluru)", priceNote: "Direct furnace intake" },
+        ],
+        cpcbEprRules: parsedData.cpcbEprRules || "Mandatory EPR certificate registry compliance under Ministry of Environment Guidelines.",
+        spcbMandates: parsedData.spcbMandates || "State Pollution Control Board valid Consent to Operate (CTO) and e-Way bill documentation required.",
+        marketTrendSummary: parsedData.marketTrendSummary || response?.text?.slice(0, 300) || `Active domestic trade across key Indian industrial clusters with rising circular economy adoption.`,
+        lastUpdated: new Date().toISOString(),
+        groundingSources: groundingSources.slice(0, 5),
+      };
+
+      return res.json({
+        success: true,
+        grounding: groundingResult,
+        searchQueries: webQueries,
+        source: "google_search_grounding",
+      });
+    } catch (err: any) {
+      console.error("[Search Grounding Error]:", sanitizeErrorMessage(err));
+      return res.status(500).json({
+        success: false,
+        error: "Unable to complete search grounding query.",
+      });
+    }
+  });
+
   // Helper to generate domain-accurate responses for Indian scrap recycling
   function generateCopilotFallbackReply(queryText: string, contextObj: any): { reply: string; followUps: string[] } {
     const q = (queryText || "").toLowerCase();
@@ -992,7 +1658,7 @@ FOLLOW_UPS:
 - Question 2`;
 
       // Multi-model resilience cascade: Try fast models with backup
-      const modelsToTry = ["gemini-2.5-flash", "gemini-3.7-flash", "gemini-2.5-flash-lite"];
+      const modelsToTry = ["gemini-3.7-flash", "gemini-3.1-flash-lite"];
       let response = null;
       let usedModel = "fallback";
 

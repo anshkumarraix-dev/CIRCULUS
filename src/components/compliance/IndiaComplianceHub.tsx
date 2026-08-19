@@ -79,7 +79,7 @@ export const IndiaComplianceHub: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner with Rich Visual Backdrop */}
-      <div className="relative rounded-3xl overflow-hidden p-6 sm:p-8 border border-emerald-200 bg-gradient-to-r from-emerald-900/90 via-teal-900/80 to-slate-900/90 text-white shadow-md">
+      <div className="relative rounded-3xl overflow-hidden p-6 sm:p-8 border border-slate-700 bg-gradient-to-r from-emerald-900/90 via-teal-900/80 to-slate-900/90 text-white shadow-md">
         <img
           src="https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1600&q=80"
           alt="Clean Energy & Compliance"
@@ -87,7 +87,7 @@ export const IndiaComplianceHub: React.FC = () => {
           referrerPolicy="no-referrer"
         />
         <div className="relative z-10 max-w-2xl space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-900/200/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold">
             <Scale className="w-4 h-4 text-emerald-400" />
             Indian Environmental Laws Made Simple
           </div>
@@ -105,10 +105,10 @@ export const IndiaComplianceHub: React.FC = () => {
         {complianceFrameworks.map((fw) => (
           <div
             key={fw.id}
-            className="bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-xs hover:border-emerald-400 hover:shadow-lg transition duration-300 flex flex-col justify-between"
+            className="bg-[#12181F] rounded-3xl border border-slate-700 overflow-hidden shadow-xs hover:border-emerald-400 hover:shadow-lg transition duration-300 flex flex-col justify-between"
           >
             {/* Card Visual Header */}
-            <div className="relative h-44 w-full overflow-hidden bg-slate-100">
+            <div className="relative h-44 w-full overflow-hidden bg-slate-800">
               <img
                 src={fw.image}
                 alt={fw.title}
@@ -117,7 +117,7 @@ export const IndiaComplianceHub: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
               <div className="absolute top-3 left-3">
-                <span className="text-xs font-extrabold px-3 py-1 rounded-xl bg-white/95 backdrop-blur-md text-emerald-900 border border-emerald-200 shadow-sm">
+                <span className="text-xs font-extrabold px-3 py-1 rounded-xl bg-[#12181F]/95 backdrop-blur-md text-emerald-400 border border-slate-700 shadow-sm">
                   {fw.badge}
                 </span>
               </div>
@@ -129,13 +129,13 @@ export const IndiaComplianceHub: React.FC = () => {
 
             <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
               <div>
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">{fw.desc}</p>
+                <p className="text-xs text-slate-400 leading-relaxed font-medium">{fw.desc}</p>
 
                 <div className="mt-4 space-y-2">
-                  <p className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">What the law says:</p>
+                  <p className="text-xs font-extrabold text-white uppercase tracking-wider">What the law says:</p>
                   <ul className="space-y-2 text-xs text-slate-700">
                     {fw.rules.map((rule, idx) => (
-                      <li key={idx} className="flex items-start gap-2 bg-emerald-50/50 p-2.5 rounded-2xl border border-emerald-100 text-slate-800">
+                      <li key={idx} className="flex items-start gap-2 bg-emerald-900/20/50 p-2.5 rounded-2xl border border-emerald-100 text-slate-200">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         <span className="font-medium">{rule}</span>
                       </li>
@@ -149,8 +149,8 @@ export const IndiaComplianceHub: React.FC = () => {
       </div>
 
       {/* Factory Legal Checklist */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-        <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+      <div className="bg-[#12181F] p-6 sm:p-8 rounded-3xl border border-slate-700 space-y-4 shadow-xs">
+        <h3 className="text-base font-extrabold text-white flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-blue-600" />
           Factory Scrap Safety & Legal Checklist
         </h3>
@@ -163,14 +163,14 @@ export const IndiaComplianceHub: React.FC = () => {
             onClick={() => toggleCheck("gst_rcm")}
             className={`p-5 rounded-2xl border text-left transition cursor-pointer flex items-start gap-3 shadow-xs ${
               checkedItems.gst_rcm
-                ? "bg-emerald-50 border-emerald-300 text-slate-900"
-                : "bg-slate-50 border-slate-200 text-slate-500"
+                ? "bg-emerald-900/20 border-emerald-300 text-white"
+                : "bg-slate-800 border-slate-700 text-slate-500"
             }`}
           >
             <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 ${checkedItems.gst_rcm ? "text-emerald-600" : "text-slate-400"}`} />
             <div>
-              <p className="font-extrabold text-xs text-slate-900">Proper GST Invoice (RCM)</p>
-              <p className="text-xs text-slate-600 mt-1">
+              <p className="font-extrabold text-xs text-white">Proper GST Invoice (RCM)</p>
+              <p className="text-xs text-slate-400 mt-1">
                 GST rules applied properly when buying scrap from local collectors.
               </p>
             </div>
@@ -180,14 +180,14 @@ export const IndiaComplianceHub: React.FC = () => {
             onClick={() => toggleCheck("spcb_cto")}
             className={`p-5 rounded-2xl border text-left transition cursor-pointer flex items-start gap-3 shadow-xs ${
               checkedItems.spcb_cto
-                ? "bg-emerald-50 border-emerald-300 text-slate-900"
-                : "bg-slate-50 border-slate-200 text-slate-500"
+                ? "bg-emerald-900/20 border-emerald-300 text-white"
+                : "bg-slate-800 border-slate-700 text-slate-500"
             }`}
           >
             <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 ${checkedItems.spcb_cto ? "text-emerald-600" : "text-slate-400"}`} />
             <div>
-              <p className="font-extrabold text-xs text-slate-900">Pollution Board License (CTO)</p>
-              <p className="text-xs text-slate-600 mt-1">
+              <p className="font-extrabold text-xs text-white">Pollution Board License (CTO)</p>
+              <p className="text-xs text-slate-400 mt-1">
                 Active state government permission to melt and recycle materials safely.
               </p>
             </div>
@@ -197,14 +197,14 @@ export const IndiaComplianceHub: React.FC = () => {
             onClick={() => toggleCheck("eway_bill")}
             className={`p-5 rounded-2xl border text-left transition cursor-pointer flex items-start gap-3 shadow-xs ${
               checkedItems.eway_bill
-                ? "bg-emerald-50 border-emerald-300 text-slate-900"
-                : "bg-slate-50 border-slate-200 text-slate-500"
+                ? "bg-emerald-900/20 border-emerald-300 text-white"
+                : "bg-slate-800 border-slate-700 text-slate-500"
             }`}
           >
             <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 ${checkedItems.eway_bill ? "text-emerald-600" : "text-slate-400"}`} />
             <div>
-              <p className="font-extrabold text-xs text-slate-900">Truck e-Way Bill with QR Tag</p>
-              <p className="text-xs text-slate-600 mt-1">
+              <p className="font-extrabold text-xs text-white">Truck e-Way Bill with QR Tag</p>
+              <p className="text-xs text-slate-400 mt-1">
                 Digital QR code attached to truck transport paper for police and tax checkpoints.
               </p>
             </div>
