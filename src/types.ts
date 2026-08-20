@@ -241,12 +241,13 @@ export interface OwnershipEvent {
 }
 
 export interface UserRole {
-  id: "supplier" | "buyer" | "auditor";
+  id: string;
   name: string;
   orgName: string;
   gstin: string;
   location: string;
   avatar: string;
+  isVerified?: boolean;
 }
 
 export interface BRSRReportSummary {
@@ -267,3 +268,9 @@ export interface BRSRReportSummary {
   methodologyStandard: string;
   complianceDisclaimers: string[];
 }
+
+export const USER_ROLES: UserRole[] = [
+  { id: "supplier", name: "Plant Manager", orgName: "AluCast Manufacturing", gstin: "24AAACA1234B1Z5", location: "Sanand, GJ", avatar: "👤", isVerified: true },
+  { id: "buyer", name: "Procurement Lead", orgName: "Mahavir PolyRecycle", gstin: "24AABCM1234F1Z8", location: "Surat, GJ", avatar: "👔", isVerified: true },
+  { id: "auditor", name: "Compliance Officer", orgName: "GreenTech Audits", gstin: "27AADCG9876E1Z2", location: "Mumbai, MH", avatar: "🛡️", isVerified: true },
+];

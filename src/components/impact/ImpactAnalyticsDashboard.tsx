@@ -73,7 +73,7 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
     <div className="space-y-8">
       
       {/* Dynamic Visual Banner with Clean Environment Photography & Backdrop Blur */}
-      <div className="relative rounded-3xl overflow-hidden border border-[#00E676]/30 bg-gradient-to-r from-[#12181F] via-[#1E2630] to-[#0B0F13] text-white p-6 sm:p-10 shadow-lg">
+      <div className="relative rounded-3xl overflow-hidden border border-[#00E676]/30 bg-gradient-to-r from-[#12181F] via-[#1E2630] to-[#0B0F13] text-ink p-6 sm:p-10 shadow-lg">
         
         {/* Lush Greenery Photography with Ambient Blur & Overlay */}
         <div 
@@ -92,10 +92,10 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
               <Leaf className="w-3.5 h-3.5" />
               <span>Real Environmental & Climate Impact</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white font-display">
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-ink font-display">
               Preserving India's Air, Rivers, and Forests
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-sm text-silver leading-relaxed max-w-xl">
               By reusing industrial scrap locally, secondary factories eliminate coal kiln smoke, reduce landfill waste, and protect natural water reservoirs.
             </p>
           </div>
@@ -117,9 +117,9 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Metric 1: Scrap Saved from Dumps */}
-        <div className="bg-[#12181F] p-6 rounded-3xl border border-slate-700 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
+        <div className="bg-panel p-6 rounded-3xl border border-white/10 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <p className="text-xs text-silver/80 font-bold uppercase tracking-wider flex items-center gap-1.5">
               <Factory className="w-4 h-4 text-[#00E676]" />
               Scrap Kept Out of Dumps
             </p>
@@ -131,19 +131,19 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
               <Info className="w-3.5 h-3.5" />
             </button>
           </div>
-          <p className="text-3xl font-extrabold text-white font-mono mt-2">
+          <p className="text-3xl font-extrabold text-ink font-mono mt-2">
             {totalDivertedMT.toFixed(1)} <span className="text-lg text-[#00E676]">Tons</span>
           </p>
-          <p className="text-xs text-slate-400 mt-1">({(totalDivertedMT * 1000).toLocaleString("en-IN")} kg recycled)</p>
-          <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
+          <p className="text-xs text-silver/80 mt-1">({(totalDivertedMT * 1000).toLocaleString("en-IN")} kg recycled)</p>
+          <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-500">
             <span>Landfills avoided</span>
             <span className="text-[#00E676] font-bold">100% Recycled</span>
           </div>
 
           {activeTooltip === "landfill" && (
-            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-white text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
+            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-ink text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
               <p className="font-bold text-[#00E676]">Methodology: Landfill Diversion</p>
-              <p className="text-slate-300">
+              <p className="text-silver">
                 Formula: Physical gross weight (MT) redirected from open municipal landfill dumps (Pirana, Gazipur, Deonar) to certified secondary remelting plants under CPCB Solid Waste Management Rules 2016.
               </p>
             </div>
@@ -151,9 +151,9 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
         </div>
 
         {/* Metric 2: Smoke Saved (CO2) */}
-        <div className="bg-[#12181F] p-6 rounded-3xl border border-slate-700 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
+        <div className="bg-panel p-6 rounded-3xl border border-white/10 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <p className="text-xs text-silver/80 font-bold uppercase tracking-wider flex items-center gap-1.5">
               <Wind className="w-4 h-4 text-[#00E676]" />
               Air Smoke Prevented (CO₂)
             </p>
@@ -168,16 +168,16 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
           <p className="text-3xl font-extrabold text-[#00E676] font-mono mt-2">
             {totalCo2eAvoidedTonnes.toFixed(1)} <span className="text-lg text-[#00E676]/80">Tons</span>
           </p>
-          <p className="text-xs text-slate-400 mt-1">Verified greenhouse gas mitigation</p>
-          <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
+          <p className="text-xs text-silver/80 mt-1">Verified greenhouse gas mitigation</p>
+          <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-500">
             <span>Clean air saved</span>
             <span className="text-[#00E676] font-bold">GHG Protocol</span>
           </div>
 
           {activeTooltip === "co2" && (
-            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-white text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
+            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-ink text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
               <p className="font-bold text-[#00E676]">Methodology: Avoided CO₂ Emissions</p>
-              <p className="text-slate-300">
+              <p className="text-silver">
                 Formula: (Virgin Smelting Emission Baseline − Secondary Remelting Energy Factor) × Tonnage. Secondary aluminium saves 9.2 t CO₂e/MT, rPET saves 2.3 t CO₂e/MT, scrap steel saves 1.8 t CO₂e/MT (BEE CCTS & IPCC Scope 1 & 3 baselines).
               </p>
             </div>
@@ -185,9 +185,9 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
         </div>
 
         {/* Metric 3: Trees Equivalent */}
-        <div className="bg-[#12181F] p-6 rounded-3xl border border-slate-700 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
+        <div className="bg-panel p-6 rounded-3xl border border-white/10 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <p className="text-xs text-silver/80 font-bold uppercase tracking-wider flex items-center gap-1.5">
               <TreeDeciduous className="w-4 h-4 text-[#00E676]" />
               Tree Planting Equivalent
             </p>
@@ -202,16 +202,16 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
           <p className="text-3xl font-extrabold text-[#00E676] font-mono mt-2">
             {treesEquivalent.toLocaleString("en-IN")} <span className="text-lg text-[#00E676]/80">Trees</span>
           </p>
-          <p className="text-xs text-slate-400 mt-1">Equivalent carbon absorption forest</p>
-          <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
+          <p className="text-xs text-silver/80 mt-1">Equivalent carbon absorption forest</p>
+          <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-500">
             <span>Nature balance</span>
             <span className="text-[#00E676] font-bold">🌱 High Positive</span>
           </div>
 
           {activeTooltip === "trees" && (
-            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-white text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
+            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-ink text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
               <p className="font-bold text-[#00E676]">Methodology: Forest Equivalence</p>
-              <p className="text-slate-300">
+              <p className="text-silver">
                 Formula: Avoided CO₂e (kg) ÷ 60 kg/tree. Based on CPCB urban forestry standards: 1 mature tree absorbs approximately 60 kg of CO₂ over a 10-year growth lifecycle.
               </p>
             </div>
@@ -219,10 +219,10 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
         </div>
 
         {/* Metric 4: Total Value Unlocked */}
-        <div className="bg-[#12181F] p-6 rounded-3xl border border-slate-700 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
+        <div className="bg-panel p-6 rounded-3xl border border-white/10 shadow-xs hover:border-[#00E676]/50 transition duration-300 relative">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-              <IndianRupee className="w-4 h-4 text-slate-300" />
+            <p className="text-xs text-silver/80 font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <IndianRupee className="w-4 h-4 text-silver" />
               Scrap Money Realized
             </p>
             <button
@@ -233,19 +233,19 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
               <Info className="w-3.5 h-3.5" />
             </button>
           </div>
-          <p className="text-3xl font-extrabold text-white font-mono mt-2">
+          <p className="text-3xl font-extrabold text-ink font-mono mt-2">
             {formatInrCurrency(totalValueInr, true)}
           </p>
-          <p className="text-xs text-slate-400 mt-1">Directly paid to source industries</p>
-          <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
+          <p className="text-xs text-silver/80 mt-1">Directly paid to source industries</p>
+          <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-500">
             <span>Fair Indian Rupee rates</span>
             <span className="text-[#00E676] font-bold">Zero Broker Cuts</span>
           </div>
 
           {activeTooltip === "valuation" && (
-            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-white text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
+            <div className="absolute inset-x-3 top-full mt-2 z-30 p-3.5 rounded-2xl bg-[#0B0F13] text-ink text-[11px] space-y-1.5 shadow-xl border border-[#00E676]/30 animate-fadeIn">
               <p className="font-bold text-[#00E676]">Methodology: Valuation Index</p>
-              <p className="text-slate-300">
+              <p className="text-silver">
                 Formula: Spot Base Price × Material Purity Index − Freight Logistics. Benchmarked against Indian scrap clusters (Mandi Gobindgarh, Alang, Hazira, Peenya).
               </p>
             </div>
@@ -254,24 +254,24 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
       </div>
 
       {/* Interactive Clean Environment Simulator */}
-      <div className="relative rounded-3xl overflow-hidden border border-[#00E676]/30 bg-[#12181F] p-6 sm:p-8 shadow-xs space-y-6">
+      <div className="relative rounded-3xl overflow-hidden border border-[#00E676]/30 bg-panel p-6 sm:p-8 shadow-xs space-y-6">
         
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#00E676]/10 text-[#00E676] text-xs font-extrabold border border-[#00E676]/20">
               <Sparkles className="w-3.5 h-3.5" />
               Interactive Clean Nature Simulator
             </div>
-            <h3 className="text-xl font-extrabold text-white font-display">
+            <h3 className="text-xl font-extrabold text-ink font-display">
               See How Much Nature You Save When Recycling Increases
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-silver/80">
               Move the slider to calculate how many trees, liters of clean water, and hours of coal smoke are avoided!
             </p>
           </div>
 
           {/* Material Category Selector */}
-          <div className="flex items-center gap-1.5 bg-[#1E2630] p-1 rounded-2xl shrink-0 border border-slate-700">
+          <div className="flex items-center gap-1.5 bg-[#1E2630] p-1 rounded-2xl shrink-0 border border-white/10">
             {(["aluminium", "plastic", "steel", "flyash"] as const).map((cat) => (
               <button
                 key={cat}
@@ -279,7 +279,7 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition cursor-pointer ${
                   simulatedCategory === cat
                     ? "bg-[#00E676] text-[#0B0F13] shadow-xs"
-                    : "text-slate-400 hover:text-white"
+                    : "text-silver/80 hover:text-ink"
                 }`}
               >
                 {cat === "flyash" ? "Fly Ash" : cat}
@@ -289,9 +289,9 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
         </div>
 
         {/* Dynamic Range Slider */}
-        <div className="bg-[#1E2630] p-5 rounded-2xl border border-slate-700 space-y-3">
+        <div className="bg-[#1E2630] p-5 rounded-2xl border border-white/10 space-y-3">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <label className="text-xs font-extrabold text-silver uppercase tracking-wider flex items-center gap-2">
               <Sliders className="w-4 h-4 text-[#00E676]" />
               Adjust Scrap Recycling Volume:
             </label>
@@ -381,18 +381,18 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
       </div>
 
       {/* Breakdown by Scrap Types */}
-      <div className="bg-[#12181F] p-6 sm:p-8 rounded-3xl border border-slate-700 space-y-4 shadow-xs">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="bg-panel p-6 sm:p-8 rounded-3xl border border-white/10 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between pb-3 border-b border-white/5">
           <div>
-            <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+            <h3 className="text-base font-extrabold text-ink flex items-center gap-2">
               <Layers className="w-4 h-4 text-[#00E676]" />
               Scrap Breakdown: What Was Saved & What It Becomes
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-silver/80 mt-0.5">
               See the exact tons and clean air savings for every type of scrap material.
             </p>
           </div>
-          <span className="text-xs font-bold text-slate-300 bg-[#1E2630] px-3 py-1 rounded-xl border border-slate-600">
+          <span className="text-xs font-bold text-silver bg-[#1E2630] px-3 py-1 rounded-xl border border-slate-600">
             {passports.length} Verified Batches
           </span>
         </div>
@@ -402,9 +402,9 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
             {brsrReport.materialBreakdown.map((item, idx) => {
               const pct = totalDivertedMT > 0 ? Math.round((item.quantityMT / totalDivertedMT) * 100) : 0;
               return (
-                <div key={idx} className="bg-[#1E2630] p-4 rounded-2xl border border-slate-700 space-y-2 text-xs">
+                <div key={idx} className="bg-[#1E2630] p-4 rounded-2xl border border-white/10 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-extrabold text-white text-sm">{item.category}</span>
+                    <span className="font-extrabold text-ink text-sm">{item.category}</span>
                     <span className="text-[#00E676] font-mono font-bold">
                       {(item.co2eAvoidedKg / 1000).toFixed(1)} Tons of CO₂ smoke avoided
                     </span>
@@ -418,9 +418,9 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
                     ></div>
                   </div>
 
-                  <div className="flex items-center justify-between text-slate-300 pt-0.5">
-                    <span><strong className="text-white">{item.quantityMT} Tons</strong> ({pct}% of all scrap)</span>
-                    <span className="text-slate-400 font-semibold">✨ Made into: <span className="text-white">{item.primaryReuseRoute}</span></span>
+                  <div className="flex items-center justify-between text-silver pt-0.5">
+                    <span><strong className="text-ink">{item.quantityMT} Tons</strong> ({pct}% of all scrap)</span>
+                    <span className="text-silver/80 font-semibold">✨ Made into: <span className="text-ink">{item.primaryReuseRoute}</span></span>
                   </div>
                 </div>
               );
@@ -436,34 +436,34 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
       {/* Green Audit Modal */}
       {showBrsrModal && (
         <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-[#12181F] rounded-3xl border border-slate-700 max-w-2xl w-full p-6 sm:p-8 space-y-5 shadow-2xl relative my-8 animate-fadeIn">
-            <div className="flex items-start justify-between pb-3 border-b border-slate-800">
+          <div className="bg-panel rounded-3xl border border-white/10 max-w-2xl w-full p-6 sm:p-8 space-y-5 shadow-2xl relative my-8 animate-fadeIn">
+            <div className="flex items-start justify-between pb-3 border-b border-white/5">
               <div>
                 <span className="text-xs uppercase font-bold px-2.5 py-0.5 rounded-lg bg-[#00E676]/10 text-[#00E676] border border-[#00E676]/30">
                   GREEN ENVIRONMENTAL AUDIT
                 </span>
-                <h2 className="text-xl font-extrabold text-white mt-1.5 font-display">
+                <h2 className="text-xl font-extrabold text-ink mt-1.5 font-display">
                   Official Sustainability & Circularity Summary Report
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">Verified scrap diversion and greenhouse gas emission prevention sheet</p>
+                <p className="text-xs text-silver/80 mt-0.5">Verified scrap diversion and greenhouse gas emission prevention sheet</p>
               </div>
               <button
                 onClick={() => setShowBrsrModal(false)}
-                className="text-slate-500 hover:text-white p-1.5 rounded-xl hover:bg-slate-800 cursor-pointer text-xs transition"
+                className="text-slate-500 hover:text-ink p-1.5 rounded-xl hover:bg-white/5 cursor-pointer text-xs transition"
               >
                 ✕ Close
               </button>
             </div>
 
             <div className="space-y-4 text-xs">
-              <div className="bg-[#1E2630] p-4 rounded-2xl border border-slate-700 grid grid-cols-2 gap-3">
+              <div className="bg-[#1E2630] p-4 rounded-2xl border border-white/10 grid grid-cols-2 gap-3">
                 <div>
                   <p className="text-[10px] text-slate-500 uppercase font-bold">Reporting Period</p>
-                  <p className="font-extrabold text-white mt-0.5">{brsrReport.reportingPeriod}</p>
+                  <p className="font-extrabold text-ink mt-0.5">{brsrReport.reportingPeriod}</p>
                 </div>
                 <div>
                   <p className="text-[10px] text-slate-500 uppercase font-bold">Total Material Recycled</p>
-                  <p className="font-extrabold text-white mt-0.5">{brsrReport.totalMaterialDivertedMT} Tons</p>
+                  <p className="font-extrabold text-ink mt-0.5">{brsrReport.totalMaterialDivertedMT} Tons</p>
                 </div>
                 <div>
                   <p className="text-[10px] text-slate-500 uppercase font-bold">Smoke Prevented (CO₂)</p>
@@ -477,9 +477,9 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
                 </div>
               </div>
 
-              <div className="border border-slate-700 rounded-2xl overflow-hidden bg-[#0B0F13]">
+              <div className="border border-white/10 rounded-2xl overflow-hidden bg-[#0B0F13]">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#1E2630] text-slate-400 border-b border-slate-700">
+                  <thead className="bg-[#1E2630] text-silver/80 border-b border-white/10">
                     <tr>
                       <th className="p-3 font-bold">Material</th>
                       <th className="p-3 font-bold">Weight (Tons)</th>
@@ -490,8 +490,8 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
                   <tbody className="divide-y divide-slate-800">
                     {brsrReport.materialBreakdown.length > 0 ? (
                       brsrReport.materialBreakdown.map((row, idx) => (
-                        <tr key={idx} className="text-slate-300">
-                          <td className="p-3 font-bold text-white">{row.category}</td>
+                        <tr key={idx} className="text-silver">
+                          <td className="p-3 font-bold text-ink">{row.category}</td>
                           <td className="p-3 font-mono">{row.quantityMT} MT</td>
                           <td className="p-3 font-mono text-[#00E676] font-bold">{(row.co2eAvoidedKg / 1000).toFixed(1)} t</td>
                           <td className="p-3">{row.primaryReuseRoute}</td>
@@ -507,7 +507,7 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-3 border-t border-slate-800">
+            <div className="flex items-center justify-between pt-3 border-t border-white/5">
               <span className="text-xs text-slate-500 font-mono">
                 {downloaded ? "✓ Report Downloaded!" : "Standard JSON format ready for audit"}
               </span>

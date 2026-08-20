@@ -95,16 +95,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between relative overflow-hidden font-sans text-slate-900 selection:bg-[#00E676] selection:text-black">
+    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden font-sans text-ink selection:bg-copper selection:text-panel">
       {/* Background Integration */}
       {/* CSS Fallback Animated Laser Background */}
-      <div className="absolute inset-0 bg-[#0a0f14] z-0 overflow-hidden">
+      <div className="absolute inset-0 bg-primary z-0 overflow-hidden">
         {/* Metal Texture */}
         <div className="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,#000_2px,#000_4px)]"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00E676]/5 to-[#12181F]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[copper]/5 to-[#12181F]"></div>
         
         {/* Sweeping Laser Line */}
-        <div className="absolute top-0 left-0 w-full h-[3px] bg-[#00E676] shadow-[0_0_20px_4px_#00E676,0_0_40px_#00E676] animate-scan z-0"></div>
+        <div className="absolute top-0 left-0 w-full h-[3px] bg-copper shadow-[0_0_20px_4px_copper,0_0_40px_copper] animate-scan z-0"></div>
         
         {/* Scanlines overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.4)_50%)] bg-[length:100%_4px] pointer-events-none z-0"></div>
@@ -120,34 +120,34 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           e.currentTarget.style.display = 'none';
         }}
       />
-      <div className="absolute inset-0 bg-[#0a0f14]/80 z-0 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-primary/80 z-0 pointer-events-none"></div>
 
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-10 relative z-10 w-full">
+      <main className="flex-1 flex items-center justify-center w-full px-4 sm:px-8 py-6 relative z-10">
         {/* Main Modal (Glassmorphism) */}
-        <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div className="w-full max-w-5xl max-h-[95vh] lg:max-h-[90vh] overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.5)]">
           
           {/* Left Column (Brand & Tech Simulation) */}
           <div className="lg:col-span-6 p-8 sm:p-14 flex flex-col justify-between relative">
             <div>
               <div className="flex items-center gap-3 mb-10">
-                <div className="w-8 h-8 rounded bg-[#00E676] flex items-center justify-center shadow-[0_0_15px_rgba(0,230,118,0.4)]">
+                <div className="w-8 h-8 rounded bg-copper flex items-center justify-center shadow-[0_0_15px_rgba(239,122,59,0.4)]">
                    <div className="w-4 h-4 border-2 border-black rounded-full border-t-transparent animate-spin"></div>
                 </div>
-                <span className="font-bold text-2xl tracking-widest text-white font-display">CIRCULUS</span>
+                <span className="font-bold text-2xl tracking-widest text-ink font-display">CIRCULUS</span>
               </div>
               
-              <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight mb-8">
+              <h2 className="text-3xl sm:text-4xl font-bold text-ink tracking-tight leading-tight mb-8">
                 Secure Enterprise Portal
               </h2>
 
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#00E676]/30 bg-[#00E676]/10 shadow-[0_0_10px_rgba(0,230,118,0.1)]">
-                <span className="w-2 h-2 rounded-full bg-[#00E676] animate-pulse shadow-[0_0_8px_#00E676]"></span>
-                <span className="text-[10px] font-bold tracking-widest text-[#00E676]">AI SCANNER ACTIVE</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-copper/30 bg-copper/10 shadow-[0_0_10px_rgba(239,122,59,0.1)]">
+                <span className="w-2 h-2 rounded-full bg-copper animate-pulse shadow-[0_0_8px_copper]"></span>
+                <span className="text-[10px] font-bold tracking-widest text-copper">AI SCANNER ACTIVE</span>
               </div>
             </div>
 
             <div className="mt-12">
-              <p className="font-mono text-[10px] text-slate-400 flex flex-wrap gap-4">
+              <p className="font-mono text-[10px] text-silver/80 flex flex-wrap gap-4">
                 <span>[ GSTIN VALIDATED ]</span>
                 <span>[ SPCB RECOGNIZED ]</span>
               </p>
@@ -155,7 +155,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </div>
 
           {/* Right Column (The Login Form) */}
-          <div className="lg:col-span-6 bg-[#12181F]/80 p-8 sm:p-14 flex flex-col justify-center relative">
+          <div className="lg:col-span-6 bg-panel/80 p-8 sm:p-14 flex flex-col justify-center relative">
             
             <div className="flex items-center gap-6 border-b border-white/10 mb-8">
               <button
@@ -163,8 +163,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 onClick={() => { setAuthMode("login"); setErrorMsg(null); }}
                 className={`pb-3 text-[11px] font-bold uppercase tracking-widest transition border-b-2 ${
                   authMode === "login"
-                    ? "border-[#00E676] text-white"
-                    : "border-transparent text-slate-500 hover:text-slate-300"
+                    ? "border-copper text-ink"
+                    : "border-transparent text-silver/60 hover:text-silver"
                 }`}
               >
                 GSTIN / EMAIL
@@ -174,8 +174,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 onClick={() => { setAuthMode("otp"); setErrorMsg(null); }}
                 className={`pb-3 text-[11px] font-bold uppercase tracking-widest transition border-b-2 ${
                   authMode === "otp"
-                    ? "border-[#00E676] text-white"
-                    : "border-transparent text-slate-500 hover:text-slate-300"
+                    ? "border-copper text-ink"
+                    : "border-transparent text-silver/60 hover:text-silver"
                 }`}
               >
                 MOBILE OTP
@@ -191,7 +191,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             {authMode === "login" && (
               <form onSubmit={handleGstinLogin} className="space-y-5">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">
+                  <label className="block text-[10px] uppercase tracking-widest text-silver/80 font-bold mb-2">
                     Enterprise ID
                   </label>
                   <input
@@ -200,11 +200,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                     onChange={(e) => setGstinOrEmail(e.target.value)}
                     placeholder="Enter GSTIN or Email"
                     required
-                    className="w-full bg-black/40 border-none rounded-lg px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:ring-1 focus:ring-[#00E676] outline-none transition"
+                    className="w-full bg-white/5 border-none rounded-lg px-4 py-3.5 text-sm text-ink placeholder-silver/40 focus:ring-1 focus:ring-copper outline-none transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">
+                  <label className="block text-[10px] uppercase tracking-widest text-silver/80 font-bold mb-2">
                     Facility Password
                   </label>
                   <input
@@ -213,14 +213,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter Password"
                     required
-                    className="w-full bg-black/40 border-none rounded-lg px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:ring-1 focus:ring-[#00E676] outline-none transition"
+                    className="w-full bg-white/5 border-none rounded-lg px-4 py-3.5 text-sm text-ink placeholder-silver/40 focus:ring-1 focus:ring-copper outline-none transition"
                   />
                 </div>
                 
                 <button
                   type="submit"
                   disabled={isLoading || !gstinOrEmail.trim() || !password.trim()}
-                  className="w-full py-4 mt-2 rounded-lg bg-[#00E676] hover:bg-[#00c968] disabled:opacity-50 text-black font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-[0_0_15px_rgba(0,230,118,0.3)]"
+                  className="w-full py-4 mt-2 rounded-lg bg-copper hover:bg-copper/90 disabled:opacity-50 text-panel font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-[0_0_15px_rgba(239,122,59,0.3)]"
                 >
                   {isLoading ? "Authenticating..." : "SIGN IN TO WORKSPACE"}
                 </button>
@@ -229,7 +229,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   <button
                     type="button"
                     onClick={onExploreAsGuest}
-                    className="w-full py-3 mt-2 text-xs font-bold text-slate-400 hover:text-white uppercase tracking-widest transition cursor-pointer"
+                    className="w-full py-3 mt-2 text-xs font-bold text-silver/80 hover:text-ink uppercase tracking-widest transition cursor-pointer"
                   >
                     Explore as Guest
                   </button>
@@ -242,7 +242,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 {!otpSent ? (
                   <>
                     <div>
-                      <label className="block text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">
+                      <label className="block text-[10px] uppercase tracking-widest text-silver/80 font-bold mb-2">
                         Registered Plant Mobile Number
                       </label>
                       <input
@@ -251,13 +251,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         onChange={(e) => setMobileNumber(e.target.value)}
                         placeholder="Enter 10-digit mobile number"
                         required
-                        className="w-full bg-black/40 border-none rounded-lg px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:ring-1 focus:ring-[#00E676] outline-none transition font-mono"
+                        className="w-full bg-white/5 border-none rounded-lg px-4 py-3.5 text-sm text-ink placeholder-silver/40 focus:ring-1 focus:ring-copper outline-none transition font-mono"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={isLoading || mobileNumber.length < 10}
-                      className="w-full py-4 mt-2 rounded-lg bg-[#00E676] hover:bg-[#00c968] disabled:opacity-50 text-black font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-[0_0_15px_rgba(0,230,118,0.3)]"
+                      className="w-full py-4 mt-2 rounded-lg bg-copper hover:bg-copper/90 disabled:opacity-50 text-panel font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-[0_0_15px_rgba(239,122,59,0.3)]"
                     >
                       {isLoading ? "Sending..." : "SEND OTP CODE"}
                     </button>
@@ -266,7 +266,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                       <button
                         type="button"
                         onClick={onExploreAsGuest}
-                        className="w-full py-3 mt-2 text-xs font-bold text-slate-400 hover:text-white uppercase tracking-widest transition cursor-pointer"
+                        className="w-full py-3 mt-2 text-xs font-bold text-silver/80 hover:text-ink uppercase tracking-widest transition cursor-pointer"
                       >
                         Explore as Guest
                       </button>
@@ -276,11 +276,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   <>
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">
+                        <label className="text-[10px] uppercase tracking-widest text-silver/80 font-bold">
                           Enter 6-Digit OTP
                         </label>
                         {otpCountdown > 0 && (
-                          <span className="text-[10px] text-[#00E676] font-mono">
+                          <span className="text-[10px] text-copper font-mono">
                             {Math.floor(otpCountdown / 60)}:{(otpCountdown % 60).toString().padStart(2, '0')}
                           </span>
                         )}
@@ -292,13 +292,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                         onChange={(e) => setOtpCode(e.target.value)}
                         placeholder="000000"
                         required
-                        className="w-full bg-black/40 border-none rounded-lg px-4 py-3.5 text-center text-xl tracking-[0.5em] text-[#00E676] placeholder-slate-700 focus:ring-1 focus:ring-[#00E676] outline-none transition font-mono"
+                        className="w-full bg-white/5 border-none rounded-lg px-4 py-3.5 text-center text-xl tracking-[0.5em] text-copper placeholder-silver/30 focus:ring-1 focus:ring-copper outline-none transition font-mono"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={isLoading || otpCode.length < 6}
-                      className="w-full py-4 mt-2 rounded-lg bg-[#00E676] hover:bg-[#00c968] disabled:opacity-50 text-black font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-[0_0_15px_rgba(0,230,118,0.3)]"
+                      className="w-full py-4 mt-2 rounded-lg bg-copper hover:bg-copper/90 disabled:opacity-50 text-panel font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-[0_0_15px_rgba(239,122,59,0.3)]"
                     >
                       {isLoading ? "Verifying..." : "SIGN IN TO WORKSPACE"}
                     </button>
@@ -306,7 +306,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                       <button
                         type="button"
                         onClick={handleSendOtp}
-                        className="w-full text-[10px] text-slate-400 hover:text-white uppercase tracking-widest transition text-center mt-3"
+                        className="w-full text-[10px] text-silver/80 hover:text-ink uppercase tracking-widest transition text-center mt-3"
                       >
                         Resend OTP Code
                       </button>
@@ -316,7 +316,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               </form>
             )}
 
-            <p className="mt-10 text-[9px] uppercase tracking-widest text-slate-500 font-mono leading-relaxed">
+            <p className="mt-10 text-[9px] uppercase tracking-widest text-silver/60 font-mono leading-relaxed">
               Protected by 256-bit SHA state proofs.<br/>
               Compliant with MoEFCC & CPCB Digital Waste Rules 2026.
             </p>

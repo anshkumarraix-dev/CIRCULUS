@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { AppHeader, USER_ROLES } from "./components/layout/AppHeader";
+import { AppHeader } from "./components/layout/AppHeader";
+import { Sidebar } from "./components/layout/Sidebar";
+import { USER_ROLES } from "./types";
 import { AppFooter } from "./components/layout/AppFooter";
 import { LoginPage } from "./components/auth/LoginPage";
 import { RealTimeEntryModal } from "./components/common/RealTimeEntryModal";
@@ -100,7 +102,11 @@ export default function App() {
   // Modals & Drawers
   const [isCopilotOpen, setIsCopilotOpen] = useState<boolean>(false);
   const [isDemoTourOpen, setIsDemoTourOpen] = useState<boolean>(false);
+  const currentPassport = activePassportId
+    ? passports.find((p) => p.id === activePassportId)
+    : null;
   const [isRealTimeModalOpen, setIsRealTimeModalOpen] = useState<boolean>(false);
+  const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -235,54 +241,42 @@ export default function App() {
 
   // If user is not authenticated, render Login Page
   if (!isAuthenticated) {
-    return (
-      <LoginPage
-        onLoginSuccess={handleLoginSuccess}
-        onExploreAsGuest={() => setIsAuthenticated(true)}
-      />
-    );
-  }
-
-  const currentPassport = activePassportId
-    ? passports.find((p) => p.id === activePassportId)
-    : null;
-
-  return (
-    <div className="min-h-screen bg-[#0B0F13] text-slate-200 flex flex-col justify-between selection:bg-[#00E676] selection:text-[#0B0F13] relative overflow-hidden font-sans">
+    
+      return (
+    <div className="h-screen bg-primary text-ink flex overflow-hidden font-sans">
       
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-16 right-6 z-50 bg-[#12181F] border border-slate-700/80 text-slate-200 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-mono font-semibold animate-fadeIn">
-          <div className="w-6 h-6 rounded-full bg-[#00E676]/20 flex items-center justify-center text-[#00E676] shrink-0 border border-[#00E676]/30">
-            <CheckCircle2 className="w-4 h-4" />
+        <div className="fixed top-6 right-6 z-[60] bg-panel border border-white/10 text-ink px-4 py-3 rounded-lg shadow-xl flex items-center gap-2.5 text-xs font-mono font-semibold animate-fadeIn">
+          <div className="w-5 h-5 rounded-full bg-moss/20 flex items-center justify-center text-moss shrink-0 border border-moss/30">
+            <CheckCircle2 className="w-3.5 h-3.5" />
           </div>
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Clean Header with Real-Time Quick Entry & Sign Out */}
-      <AppHeader
-        activeTab={activeTab}
-        setActiveTab={(tab) => {
-          setActiveTab(tab);
-        }}
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab}
         activeRole={activeRole}
-        setActiveRole={(r) => {
-          setActiveRole(r);
-          localStorage.setItem("circulus_role", JSON.stringify(r));
-        }}
-        onOpenDemoTour={() => setIsDemoTourOpen(true)}
-        onToggleCopilot={() => setIsCopilotOpen(!isCopilotOpen)}
-        onOpenRealTimeEntry={() => setIsRealTimeModalOpen(true)}
         onSignOut={handleSignOut}
-        isCopilotOpen={isCopilotOpen}
-        passportsCount={passports.length}
-        listingsCount={listings.length}
+        onOpenRealTimeEntry={() => setIsRealTimeModalOpen(true)}
+        isMobileOpen={isMobileOpen}
+        setIsMobileOpen={setIsMobileOpen}
       />
 
-      {/* Main Content View Container - Spacious and Breathable */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 relative z-10">
-        {/* Marketplace View */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <AppHeader
+          activeRole={activeRole}
+          onToggleCopilot={() => setIsCopilotOpen(!isCopilotOpen)}
+          isCopilotOpen={isCopilotOpen}
+          onOpenMobileMenu={() => setIsMobileOpen(true)}
+        />
+        
+        <main className="flex-1 overflow-y-auto px-4 sm:px-6 py-8">
+          <div className="max-w-7xl mx-auto w-full">
+            {/* Marketplace View */}
+
         {activeTab === "marketplace" && (
           <MarketplaceGrid
             listings={listings}
@@ -366,7 +360,9 @@ export default function App() {
         {activeTab === "compliance" && (
           <IndiaComplianceHub />
         )}
-      </main>
+                </div>
+        </main>
+      </div>
 
       {/* Real-Time Entry Modal */}
       <RealTimeEntryModal
@@ -384,29 +380,13 @@ export default function App() {
         activeRole={activeRole}
       />
 
-      {/* Floating 1-Click AI Helper Launcher (visible when closed) */}
-      {!isCopilotOpen && (
-        <button
-          id="floating-copilot-launcher"
-          onClick={() => setIsCopilotOpen(true)}
-          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white pl-4 pr-5 py-3 rounded-full shadow-xl shadow-blue-600/30 flex items-center gap-2.5 transition-all duration-200 hover:scale-105 cursor-pointer font-bold text-xs border border-white/20"
-        >
-          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          </div>
-          <span>Ask AI Helper</span>
-        </button>
-      )}
-
       {/* 3-Minute Judge Demo Tour Guide Modal */}
       <DemoTourGuide
         isOpen={isDemoTourOpen}
         onClose={() => setIsDemoTourOpen(false)}
         onNavigateStep={handleNavigateStep}
       />
-
-      {/* Footer */}
-      <AppFooter />
     </div>
   );
+}
 }

@@ -1,4 +1,8 @@
+const fs = require('fs');
+let css = fs.readFileSync('src/index.css', 'utf-8');
 
+// Replace the previous patch completely to be safe
+css = `
 @import "tailwindcss";
 
 @theme {
@@ -79,3 +83,6 @@
 .animate-scan {
   animation: scan 4s ease-in-out infinite;
 }
+`;
+
+fs.writeFileSync('src/index.css', css);

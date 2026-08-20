@@ -85,18 +85,18 @@ export const DemoTourGuide: React.FC<DemoTourGuideProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#12181F] rounded-3xl border border-slate-700 max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
+    <div className="fixed inset-0 z-50 bg-panel/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-panel rounded-3xl border border-white/10 max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
         
         {/* Header */}
         <div className="flex items-start justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 rounded-2xl bg-copper/50 border border-copper/200 flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-copper/600" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-extrabold text-white tracking-tight">
+                <h2 className="text-xl font-extrabold text-ink tracking-tight">
                   How Circulus Works (Simple 6-Step Guide)
                 </h2>
                 <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -111,7 +111,7 @@ export const DemoTourGuide: React.FC<DemoTourGuideProps> = ({
 
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-400 p-1.5 rounded-xl hover:bg-slate-100 cursor-pointer text-xs"
+            className="text-silver/80 hover:text-silver/80 p-1.5 rounded-xl hover:bg-slate-100 cursor-pointer text-xs"
           >
             <X className="w-5 h-5" />
           </button>
@@ -124,19 +124,19 @@ export const DemoTourGuide: React.FC<DemoTourGuideProps> = ({
             return (
               <div
                 key={item.step}
-                className="bg-slate-50 p-5 rounded-2xl border border-slate-700 hover:border-blue-300 hover:bg-blue-50/40 transition duration-300 space-y-3 flex flex-col justify-between group"
+                className="bg-slate-50 p-5 rounded-2xl border border-white/10 hover:border-copper/300 hover:bg-copper/50/40 transition duration-300 space-y-3 flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-blue-100 text-blue-800">
+                    <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-copper/100 text-copper/800">
                       {item.badge}
                     </span>
-                    <span className="text-xs font-mono font-bold text-slate-400 group-hover:text-blue-600">
+                    <span className="text-xs font-mono font-bold text-silver/80 group-hover:text-copper/600">
                       STEP {item.step}
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-extrabold text-white mt-2 group-hover:text-blue-600 transition">
+                  <h3 className="text-sm font-extrabold text-ink mt-2 group-hover:text-copper/600 transition">
                     {item.title}
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed mt-1">
@@ -149,7 +149,7 @@ export const DemoTourGuide: React.FC<DemoTourGuideProps> = ({
                     onNavigateStep(item.tab);
                     onClose();
                   }}
-                  className="w-full py-2.5 px-3 rounded-xl bg-[#12181F] hover:bg-blue-600 hover:text-white text-blue-700 border border-slate-700 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:border-blue-600"
+                  className="w-full py-2.5 px-3 rounded-xl bg-panel hover:bg-copper/600 hover:text-ink text-copper/700 border border-white/10 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:border-copper/600"
                 >
                   <span>Open {item.title.split(".")[1]}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -166,7 +166,7 @@ export const DemoTourGuide: React.FC<DemoTourGuideProps> = ({
           </p>
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-300 text-xs font-bold transition cursor-pointer"
+            className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-silver text-xs font-bold transition cursor-pointer"
           >
             Got it, Let's Start!
           </button>
