@@ -197,7 +197,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                   <p className={`text-xs font-bold truncate ${s.isActive ? "text-emerald-400" : s.isCompleted ? "text-white" : "text-slate-500"}`}>
                     {s.title}
                   </p>
-                  <p className={`text-[11px] truncate ${s.isActive ? "text-emerald-700 font-semibold" : s.isCompleted ? "text-emerald-800" : "text-slate-400"}`}>
+                  <p className={`text-[11px] truncate ${s.isActive ? "text-emerald-400 font-semibold" : s.isCompleted ? "text-emerald-500" : "text-slate-400"}`}>
                     {s.desc}
                   </p>
                 </div>
@@ -265,7 +265,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
             {passports.length > 0 ? (
               <form onSubmit={handleTransfer} className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Select Scrap Batch</label>
+                  <label className="block text-slate-300 font-bold mb-1">Select Scrap Batch</label>
                   <select
                     value={selectedPassportId}
                     onChange={(e) => setSelectedPassportId(e.target.value)}
@@ -280,7 +280,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Current Factory Owner</label>
+                  <label className="block text-slate-300 font-bold mb-1">Current Factory Owner</label>
                   <input
                     type="text"
                     disabled
@@ -290,7 +290,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Buyer Factory Name</label>
+                  <label className="block text-slate-300 font-bold mb-1">Buyer Factory Name</label>
                   <input
                     type="text"
                     value={recipientOrg}
@@ -301,7 +301,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Transfer City & Location</label>
+                  <label className="block text-slate-300 font-bold mb-1">Transfer City & Location</label>
                   <input
                     type="text"
                     value={transferLocation}
@@ -311,7 +311,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Handover Notes & Bill Number</label>
+                  <label className="block text-slate-300 font-bold mb-1">Handover Notes & Bill Number</label>
                   <textarea
                     rows={2}
                     value={transferNotes}
@@ -340,7 +340,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
               </form>
             ) : (
               <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 text-center space-y-2 text-xs">
-                <p className="font-bold text-slate-700">No Scrap Batches Available to Transfer</p>
+                <p className="font-bold text-slate-300">No Scrap Batches Available to Transfer</p>
                 <p className="text-slate-500 text-[11px]">
                   Add a real-time entry or scan a batch photo to register scrap before recording custody handovers.
                 </p>
@@ -370,8 +370,8 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-blue-700">{ev.eventType.replace(/_/g, " ")}</span>
-                      <span className="text-[11px] px-2 py-0.5 rounded-lg bg-[#12181F] border border-slate-700 text-slate-700 font-semibold">
+                      <span className="font-extrabold text-blue-400">{ev.eventType.replace(/_/g, " ")}</span>
+                      <span className="text-[11px] px-2 py-0.5 rounded-lg bg-[#12181F] border border-slate-700 text-slate-300 font-semibold">
                         ID: {ev.passportId}
                       </span>
                     </div>
@@ -380,7 +380,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-slate-700 text-xs leading-relaxed">{ev.notes}</p>
+                  <p className="text-slate-300 text-xs leading-relaxed">{ev.notes}</p>
 
                   <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-700 text-[11px] text-slate-500">
                     <span><strong>By:</strong> {ev.actor}</span>
@@ -398,15 +398,15 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
                     <div className="p-2.5 rounded-xl bg-[#12181F] border border-slate-700/80">
-                      <span className="font-bold text-emerald-800 block mb-0.5">1. Origin Mint</span>
+                      <span className="font-bold text-emerald-500 block mb-0.5">1. Origin Mint</span>
                       <p className="text-slate-500">Generator registers scrap lot with AI purity & geo-stamp.</p>
                     </div>
                     <div className="p-2.5 rounded-xl bg-[#12181F] border border-slate-700/80">
-                      <span className="font-bold text-blue-800 block mb-0.5">2. Safe Handover</span>
+                      <span className="font-bold text-blue-400 block mb-0.5">2. Safe Handover</span>
                       <p className="text-slate-500">Logistics driver or recycler records receipt with GST e-Way bill.</p>
                     </div>
                     <div className="p-2.5 rounded-xl bg-[#12181F] border border-slate-700/80">
-                      <span className="font-bold text-purple-800 block mb-0.5">3. Final Remelt</span>
+                      <span className="font-bold text-purple-400 block mb-0.5">3. Final Remelt</span>
                       <p className="text-slate-500">Authorized smelter logs recycling proof & closes circular loop.</p>
                     </div>
                   </div>
@@ -416,7 +416,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                 <div className="space-y-2.5 opacity-40 select-none pointer-events-none">
                   <div className="bg-slate-800 p-4 rounded-2xl border border-dashed border-slate-600 space-y-2 text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-blue-700">CUSTODY TRANSFER</span>
+                      <span className="font-bold text-blue-400">CUSTODY TRANSFER</span>
                       <span className="text-[10px] text-slate-500 font-mono">HASH: 0x8f3c...1e9a</span>
                     </div>
                     <p className="text-slate-400 text-xs">Sample: Transferred 25.0 MT Aluminium 6063 Scrap to Recycler Plant</p>
@@ -428,7 +428,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
 
                   <div className="bg-slate-800 p-4 rounded-2xl border border-dashed border-slate-600 space-y-2 text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-emerald-700">FINAL REMELT CERTIFICATE</span>
+                      <span className="font-bold text-emerald-400">FINAL REMELT CERTIFICATE</span>
                       <span className="text-[10px] text-slate-500 font-mono">HASH: 0x4a12...99b2</span>
                     </div>
                     <p className="text-slate-400 text-xs">Sample: 100% recycled into secondary extrusion billets. 230 t CO₂ avoided.</p>
