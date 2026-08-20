@@ -122,7 +122,7 @@ const QUICK_SAMPLE_BATCHES = [
     pricePerMT: 37500,
     city: "Raipur",
     state: "Chhattisgarh",
-    imageUrl: "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
     suggestedApplications: ["Induction Furnace Billets", "TMT Construction Rebars", "Foundry Casting"],
     co2PerTon: 1.8
   },
@@ -181,7 +181,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
   const simPrices = {
     aluminium: { price: 185000, name: "6063 Aluminium Off-Cuts", cat: "non_ferrous" as MaterialCategory, co2: 9.2, img: "https://images.unsplash.com/photo-1535813547-99c456a41d4a?auto=format&fit=crop&w=800&q=80" },
     plastic: { price: 42000, name: "Washed Clear rPET Flakes", cat: "plastic" as MaterialCategory, co2: 2.3, img: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=800&q=80" },
-    steel: { price: 37500, name: "Heavy Melting Steel Scrap", cat: "ferrous" as MaterialCategory, co2: 1.8, img: "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80" },
+    steel: { price: 37500, name: "Heavy Melting Steel Scrap", cat: "ferrous" as MaterialCategory, co2: 1.8, img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" },
     copper: { price: 745000, name: "Pure Berry Copper Wire (99%)", cat: "non_ferrous" as MaterialCategory, co2: 6.8, img: "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80" },
     flyash: { price: 520, name: "Silo Pozzolanic Fly Ash", cat: "fly_ash" as MaterialCategory, co2: 0.82, img: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=800&q=80" },
   };

@@ -81,7 +81,7 @@ export const IndiaComplianceHub: React.FC = () => {
       {/* Header Banner with Rich Visual Backdrop */}
       <div className="relative rounded-3xl overflow-hidden p-6 sm:p-8 border border-slate-700 bg-gradient-to-r from-emerald-900/90 via-teal-900/80 to-slate-900/90 text-white shadow-md">
         <img
-          src="https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1600&q=80"
+          src="https://images.unsplash.com/photo-1535813547-99c456a41d4a?auto=format&fit=crop&w=1600&q=80"
           alt="Clean Energy & Compliance"
           className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30 pointer-events-none"
           referrerPolicy="no-referrer"

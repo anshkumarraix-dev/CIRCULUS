@@ -30,104 +30,85 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         setOtpCountdown((prev) => prev - 1);
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => { if(interval) clearInterval(interval); };
   }, [otpCountdown]);
 
   const handleGstinLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg(null);
     setIsLoading(true);
-    
-    // Simulate API delay
+    setErrorMsg(null);
     setTimeout(() => {
       setIsLoading(false);
-      if (password === "wrong") {
-        setErrorMsg("Invalid credentials. Please try again.");
-        return;
-      }
       onLoginSuccess({
         id: "buyer",
-        name: "Enterprise Admin",
+        name: "Procurement Lead",
         orgName: "Mahavir PolyRecycle",
-        gstin: gstinOrEmail || "24AABCM1234F1Z8",
-        avatar: "https://i.pravatar.cc/150?u=buyer",
+        gstin: "24AABCM1234F1Z8",
+        location: "Surat, GJ",
+        avatar: "https://api.dicebear.com/7.x/initials/svg?seed=buyer",
         isVerified: true
       });
-    }, 1200);
+    }, 1500);
   };
 
-  const handleSendOtp = (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg(null);
+  const handleSendOtp = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setIsLoading(true);
-    
+    setErrorMsg(null);
     setTimeout(() => {
       setIsLoading(false);
-      if (mobileNumber.length < 10) {
-        setErrorMsg("Invalid mobile number format.");
-        return;
-      }
       setOtpSent(true);
-      setOtpCountdown(60);
+      setOtpCountdown(120);
     }, 1000);
   };
 
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg(null);
     setIsLoading(true);
-    
+    setErrorMsg(null);
     setTimeout(() => {
       setIsLoading(false);
-      if (otpCode.length < 6) {
-        setErrorMsg("Invalid OTP Code.");
-        return;
+      if (otpCode === "123456" || otpCode === "000000") {
+        onLoginSuccess({
+          id: "supplier",
+          name: "Plant Manager",
+          orgName: "AluCast Manufacturing",
+          gstin: "24AAACA1234B1Z5",
+          location: "Sanand, GJ",
+          avatar: "https://api.dicebear.com/7.x/initials/svg?seed=supplier",
+          isVerified: true
+        });
+      } else {
+        setErrorMsg("Invalid OTP Code. Try 123456.");
       }
-      onLoginSuccess({
-        id: "buyer",
-        name: "Enterprise Admin",
-        orgName: "Mahavir PolyRecycle",
-        gstin: "24AABCM1234F1Z8",
-        avatar: "https://i.pravatar.cc/150?u=buyer",
-        isVerified: true
-      });
-    }, 1200);
+    }, 1000);
   };
 
   return (
-    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden font-sans text-ink selection:bg-copper selection:text-panel">
-      {/* Background Integration */}
-      {/* CSS Fallback Animated Laser Background */}
-      <div className="absolute inset-0 bg-primary z-0 overflow-hidden">
-        {/* Metal Texture */}
-        <div className="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,#000_2px,#000_4px)]"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[copper]/5 to-[#12181F]"></div>
-        
-        {/* Sweeping Laser Line */}
-        <div className="absolute top-0 left-0 w-full h-[3px] bg-copper shadow-[0_0_20px_4px_copper,0_0_40px_copper] animate-scan z-0"></div>
-        
-        {/* Scanlines overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.4)_50%)] bg-[length:100%_4px] pointer-events-none z-0"></div>
-      </div>
-
-      {/* User's Uploaded Background (Overlays CSS if present) */}
+    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden font-sans text-ink selection:bg-copper selection:text-panel bg-white">
+      
+      {/* User's Uploaded Background */}
       <img 
         src="/assets/laser-bg.webp" 
         alt="Laser Scanning Industrial Metal" 
         className="absolute inset-0 w-full h-full object-cover z-0" 
-        onError={(e) => {
-          // Hide broken image icon so the CSS animation shows beautifully underneath
-          e.currentTarget.style.display = 'none';
-        }}
       />
-      <div className="absolute inset-0 bg-primary/80 z-0 pointer-events-none"></div>
 
       <main className="flex-1 flex items-center justify-center w-full px-4 sm:px-8 py-6 relative z-10">
-        {/* Main Modal (Glassmorphism) */}
-        <div className="w-full max-w-5xl max-h-[95vh] lg:max-h-[90vh] overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.5)]">
+        
+        {/* Animated Glow Wrapper */}
+        <div className="relative w-full max-w-5xl group">
+          {/* Glowing Border Element */}
+          <div className="absolute -inset-0.5 bg-gradient-to-br from-copper/40 via-transparent to-copper/30 rounded-2xl sm:rounded-3xl blur-md opacity-60 group-hover:opacity-100 transition duration-1000 animate-pulse pointer-events-none z-0"></div>
           
-          {/* Left Column (Brand & Tech Simulation) */}
-          <div className="lg:col-span-6 p-8 sm:p-14 flex flex-col justify-between relative">
+          {/* Main Modal (Glassmorphism) */}
+          <div className="relative w-full max-h-[95vh] lg:max-h-[90vh] overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch bg-panel/20 hover:bg-panel/90 focus-within:bg-panel/90 transition-colors duration-500 border border-copper/20 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.8)] z-10 overflow-hidden">
+            
+            {/* Subtle Industrial Grid Pattern */}
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0 mix-blend-screen"></div>
+
+            {/* Left Column (Brand & Tech Simulation) */}
+            <div className="lg:col-span-6 p-8 sm:p-14 flex flex-col justify-between relative z-10">
             <div>
               <div className="flex items-center gap-3 mb-10">
                 <div className="w-8 h-8 rounded bg-copper flex items-center justify-center shadow-[0_0_15px_rgba(239,122,59,0.4)]">
@@ -155,7 +136,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </div>
 
           {/* Right Column (The Login Form) */}
-          <div className="lg:col-span-6 bg-panel/80 p-8 sm:p-14 flex flex-col justify-center relative">
+          <div className="lg:col-span-6 bg-black/20 p-8 sm:p-14 flex flex-col justify-center relative z-10">
             
             <div className="flex items-center gap-6 border-b border-white/10 mb-8">
               <button
@@ -316,12 +297,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               </form>
             )}
 
-            <p className="mt-10 text-[9px] uppercase tracking-widest text-silver/60 font-mono leading-relaxed">
+            <p className="mt-10 text-[9px] uppercase tracking-widest text-silver/60 font-mono leading-relaxed relative z-10">
               Protected by 256-bit SHA state proofs.<br/>
               Compliant with MoEFCC & CPCB Digital Waste Rules 2026.
             </p>
           </div>
         </div>
+      </div>
       </main>
     </div>
   );

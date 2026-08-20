@@ -241,8 +241,15 @@ export default function App() {
 
   // If user is not authenticated, render Login Page
   if (!isAuthenticated) {
-    
-      return (
+    return (
+      <LoginPage 
+        onLoginSuccess={handleLoginSuccess}
+        onExploreAsGuest={() => setIsAuthenticated(true)}
+      />
+    );
+  }
+
+  return (
     <div className="h-screen bg-primary text-ink flex overflow-hidden font-sans">
       
       {/* Toast Notification */}
@@ -388,5 +395,4 @@ export default function App() {
       />
     </div>
   );
-}
 }

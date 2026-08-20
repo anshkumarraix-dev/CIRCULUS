@@ -180,7 +180,7 @@ export const MatchRecommendations: React.FC<MatchRecommendationsProps> = ({
                     {/* Top Visual Header: Buyer Plant Photo + Clean Environment Badge */}
                     <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-slate-900">
                       <img
-                        src={match.buyerFacilityImage || "https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=80"}
+                        src={match.buyerFacilityImage || "https://images.unsplash.com/photo-1535813547-99c456a41d4a?auto=format&fit=crop&w=1200&q=80"}
                         alt={match.buyerOrg}
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-60"
                       />

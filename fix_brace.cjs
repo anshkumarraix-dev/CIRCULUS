@@ -1,7 +1,9 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/components/auth/LoginPage.tsx', 'utf8');
 
-// Replace the end
-code = code.replace(/<\/p>\s*<\/main>/, `</p>\n          </div>\n        </div>\n      </main>`);
+code = code.replace(
+  'return () => { if(interval) clearInterval(interval); };',
+  '}\n      return () => { if(interval) clearInterval(interval); };'
+);
 
 fs.writeFileSync('src/components/auth/LoginPage.tsx', code);
