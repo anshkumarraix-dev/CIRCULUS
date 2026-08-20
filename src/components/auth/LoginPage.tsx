@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { UserRole } from "../../types";
-import laserBg from "../../assets/laser-bg.webp";
 
 interface LoginPageProps {
   onLoginSuccess: (user: UserRole) => void;
@@ -86,11 +85,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden font-sans text-ink selection:bg-copper selection:text-panel bg-white">
+    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden font-sans text-ink selection:bg-copper selection:text-panel bg-[#12181F]">
       
       {/* User's Uploaded Background */}
       <img 
-        src={laserBg} 
+        src="/assets/laser-bg.webp" 
         alt="Laser Scanning Industrial Metal" 
         className="absolute inset-0 w-full h-full object-cover z-0" 
       />
