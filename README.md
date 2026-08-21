@@ -54,14 +54,54 @@ CIRCULUS integrates **Google Gemini 2.5 Flash (Multimodal Vision & Reasoning)** 
 * **Logistics APIs:** E-way bill and GPS tracking integration.
 * **Production Identity:** OAuth/Enterprise SSO and HSM-backed digital signatures.
 
-## 🛠️ 6. Tech Stack
-- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, Framer Motion
-- **Backend:** Node.js, Express
-- **AI Integration:** Google Gemini API (@google/genai)
-- **Deployment:** Vercel
+## 🛠️ 6. Tech Stack & Architecture
+- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, Motion (motion/react), Lucide Icons
+- **Backend:** Node.js, Express (with bundled `esbuild` server production pipeline)
+- **AI Integration:** Google Gemini API (`@google/genai` with `gemini-3.7-flash` & `gemini-3.1-flash-lite`)
+- **Serverless Deployments:** Vercel serverless API routes (`/api/*`) and SPA fallback routing
 
-## 📸 7. Screenshots
-*(Please add screenshots of the AI Scanner, Dashboard, and Marketplace in the `docs/screenshots/` folder.)*
+## 📁 7. Project Structure
+
+```text
+CIRCULUS/
+├── api/                    # Vercel Serverless Functions (/api/copilot-chat.ts)
+├── assets/                 # Brand assets and diagrams
+├── docs/                   # Documentation and guides
+├── public/                 # Static assets & web manifest
+├── src/                    # Primary application source code
+│   ├── components/
+│   │   ├── auth/           # OTP Authentication & Role Switcher
+│   │   ├── common/         # Activity Ticker, Entry Modals, AIChatWidget
+│   │   ├── compliance/     # India Compliance Hub (CPCB / SPCB EPR)
+│   │   ├── impact/         # Impact Analytics & BRSR / Scope 3 Carbon Reports
+│   │   ├── layout/         # Header, Sidebar, and Footer navigation
+│   │   ├── ledger/         # Tamper-evident Ownership Ledger & Custody Trails
+│   │   ├── marketplace/    # Live Scrap Marketplace & Listing Modals
+│   │   ├── matches/        # Proximity-based AI Buyer Matching
+│   │   ├── passport/       # Digital Product Passport (DPP) & SHA-256 Hashes
+│   │   ├── scanner/        # Multimodal AI Material Photo & Stream Scanner
+│   │   └── ui/             # Reusable UI primitives (Badges, Chips)
+│   ├── lib/                # Valuation, Carbon LCA, Matching & Ledger Adapters
+│   ├── utils/              # Client-side fallback intelligence & helper engines
+│   ├── types.ts            # Core TypeScript interfaces & enum models
+│   ├── App.tsx             # Main application component & routing state
+│   ├── main.tsx            # React root mount
+│   └── index.css           # Tailwind CSS v4 styles and custom scrollbar
+├── .env.example            # Environment variable declarations
+├── index.html              # HTML entry point with native smooth scroll
+├── package.json            # NPM dependencies and build scripts
+├── server.ts               # Express backend proxy for secure Gemini calls
+├── tsconfig.json           # TypeScript configuration
+├── vercel.json             # Vercel SPA and API routing configuration
+└── vite.config.ts          # Vite build and plugin configurations
+```
+
+## 👩‍💻 8. Development & Workflow Guidelines
+
+- **Direct Source Edits:** All changes are made directly within `src/` and `server.ts`. Ad-hoc root patch scripts are prohibited.
+- **Type Safety:** Maintain strict TypeScript types without `any` regressions.
+- **Secure Key Handling:** Gemini API keys must remain strictly server-side (`process.env.GEMINI_API_KEY`) via Express/Vercel proxies and never be exposed in client code.
+- **Native Scrolling:** The application uses native CSS smooth scrolling (`class="scroll-smooth"`). Do not introduce virtual scroll interceptors.
 
 ## 🚀 8. Installation
 
