@@ -28,7 +28,7 @@ export const MaterialBadge: React.FC<{ category: MaterialCategory | string, clas
   return (
     <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border ${style} ${className}`}>
       <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70"></span>
-      <span className="text-[10px] font-bold tracking-widest uppercase">{label}</span>
+      <span className="text-xs font-bold tracking-widest uppercase">{label}</span>
     </div>
   );
 };

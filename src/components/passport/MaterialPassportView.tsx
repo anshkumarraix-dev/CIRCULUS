@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "motion/react";
 import QRCode from "qrcode";
 import { 
   ShieldCheck, 
@@ -37,6 +38,18 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
   events = [],
 }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set(clientX / innerWidth - 0.5);
+    mouseY.set(clientY / innerHeight - 0.5);
+  };
+  const parallaxX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-15, 15]), { stiffness: 150, damping: 20 });
+  const parallaxY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-15, 15]), { stiffness: 150, damping: 20 });
+  
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
   const [showAdvancedTech, setShowAdvancedTech] = useState<boolean>(false);
   const [copiedHash, setCopiedHash] = useState<boolean>(false);
@@ -101,14 +114,14 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
   ];
 
   return (
-    <div className="space-y-6">
+    <motion.div className="space-y-6" ref={containerRef} onMouseMove={handleMouseMove} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
       
       {/* Top Bar with Simple Actions */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         {onBackToList && (
           <button
             onClick={onBackToList}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-panel hover:bg-slate-50 border border-white/10 text-xs font-bold text-silver/80 transition cursor-pointer shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-panel hover:bg-panel border border-white/10 text-sm font-bold text-ink-muted/80 transition cursor-pointer shadow-xs"
           >
             <ChevronLeft className="w-4 h-4" />
             ← Back to All ID Cards
@@ -118,7 +131,7 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
         <div className="flex items-center gap-2.5 ml-auto">
           <button
             onClick={() => setShowQrModal(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-panel hover:bg-slate-50 border border-white/10 text-xs font-bold text-silver transition cursor-pointer shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-panel hover:bg-panel border border-white/10 text-sm font-bold text-ink-muted transition cursor-pointer shadow-xs"
           >
             <QrCode className="w-4 h-4 text-copper/600" />
             <span>Print Truck QR Tag</span>
@@ -126,7 +139,7 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
 
           <button
             onClick={() => onFindMatches(passport.id)}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-copper/600 hover:bg-copper/700 text-ink text-xs font-extrabold transition cursor-pointer shadow-sm shadow-blue-600/20"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-accent-cyan text-primary hover:bg-accent-cyan/80 text-ink text-sm font-extrabold transition cursor-pointer shadow-sm shadow-accent-cyan/20"
           >
             <span>Find Buying Factories</span>
             <ArrowRight className="w-4 h-4" />
@@ -135,20 +148,20 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
       </div>
 
       {/* Main Digital ID Card */}
-      <div className="bg-panel rounded-3xl border border-white/10 overflow-hidden shadow-xs">
+      <div className="glass-panel glow-edge-cyan rounded-3xl overflow-hidden">
         
         {/* ID Card Header */}
-        <div className="bg-gradient-to-r from-[#1E2630] via-[#12181F] to-[#1E2630] px-6 sm:px-8 py-6 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-panel-steel/30 backdrop-blur-md px-6 sm:px-8 py-6 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#00E676]/10 border border-[#00E676]/30 flex items-center justify-center text-[#00E676] shadow-md shadow-[#00E676]/10 shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-accent-teal/10 border border-accent-teal/30 flex items-center justify-center text-accent-teal shadow-md shadow-[#00E676]/10 shrink-0">
               <Layers className="w-7 h-7" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-white/5 text-silver border border-white/10 font-mono">
+                <span className="text-sm font-bold px-2.5 py-0.5 rounded-lg bg-white/5 text-ink-muted border border-white/10 font-mono">
                   DIGITAL ID: {passport.id}
                 </span>
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-[#00E676]/20 text-[#00E676] border border-[#00E676]/30 flex items-center gap-1">
+                <span className="text-sm font-bold px-2.5 py-0.5 rounded-lg bg-accent-teal/20 text-accent-teal border border-accent-teal/30 flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   Verified Authentic
                 </span>
@@ -159,53 +172,51 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
             </div>
           </div>
 
-          <div className="text-left md:text-right text-xs">
-            <p className="text-slate-500 font-medium">Card Created: {new Date(passport.createdAt).toLocaleDateString("en-IN")}</p>
-            <p className="text-copper/700 font-bold text-sm mt-0.5">HSN Code: {passport.hsnCode}</p>
+          <div className="text-left md:text-right text-sm">
+            <p className="text-ink-muted font-medium">Card Created: {new Date(passport.createdAt).toLocaleDateString("en-IN")}</p>
+            <p className="text-copper/700 font-bold text-base mt-0.5">HSN Code: {passport.hsnCode}</p>
           </div>
         </div>
 
         {/* 5-Step Simple Lifecycle Bar */}
         <div className="px-6 sm:px-8 py-4 bg-panel border-b border-white/10">
-          <p className="text-xs font-bold text-silver/80 uppercase tracking-wider mb-2.5">
+          <p className="text-sm font-bold text-ink-muted/80 uppercase tracking-wider mb-2.5">
             Recycling Journey of this Scrap Batch:
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
             {simpleSteps.map((step) => (
               <div
                 key={step.num}
-                className={`p-3 rounded-2xl border text-xs transition ${
+                className={`p-3 rounded-2xl border text-sm transition ${
                   step.done
-                    ? "bg-[#1E2630] border-copper/500/30 text-ink shadow-xs"
-                    : "bg-[#0B0F13] border-white/5 text-slate-500"
+                    ? "bg-white/5 border-accent-gold/30 text-ink shadow-xs"
+                    : "bg-transparent border-white/5 text-ink-muted"
                 }`}
               >
                 <div className="flex items-center gap-1.5 font-bold mb-1">
-                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
-                    step.done ? "bg-copper/600 text-ink" : "bg-white/5 text-silver/80"
+                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
+                    step.done ? "bg-accent-cyan text-primary text-ink" : "bg-white/5 text-ink-muted/80"
                   }`}>
                     {step.num}
                   </span>
-                  <span className={step.done ? "text-copper/400" : "text-slate-500"}>{step.title}</span>
+                  <span className={step.done ? "text-copper/400" : "text-ink-muted"}>{step.title}</span>
                 </div>
-                <p className="text-[11px] text-silver/80">{step.desc}</p>
+                <p className="text-sm text-ink-muted/80">{step.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Core ID Card Body */}
-        <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 bg-[#0B0F13]">
+        <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 bg-transparent">
           
           {/* Left Column: Product Photo & QR Tag (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <div className="aspect-square w-full rounded-2xl overflow-hidden border border-white/10 relative bg-panel shadow-xs">
-              <img
-                src={passport.imageUrl}
-                alt={passport.materialType}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-3 left-3 bg-panel/95 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-bold text-slate-200 border border-white/10 shadow-xs">
+              <motion.div style={{ x: parallaxX, y: parallaxY, scale: 1.05 }} className="w-full h-full">
+              <img src={passport.imageUrl} alt={passport.materialType} className="w-full h-full object-cover" />
+              </motion.div>
+              <div className="absolute top-3 left-3 bg-panel/95 backdrop-blur-md px-3 py-1 rounded-xl text-sm font-bold text-slate-200 border border-white/10 shadow-xs">
                 ⚖️ {passport.quantityMT} Tons Batch
               </div>
             </div>
@@ -214,14 +225,14 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
             {qrCodeUrl && (
               <div className="bg-panel p-4 rounded-2xl border border-white/10 flex items-center gap-3.5">
                 <img src={qrCodeUrl} alt="Passport QR" className="w-18 h-18 rounded-xl border border-white/10 p-1 bg-panel shrink-0" />
-                <div className="text-xs">
+                <div className="text-sm">
                   <p className="font-extrabold text-ink">Scannable QR Tag</p>
-                  <p className="text-[11px] text-silver/80 mt-0.5">
+                  <p className="text-sm text-ink-muted/80 mt-0.5">
                     Stick this QR code on physical truck bags or lorry bills.
                   </p>
                   <button
                     onClick={() => setShowQrModal(true)}
-                    className="text-xs text-[#00E676] hover:text-[#00C853] mt-1 cursor-pointer font-bold flex items-center gap-1"
+                    className="text-sm text-accent-teal hover:text-[#00C853] mt-1 cursor-pointer font-bold flex items-center gap-1"
                   >
                     <Printer className="w-3.5 h-3.5" />
                     Print Large QR Tag
@@ -237,78 +248,78 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
             {/* 4 Big Simple Metric Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="bg-panel p-4 rounded-2xl border border-white/10">
-                <span className="text-[11px] text-silver/80 font-bold uppercase block">Cleanliness Score</span>
-                <p className="text-2xl font-extrabold text-[#00E676] font-mono mt-1">{passport.reusabilityScore}%</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">Top-grade clean</p>
+                <span className="text-sm text-ink-muted/80 font-bold uppercase block">Cleanliness Score</span>
+                <p className="text-2xl font-extrabold text-accent-teal font-mono mt-1">{passport.reusabilityScore}%</p>
+                <p className="text-sm text-ink-muted mt-0.5">Top-grade clean</p>
               </div>
 
               <div className="bg-panel p-4 rounded-2xl border border-white/10">
-                <span className="text-[11px] text-silver/80 font-bold uppercase block">Total Weight</span>
+                <span className="text-sm text-ink-muted/80 font-bold uppercase block">Total Weight</span>
                 <p className="text-2xl font-extrabold text-ink font-mono mt-1">{passport.quantityMT} Tons</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">{passport.quantityMT * 1000} Kilograms</p>
+                <p className="text-sm text-ink-muted mt-0.5">{passport.quantityMT * 1000} Kilograms</p>
               </div>
 
               <div className="bg-panel p-4 rounded-2xl border border-white/10">
-                <span className="text-[11px] text-silver/80 font-bold uppercase block flex items-center gap-1">
-                  <Leaf className="w-3.5 h-3.5 text-[#00E676]" />
+                <span className="text-sm text-ink-muted/80 font-bold uppercase block flex items-center gap-1">
+                  <Leaf className="w-3.5 h-3.5 text-accent-teal" />
                   Smoke Saved
                 </span>
-                <p className="text-2xl font-extrabold text-[#00E676] font-mono mt-1">
+                <p className="text-2xl font-extrabold text-accent-teal font-mono mt-1">
                   {(passport.carbonImpact.co2eAvoidedKg / 1000).toFixed(1)} t
                 </p>
-                <p className="text-[11px] text-slate-500 mt-0.5">Tons of CO₂ gas</p>
+                <p className="text-sm text-ink-muted mt-0.5">Tons of CO₂ gas</p>
               </div>
 
               <div className="bg-panel p-4 rounded-2xl border border-white/10">
-                <span className="text-[11px] text-silver/80 font-bold uppercase block flex items-center gap-1">
-                  <IndianRupee className="w-3.5 h-3.5 text-silver/80" />
+                <span className="text-sm text-ink-muted/80 font-bold uppercase block flex items-center gap-1">
+                  <IndianRupee className="w-3.5 h-3.5 text-ink-muted/80" />
                   Total Value
                 </span>
                 <p className="text-2xl font-extrabold text-ink font-mono mt-1">
                   {formatInrCurrency(passport.valuation.estimatedTotalInr, true)}
                 </p>
-                <p className="text-[11px] text-slate-500 mt-0.5">₹{passport.valuation.basePricePerMT.toLocaleString("en-IN")}/Ton</p>
+                <p className="text-sm text-ink-muted mt-0.5">₹{passport.valuation.basePricePerMT.toLocaleString("en-IN")}/Ton</p>
               </div>
             </div>
 
             {/* Who Owns & Where Is It? */}
-            <div className="bg-[#1E2630] p-5 rounded-2xl border border-white/10 space-y-2.5">
-              <span className="text-xs font-extrabold text-ink uppercase tracking-wider flex items-center gap-1.5">
+            <div className="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-2.5">
+              <span className="text-sm font-extrabold text-ink uppercase tracking-wider flex items-center gap-1.5">
                 <Building2 className="w-4 h-4 text-copper/400" />
                 Factory & Location Details
               </span>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div className="bg-[#0B0F13] p-3 rounded-xl border border-white/10">
-                  <span className="text-[10px] text-slate-500 uppercase font-bold block">Current Owner</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                <div className="bg-transparent p-3 rounded-xl border border-white/10">
+                  <span className="text-xs text-ink-muted uppercase font-bold block">Current Owner</span>
                   <p className="font-extrabold text-ink mt-0.5 truncate">{passport.ownerOrg}</p>
-                  <p className="text-[10px] text-silver/80 font-mono mt-0.5">GST: {passport.ownerGstin}</p>
+                  <p className="text-xs text-ink-muted/80 font-mono mt-0.5">GST: {passport.ownerGstin}</p>
                 </div>
 
-                <div className="bg-[#0B0F13] p-3 rounded-xl border border-white/10">
-                  <span className="text-[10px] text-slate-500 uppercase font-bold block">Factory City & State</span>
+                <div className="bg-transparent p-3 rounded-xl border border-white/10">
+                  <span className="text-xs text-ink-muted uppercase font-bold block">Factory City & State</span>
                   <p className="font-extrabold text-ink mt-0.5 truncate">{passport.locationCity}</p>
-                  <p className="text-[10px] text-silver/80 mt-0.5">{passport.locationState}, India</p>
+                  <p className="text-xs text-ink-muted/80 mt-0.5">{passport.locationState}, India</p>
                 </div>
 
-                <div className="bg-[#0B0F13] p-3 rounded-xl border border-white/10">
-                  <span className="text-[10px] text-slate-500 uppercase font-bold block">Local Authority</span>
+                <div className="bg-transparent p-3 rounded-xl border border-white/10">
+                  <span className="text-xs text-ink-muted uppercase font-bold block">Local Authority</span>
                   <p className="font-extrabold text-copper/400 mt-0.5 truncate">{passport.spcbJurisdiction}</p>
-                  <p className="text-[10px] text-[#00E676] font-bold mt-0.5">✓ Green Safety Certified</p>
+                  <p className="text-xs text-accent-teal font-bold mt-0.5">✓ Green Safety Certified</p>
                 </div>
               </div>
             </div>
 
             {/* What can be made from this scrap? */}
             <div className="space-y-2">
-              <span className="text-xs font-extrabold text-ink uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-[#00E676]" />
+              <span className="text-sm font-extrabold text-ink uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-accent-teal" />
                 What can factories manufacture from this scrap?
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {passport.suggestedApplications.map((app, i) => (
-                  <div key={i} className="text-xs text-ink flex items-center gap-2 bg-[#00E676]/10 p-3 rounded-xl border border-[#00E676]/30 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-[#00E676] shrink-0" />
+                  <div key={i} className="text-sm text-ink flex items-center gap-2 bg-accent-teal/10 p-3 rounded-xl border border-accent-teal/30 font-medium">
+                    <CheckCircle2 className="w-4 h-4 text-accent-teal shrink-0" />
                     <span>{app}</span>
                   </div>
                 ))}
@@ -316,12 +327,12 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
             </div>
 
             {/* Simple Green Fact */}
-            <div className="bg-[#00E676]/10 p-4 rounded-2xl border border-[#00E676]/30 text-xs text-ink space-y-1">
-              <p className="font-bold flex items-center gap-1.5 text-[#00E676]">
-                <Leaf className="w-4 h-4 text-[#00E676]" />
+            <div className="bg-accent-teal/10 p-4 rounded-2xl border border-accent-teal/30 text-sm text-ink space-y-1">
+              <p className="font-bold flex items-center gap-1.5 text-accent-teal">
+                <Leaf className="w-4 h-4 text-accent-teal" />
                 Why recycling this helps our planet:
               </p>
-              <p className="leading-relaxed text-[#00E676]/80">
+              <p className="leading-relaxed text-accent-teal/80">
                 {passport.carbonImpact.methodologyNote || "Melting recycled materials uses up to 95% less electricity than mining raw rocks from the earth. Keeps dumpyards clean and reduces factory smoke."}
               </p>
             </div>
@@ -330,30 +341,30 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
             <div className="pt-2">
               <button
                 onClick={() => setShowAdvancedTech(!showAdvancedTech)}
-                className="w-full p-3 rounded-2xl bg-white/5 hover:bg-slate-700 text-ink text-xs font-bold transition flex items-center justify-between cursor-pointer border border-white/10"
+                className="w-full p-3 rounded-2xl bg-white/5 hover:bg-slate-700 text-ink text-sm font-bold transition flex items-center justify-between cursor-pointer border border-white/10"
               >
                 <span className="flex items-center gap-2">
-                  <Lock className="w-3.5 h-3.5 text-silver/80" />
+                  <Lock className="w-3.5 h-3.5 text-ink-muted/80" />
                   <span>Advanced Digital Proof & Blockchain Security Numbers</span>
                 </span>
                 {showAdvancedTech ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
 
               {showAdvancedTech && (
-                <div className="mt-2 p-4 bg-[#1E2630] rounded-2xl border border-white/10 space-y-2 text-xs font-mono animate-fadeIn">
+                <div className="mt-2 p-4 bg-white/5 rounded-2xl border border-white/10 space-y-2 text-sm font-mono animate-fadeIn">
                   <div>
-                    <span className="text-[10px] text-slate-500 font-bold uppercase">SHA-256 Unique Proof Hash</span>
-                    <div className="flex items-center justify-between bg-[#0B0F13] p-2 rounded-lg border border-white/10 mt-1">
-                      <span className="text-[11px] text-silver/80 truncate">{passport.recordHash}</span>
-                      <button onClick={copyHashToClipboard} className="text-copper/400 text-[10px] font-bold ml-2 cursor-pointer">
+                    <span className="text-xs text-ink-muted font-bold uppercase">SHA-256 Unique Proof Hash</span>
+                    <div className="flex items-center justify-between bg-transparent p-2 rounded-lg border border-white/10 mt-1">
+                      <span className="text-sm text-ink-muted/80 truncate">{passport.recordHash}</span>
+                      <button onClick={copyHashToClipboard} className="text-copper/400 text-xs font-bold ml-2 cursor-pointer">
                         {copiedHash ? "COPIED" : "COPY"}
                       </button>
                     </div>
                   </div>
                   {passport.ledgerTxHash && (
                     <div>
-                      <span className="text-[10px] text-slate-500 font-bold uppercase">Polygon Ledger Transaction ID</span>
-                      <p className="text-[11px] text-silver/80 bg-[#0B0F13] p-2 rounded-lg border border-white/10 mt-1 truncate">
+                      <span className="text-xs text-ink-muted font-bold uppercase">Polygon Ledger Transaction ID</span>
+                      <p className="text-sm text-ink-muted/80 bg-transparent p-2 rounded-lg border border-white/10 mt-1 truncate">
                         {passport.ledgerTxHash}
                       </p>
                     </div>
@@ -370,48 +381,48 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
       <div className="bg-panel rounded-3xl border border-white/10 p-6 sm:p-8 space-y-4 shadow-xs">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-extrabold text-ink flex items-center gap-2">
+            <h3 className="text-lg font-extrabold text-ink flex items-center gap-2">
               <History className="w-4 h-4 text-copper/400" />
               Safe Record of Who Owned & Handled This Scrap
             </h3>
-            <p className="text-xs text-silver/80 mt-0.5">
+            <p className="text-sm text-ink-muted/80 mt-0.5">
               Every step is saved in the safe timeline so everyone knows where the material came from.
             </p>
           </div>
           <button
             onClick={() => onTransferCustody(passport.id)}
-            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-slate-700 border border-white/10 text-xs font-bold text-ink transition cursor-pointer shadow-xs"
+            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-slate-700 border border-white/10 text-sm font-bold text-ink transition cursor-pointer shadow-xs"
           >
             + Transfer to Buyer
           </button>
         </div>
 
-        <div className="relative pl-6 space-y-4 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-copper/500/20">
+        <div className="relative pl-6 space-y-4 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-accent-gold/20">
           {events.length > 0 ? (
             events.map((ev) => (
               <div key={ev.id} className="relative">
-                <div className="absolute -left-6 top-1.5 w-3 h-3 rounded-full bg-copper/500 border-2 border-[#12181F] shadow-xs"></div>
-                <div className="bg-[#1E2630] p-4 rounded-2xl border border-white/10 text-xs space-y-1">
+                <div className="absolute -left-6 top-1.5 w-3 h-3 rounded-full bg-accent-gold border-2 border-[#12181F] shadow-xs"></div>
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-sm space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="font-extrabold text-ink">{ev.eventType.replace(/_/g, " ")}</span>
-                    <span className="text-[11px] text-silver/80 font-medium">
+                    <span className="text-sm text-ink-muted/80 font-medium">
                       {new Date(ev.timestamp).toLocaleDateString("en-IN")}
                     </span>
                   </div>
-                  <p className="text-silver">{ev.notes}</p>
-                  <p className="text-[11px] text-slate-500 pt-0.5">
-                    By: <strong className="text-silver/80">{ev.actor}</strong> ({ev.location})
+                  <p className="text-ink-muted">{ev.notes}</p>
+                  <p className="text-sm text-ink-muted pt-0.5">
+                    By: <strong className="text-ink-muted/80">{ev.actor}</strong> ({ev.location})
                   </p>
                 </div>
               </div>
             ))
           ) : (
             <div className="relative">
-              <div className="absolute -left-6 top-1.5 w-3 h-3 rounded-full bg-copper/500 border-2 border-[#12181F]"></div>
-              <div className="bg-[#1E2630] p-4 rounded-2xl border border-white/10 text-xs">
+              <div className="absolute -left-6 top-1.5 w-3 h-3 rounded-full bg-accent-gold border-2 border-[#12181F]"></div>
+              <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-sm">
                 <p className="font-bold text-ink">ID CARD CREATED</p>
-                <p className="text-silver/80 mt-1">{passport.notes || "Material batch recorded and verified."}</p>
-                <p className="text-[11px] text-slate-500 mt-1">Logged by: {passport.ownerOrg}</p>
+                <p className="text-ink-muted/80 mt-1">{passport.notes || "Material batch recorded and verified."}</p>
+                <p className="text-sm text-ink-muted mt-1">Logged by: {passport.ownerOrg}</p>
               </div>
             </div>
           )}
@@ -420,79 +431,79 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
 
       {/* Printable Digital Aadhaar QR Modal */}
       {showQrModal && (
-        <div className="fixed inset-0 z-50 bg-panel/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-panel rounded-3xl border border-white/10 p-6 sm:p-7 max-w-lg w-full space-y-5 shadow-2xl animate-fadeIn my-6">
+        <div className="fixed inset-0 z-50 bg-primary/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+          <div className="glass-panel glow-edge-cyan rounded-3xl p-6 sm:p-7 max-w-lg w-full space-y-5 shadow-2xl animate-fadeIn my-6">
             
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span className="text-xs font-extrabold text-ink uppercase tracking-tight font-display">
+                <span className="text-sm font-extrabold text-ink uppercase tracking-tight font-display">
                   Digital Aadhaar QR • Direct Scrap Data
                 </span>
               </div>
               <button
                 onClick={() => setShowQrModal(false)}
-                className="text-silver/80 hover:text-silver/80 text-xs cursor-pointer font-bold px-2 py-1 rounded-lg hover:bg-slate-100 transition"
+                className="text-ink-muted/80 hover:text-ink-muted/80 text-sm cursor-pointer font-bold px-2 py-1 rounded-lg hover:bg-slate-100 transition"
               >
                 ✕ Close
               </button>
             </div>
 
             {/* Zero Redirect Alert Tag */}
-            <div className="bg-copper/50/80 border border-copper/200 rounded-2xl p-3 text-xs text-copper/900 flex items-start gap-2.5">
+            <div className="bg-copper/50/80 border border-copper/200 rounded-2xl p-3 text-sm text-copper/900 flex items-start gap-2.5">
               <ShieldCheck className="w-4 h-4 text-copper/600 shrink-0 mt-0.5" />
               <div>
                 <p className="font-bold">Direct Digital Aadhaar Data (No URL Redirect)</p>
-                <p className="text-[11px] text-copper/700 mt-0.5 leading-relaxed">
+                <p className="text-sm text-copper/700 mt-0.5 leading-relaxed">
                   Scanning this QR code with any phone camera or handheld scanner displays the raw Digital Aadhaar certificate on-screen immediately without opening any website.
                 </p>
               </div>
             </div>
 
             {/* QR Code Canvas */}
-            <div className="bg-slate-50 p-4 rounded-3xl border border-white/10 text-center">
+            <div className="bg-panel p-4 rounded-3xl border border-white/10 text-center">
               <div className="bg-panel p-3 rounded-2xl inline-block shadow-md mx-auto border border-white/10">
                 <img src={qrCodeUrl} alt="Digital Aadhaar QR" className="w-56 h-56 mx-auto" />
               </div>
-              <p className="text-[10px] text-slate-500 font-mono mt-2 font-semibold">
+              <p className="text-xs text-ink-muted font-mono mt-2 font-semibold">
                 SCAN WITH ANY CAMERA • DIRECT AADHAAR TEXT PAYLOAD
               </p>
             </div>
 
             {/* Digital Aadhaar Data Summary Card */}
-            <div className="bg-slate-50 p-4 rounded-2xl border border-white/10 space-y-2 text-xs">
+            <div className="bg-panel p-4 rounded-2xl border border-white/10 space-y-2 text-sm">
               <div className="flex items-center justify-between border-b border-white/10/80 pb-2">
-                <span className="text-slate-500 font-semibold">Aadhaar Card ID:</span>
+                <span className="text-ink-muted font-semibold">Aadhaar Card ID:</span>
                 <span className="font-mono font-bold text-copper/700">{passport.id}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">Scrap Description:</span>
+                <span className="text-ink-muted font-semibold">Scrap Description:</span>
                 <span className="font-bold text-ink text-right truncate max-w-[240px]">{passport.title}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">Weight / Quantity:</span>
+                <span className="text-ink-muted font-semibold">Weight / Quantity:</span>
                 <span className="font-bold text-ink">{passport.quantityMT} Tons ({passport.quantityMT * 1000} kg)</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">Cleanliness / Purity:</span>
+                <span className="text-ink-muted font-semibold">Cleanliness / Purity:</span>
                 <span className="font-bold text-emerald-700">{passport.reusabilityScore}% Clean Grade</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">Facility / Owner:</span>
+                <span className="text-ink-muted font-semibold">Facility / Owner:</span>
                 <span className="font-bold text-ink truncate max-w-[240px]">{passport.ownerOrg}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">Origin GSTIN:</span>
-                <span className="font-mono text-silver">{passport.ownerGstin}</span>
+                <span className="text-ink-muted font-semibold">Origin GSTIN:</span>
+                <span className="font-mono text-ink-muted">{passport.ownerGstin}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">SPCB Jurisdiction:</span>
-                <span className="text-silver/80">{passport.spcbJurisdiction}</span>
+                <span className="text-ink-muted font-semibold">SPCB Jurisdiction:</span>
+                <span className="text-ink-muted/80">{passport.spcbJurisdiction}</span>
               </div>
               <div className="flex items-center justify-between pt-1 border-t border-white/10/80">
-                <span className="text-slate-500 font-semibold">Proof Hash:</span>
-                <span className="font-mono text-[10px] text-slate-600 truncate max-w-[200px]">{passport.recordHash}</span>
+                <span className="text-ink-muted font-semibold">Proof Hash:</span>
+                <span className="font-mono text-xs text-slate-600 truncate max-w-[200px]">{passport.recordHash}</span>
               </div>
             </div>
 
@@ -501,7 +512,7 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
               <button
                 type="button"
                 onClick={copyAadhaarToClipboard}
-                className="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 border border-white/10 text-xs font-bold text-silver transition flex items-center justify-center gap-1.5 cursor-pointer"
+                className="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 border border-white/10 text-sm font-bold text-ink-muted transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <span>{copiedAadhaarText ? "Copied Aadhaar!" : "Copy Aadhaar Text"}</span>
@@ -510,19 +521,19 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="py-2.5 px-3 rounded-xl bg-copper/600 hover:bg-copper/700 text-ink text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm shadow-blue-600/20"
+                className="py-2.5 px-3 rounded-xl bg-accent-cyan text-primary hover:bg-accent-cyan/80 text-ink text-sm font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm shadow-accent-cyan/20"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print Truck Tag</span>
               </button>
             </div>
 
-            <p className="text-[10px] text-center text-silver/80 font-mono">
+            <p className="text-xs text-center text-ink-muted/80 font-mono">
               CIRCULUS INDIA INDUSTRIAL PROTOCOL • COMPLIANT WITH DIGITAL WASTE RULES 2026
             </p>
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };

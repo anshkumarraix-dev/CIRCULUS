@@ -238,20 +238,20 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#12181F] rounded-3xl border border-slate-700 max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
+    <div className="fixed inset-0 z-50 bg-primary/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+      <div className="glass-panel glow-edge-cyan rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 relative my-8 animate-fadeIn">
         
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
+            <div className="w-8 h-8 rounded-lg bg-accent-cyan text-primary flex items-center justify-center text-ink font-bold">
               <Plus className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white uppercase tracking-tight font-display">
+              <h2 className="text-xl font-bold text-ink uppercase tracking-tight font-display">
                 Add Real-Time Material Entry
               </h2>
-              <p className="text-[10px] uppercase tracking-wider font-mono text-slate-500">
+              <p className="text-xs uppercase tracking-wider font-mono text-slate-500">
                 Instant Passport Minting & Live Marketplace Auction
               </p>
             </div>
@@ -259,7 +259,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-white flex items-center justify-center transition cursor-pointer"
+            className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-ink flex items-center justify-center transition cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -270,13 +270,13 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           
           {/* Category Dropdown */}
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">
+            <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1.5">
               Material Stream Category
             </label>
             <select
               value={category}
               onChange={(e) => handleCategoryChange(e.target.value as MaterialCategory)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-semibold"
+              className="w-full bg-primary border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-semibold"
             >
               {CATEGORY_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -287,7 +287,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           {/* Title & Grade */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Material Name / Batch Title
               </label>
               <input
@@ -295,12 +295,12 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Standard Alloy / Polymer Grade
               </label>
               <input
@@ -308,7 +308,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={grade}
                 onChange={(e) => setGrade(e.target.value)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono"
               />
             </div>
           </div>
@@ -316,7 +316,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           {/* Volume, Price & Circularity */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Batch Volume (MT)
               </label>
               <input
@@ -326,12 +326,12 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={quantityMT}
                 onChange={(e) => setQuantityMT(parseFloat(e.target.value) || 1)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono font-bold"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Unit Price (₹/MT)
               </label>
               <input
@@ -341,12 +341,12 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={pricePerMT}
                 onChange={(e) => setPricePerMT(parseFloat(e.target.value) || 100)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-blue-700 focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono font-bold"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-accent-cyan focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 Circularity Score (0-100)
               </label>
               <input
@@ -355,7 +355,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 max="100"
                 value={reusabilityScore}
                 onChange={(e) => setReusabilityScore(parseInt(e.target.value) || 90)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono font-bold"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
               />
             </div>
           </div>
@@ -363,7 +363,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           {/* Location & HSN */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 City / Industrial Cluster
               </label>
               <input
@@ -371,18 +371,18 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 State
               </label>
               <select
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-medium"
               >
                 <option value="Gujarat">Gujarat</option>
                 <option value="Maharashtra">Maharashtra</option>
@@ -394,7 +394,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
                 GST HSN (8-digit)
               </label>
               <input
@@ -402,22 +402,22 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
                 value={hsnCode}
                 onChange={(e) => setHsnCode(e.target.value)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-mono"
+                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono"
               />
             </div>
           </div>
 
           {/* Live Calculated Impact Strip */}
-          <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700 grid grid-cols-2 gap-4 text-xs font-mono">
+          <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700 grid grid-cols-2 gap-4 text-sm font-mono">
             <div>
-              <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">Live Total Lot Value</span>
-              <p className="text-lg font-bold text-blue-700 mt-0.5">{formatInrCurrency(totalValueInr, true)}</p>
+              <span className="text-xs uppercase tracking-wider text-slate-500 font-bold block">Live Total Lot Value</span>
+              <p className="text-xl font-bold text-accent-cyan mt-0.5">{formatInrCurrency(totalValueInr, true)}</p>
             </div>
             <div>
-              <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block flex items-center gap-1">
+              <span className="text-xs uppercase tracking-wider text-slate-500 font-bold block flex items-center gap-1">
                 <Leaf className="w-3.5 h-3.5 text-emerald-600" /> Avoided Scope 3 CO₂e
               </span>
-              <p className="text-lg font-bold text-emerald-700 mt-0.5">{(carbonImpact.avoidedCo2eKg / 1000).toFixed(1)} tCO₂e</p>
+              <p className="text-xl font-bold text-emerald-700 mt-0.5">{(carbonImpact.avoidedCo2eKg / 1000).toFixed(1)} tCO₂e</p>
             </div>
           </div>
 
@@ -425,13 +425,13 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-tight transition flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-blue-600/20"
+            className="w-full py-3.5 rounded-xl bg-accent-cyan text-primary hover:bg-accent-cyan/80 text-ink font-bold text-sm uppercase tracking-tight transition flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-accent-cyan/20"
           >
             {isSubmitting ? (
               <span>Minting Digital Passport & Broadcasting Live...</span>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 text-white" />
+                <Sparkles className="w-4 h-4 text-ink" />
                 <span>Broadcast Real-Time Entry to Marketplace</span>
               </>
             )}

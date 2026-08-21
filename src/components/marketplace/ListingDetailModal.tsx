@@ -53,21 +53,21 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-panel rounded-3xl border border-white/10 max-w-2xl w-full p-6 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
+    <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+      <div className="glass-panel glow-edge-teal rounded-3xl max-w-2xl w-full p-6 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
         {/* Modal Header */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/5">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-copper/500/10 text-copper/400 border border-copper/500/20">
+              <span className="text-sm font-bold px-2.5 py-0.5 rounded-lg bg-copper/500/10 text-accent-gold/400 border border-copper/500/20">
                 📦 {listing.category.replace("_", " ")}
               </span>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-[#00E676]/10 text-[#00E676] border border-[#00E676]/20">
+              <span className="text-sm font-semibold px-2 py-0.5 rounded-lg bg-[#00E676]/10 text-[#00E676] border border-[#00E676]/20">
                 {listing.reusabilityScore}% Clean Grade
               </span>
             </div>
             <h2 className="text-xl font-extrabold text-ink tracking-tight mt-1.5">{listing.title}</h2>
-            <p className="text-xs text-silver/80 mt-0.5 flex items-center gap-1.5">
+            <p className="text-sm text-silver/80 mt-0.5 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[#FF6D00]" />
               Location: <strong className="text-ink">{listing.city}, {listing.state}</strong> • Seller: <strong className="text-ink">{listing.sellerOrg}</strong>
             </p>
@@ -87,20 +87,20 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
           <div className="space-y-4">
             <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden border border-white/10 relative bg-white/5 shadow-xs">
               <img src={listing.imageUrl} alt={listing.materialType} className="w-full h-full object-cover" />
-              <div className="absolute top-2.5 left-2.5 bg-[#0B0F13]/90 backdrop-blur-md px-2.5 py-1 rounded-xl text-xs font-bold text-ink border border-white/10 shadow-xs">
+              <div className="absolute top-2.5 left-2.5 bg-[#0B0F13]/90 backdrop-blur-md px-2.5 py-1 rounded-xl text-sm font-bold text-ink border border-white/10 shadow-xs">
                 {listing.quantityMT} Tons Available
               </div>
             </div>
 
             {/* Simple Facts Card */}
-            <div className="bg-[#1E2630] p-4 rounded-2xl border border-white/10 space-y-2.5 text-xs">
+            <div className="bg-[#1E2630] p-4 rounded-2xl border border-white/10 space-y-2.5 text-sm">
               <div className="flex justify-between text-silver/80">
                 <span>Total Weight:</span>
                 <span className="text-ink font-bold">{listing.quantityMT} Tons ({listing.quantityMT * 1000} kg)</span>
               </div>
               <div className="flex justify-between text-silver/80">
                 <span>Price per Ton:</span>
-                <span className="text-copper/400 font-bold font-mono">₹{listing.pricePerMT.toLocaleString("en-IN")}</span>
+                <span className="text-accent-gold/400 font-bold font-mono">₹{listing.pricePerMT.toLocaleString("en-IN")}</span>
               </div>
               <div className="flex justify-between text-silver/80">
                 <span>Total Value:</span>
@@ -116,8 +116,8 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
 
             {/* What this becomes */}
             {passport && passport.suggestedApplications && (
-              <div className="bg-copper/500/10 p-3 rounded-2xl border border-copper/500/30 text-xs text-copper/100">
-                <p className="font-bold text-[11px] uppercase tracking-wider text-copper/400 mb-1">
+              <div className="bg-copper/500/10 p-3 rounded-2xl border border-copper/500/30 text-sm text-accent-gold/100">
+                <p className="font-bold text-sm uppercase tracking-wider text-accent-gold/400 mb-1">
                   ✨ What can be made from this scrap:
                 </p>
                 <p className="leading-relaxed">
@@ -131,7 +131,7 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                 onClose();
                 onViewPassport(listing.passportId);
               }}
-              className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-slate-700 border border-white/10 text-xs font-bold text-ink transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-slate-700 border border-white/10 text-sm font-bold text-ink transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
               <Layers className="w-4 h-4 text-[#FF6D00]" />
               View Full Product ID Card (Aadhaar)
@@ -142,11 +142,11 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
           <div className="space-y-4">
             <div className="bg-[#1E2630] p-5 rounded-2xl border border-white/10 space-y-4">
               <div>
-                <h4 className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
-                  <Send className="w-3.5 h-3.5 text-copper/400" />
+                <h4 className="text-sm font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
+                  <Send className="w-3.5 h-3.5 text-accent-gold/400" />
                   Send Buy Offer to Seller
                 </h4>
-                <p className="text-[11px] text-silver/80 mt-0.5">
+                <p className="text-sm text-silver/80 mt-0.5">
                   Enter how many tons you want and what price you would like to pay.
                 </p>
               </div>
@@ -156,13 +156,13 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                   <div className="w-10 h-10 rounded-full bg-[#00E676]/20 text-[#00E676] flex items-center justify-center mx-auto border border-[#00E676]/30">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <p className="text-sm font-bold text-[#00E676]">Offer Sent Successfully!</p>
-                  <p className="text-xs text-[#00E676]/80">
+                  <p className="text-base font-bold text-[#00E676]">Offer Sent Successfully!</p>
+                  <p className="text-sm text-[#00E676]/80">
                     {listing.sellerOrg} has received your purchase offer of {offerQty} Tons for ₹{totalOfferValue.toLocaleString("en-IN")}.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+                <form onSubmit={handleSubmit} className="space-y-3.5 text-sm">
                   <div>
                     <label className="block text-silver font-bold mb-1">
                       How many Tons do you want? (Max: {listing.quantityMT} MT)
@@ -174,9 +174,9 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                       step={0.5}
                       value={offerQty}
                       onChange={(e) => setOfferQty(parseFloat(e.target.value) || 1)}
-                      className="w-full bg-[#0B0F13] border border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-ink focus:border-copper/500 focus:outline-none"
+                      className="w-full bg-[#0B0F13] border border-white/10 rounded-xl px-3 py-2 text-sm font-bold text-ink focus:border-copper/500 focus:outline-none"
                     />
-                    <p className="text-[10px] text-slate-500 mt-1">1 Ton = 1,000 kg. Minimum order: {listing.minimumOrderMT || 1} Tons.</p>
+                    <p className="text-xs text-slate-500 mt-1">1 Ton = 1,000 kg. Minimum order: {listing.minimumOrderMT || 1} Tons.</p>
                   </div>
 
                   <div>
@@ -190,10 +190,10 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                         step={100}
                         value={offerPrice}
                         onChange={(e) => setOfferPrice(parseFloat(e.target.value) || 0)}
-                        className="w-full bg-[#0B0F13] border border-white/10 rounded-xl pl-7 pr-3 py-2 text-xs font-bold text-ink focus:border-copper/500 focus:outline-none"
+                        className="w-full bg-[#0B0F13] border border-white/10 rounded-xl pl-7 pr-3 py-2 text-sm font-bold text-ink focus:border-copper/500 focus:outline-none"
                       />
                     </div>
-                    <p className="text-[10px] text-slate-500 mt-1">Seller asking: ₹{listing.pricePerMT.toLocaleString("en-IN")} / Ton</p>
+                    <p className="text-xs text-slate-500 mt-1">Seller asking: ₹{listing.pricePerMT.toLocaleString("en-IN")} / Ton</p>
                   </div>
 
                   <div>
@@ -205,7 +205,7 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                       value={destinationCity}
                       onChange={(e) => setDestinationCity(e.target.value)}
                       placeholder="e.g. Changodar, Ahmedabad"
-                      className="w-full bg-[#0B0F13] border border-white/10 rounded-xl px-3 py-2 text-xs text-ink focus:border-copper/500 focus:outline-none font-medium placeholder-slate-600"
+                      className="w-full bg-[#0B0F13] border border-white/10 rounded-xl px-3 py-2 text-sm text-ink focus:border-copper/500 focus:outline-none font-medium placeholder-slate-600"
                     />
                   </div>
 
@@ -213,9 +213,9 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                   <div className="bg-panel p-3.5 rounded-xl border border-white/10 space-y-1.5">
                     <div className="flex justify-between font-bold text-ink">
                       <span>Total Amount You Pay:</span>
-                      <span className="text-copper/400 font-mono text-sm">₹{totalOfferValue.toLocaleString("en-IN")}</span>
+                      <span className="text-accent-gold/400 font-mono text-base">₹{totalOfferValue.toLocaleString("en-IN")}</span>
                     </div>
-                    <div className="flex justify-between text-[11px] text-slate-500">
+                    <div className="flex justify-between text-sm text-slate-500">
                       <span>Est. Truck Transport:</span>
                       <span className="font-mono text-silver/80">~₹{estimatedFreight.estimatedFreightInr.toLocaleString("en-IN")}</span>
                     </div>
@@ -223,7 +223,7 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
 
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-copper/600 hover:bg-copper/500 text-ink font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full py-3 rounded-xl bg-copper/600 hover:bg-copper/500 text-ink font-bold text-sm transition cursor-pointer flex items-center justify-center gap-2 shadow-sm"
                   >
                     <Send className="w-4 h-4" />
                     <span>Send Purchase Offer to Seller</span>

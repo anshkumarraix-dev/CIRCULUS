@@ -1,18 +1,35 @@
-
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1C1A17;
-  --color-panel: #262220;
-  --color-copper: #A85D33;
-  --color-moss: #6B8F5C;
-  --color-silver: #B8B2A6;
-  --color-ink: #EDE8DF;
+  --color-obsidian: #0a0b0d;
+  --color-charcoal: #14161a;
+  --color-graphite: #1c1f24;
+  --color-steel: #24282e;
+
+  --color-accent-cyan: #4fd8e8;
+  --color-accent-teal: #2a9d8f;
+  --color-accent-gold: #c9a86a;
   
-  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #0a0b0d;
+  --color-panel: #14161a;
+  --color-copper: #c9a86a;
+  --color-moss: #2a9d8f;
+  --color-silver: #a0a6b1;
+  --color-ink: #f0f4f8;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  --glass-bg: rgba(28, 31, 36, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glow-cyan: 0 0 20px rgba(79, 216, 232, 0.4);
+  --glow-teal: 0 0 20px rgba(42, 157, 143, 0.4);
+  --glow-gold: 0 0 20px rgba(201, 168, 106, 0.4);
 }
 
 @layer base {
@@ -21,23 +38,68 @@
     color: var(--color-ink);
     min-height: 100vh;
     overflow-x: hidden;
-    letter-spacing: -0.012em;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    font-weight: 400;
   }
   
   h1, h2, h3, h4, h5, h6, .font-display, .font-heading {
-    letter-spacing: -0.025em;
-    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+    font-weight: 600 !important;
     font-family: var(--font-display);
   }
   
   .font-body {
     font-family: var(--font-body);
+    line-height: 1.6;
+    font-weight: 400;
   }
   
   .font-mono {
     font-family: var(--font-mono);
-    letter-spacing: -0.02em;
+    letter-spacing: normal;
   }
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glow-edge-cyan {
+  border: 1px solid rgba(79, 216, 232, 0.3);
+  box-shadow: var(--glow-cyan);
+}
+
+.glow-edge-gold {
+  border: 1px solid rgba(201, 168, 106, 0.3);
+  box-shadow: var(--glow-gold);
+}
+
+.volumetric-blob-cyan {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(79,216,232,0.15) 0%, rgba(79,216,232,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
+}
+
+.volumetric-blob-teal {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(42,157,143,0.1) 0%, rgba(42,157,143,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
 }
 
 /* Custom crisp scrollbar */
@@ -46,21 +108,19 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-panel);
+  background: var(--color-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-silver);
+  background: var(--color-steel);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-copper);
+  background: var(--color-accent-cyan);
 }
-
 ::selection {
-  background-color: var(--color-copper);
+  background-color: rgba(79, 216, 232, 0.3);
   color: #fff;
 }
-
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
@@ -75,7 +135,6 @@
   90% { opacity: 1; }
   100% { transform: translateY(100vh); opacity: 0; }
 }
-
 .animate-scan {
   animation: scan 4s ease-in-out infinite;
 }

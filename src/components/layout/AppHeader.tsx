@@ -16,7 +16,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   activeRole
 }) => {
   return (
-    <header className="h-16 border-b border-white/5 bg-panel flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30">
+    <header className="h-16 border-b border-white/5 glass-panel flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30">
       <div className="flex items-center gap-4">
         <button 
           onClick={onOpenMobileMenu}
@@ -24,7 +24,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         >
           <Menu className="w-5 h-5" />
         </button>
-        <div className="lg:hidden font-extrabold text-lg tracking-tight text-ink font-display">
+        <div className="lg:hidden font-extrabold text-xl tracking-tight text-ink font-display">
           CIRCULUS
         </div>
       </div>

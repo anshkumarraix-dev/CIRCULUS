@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ReactLenis } from "lenis/react";
 import { AppHeader } from "./components/layout/AppHeader";
 import { Sidebar } from "./components/layout/Sidebar";
 import { USER_ROLES } from "./types";
@@ -278,11 +279,15 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen bg-primary text-ink flex overflow-hidden font-sans">
+    <ReactLenis root>
+      <div className="bg-primary text-ink flex min-h-screen font-sans relative">
+      {/* Cinematic Volumetric Background */}
+      <div className="volumetric-blob-cyan top-[-100px] left-[-100px] opacity-70"></div>
+      <div className="volumetric-blob-teal bottom-[-200px] right-[-100px] opacity-70"></div>
       
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-6 right-6 z-[60] bg-panel border border-white/10 text-ink px-4 py-3 rounded-lg shadow-xl flex items-center gap-2.5 text-xs font-mono font-semibold animate-fadeIn">
+        <div className="fixed top-6 right-6 z-[60] bg-panel border border-white/10 text-ink px-4 py-3 rounded-lg shadow-xl flex items-center gap-2.5 text-sm font-mono font-semibold animate-fadeIn">
           <div className="w-5 h-5 rounded-full bg-moss/20 flex items-center justify-center text-moss shrink-0 border border-moss/30">
             <CheckCircle2 className="w-3.5 h-3.5" />
           </div>
@@ -301,13 +306,13 @@ export default function App() {
         setIsMobileOpen={setIsMobileOpen}
       />
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0">
         <AppHeader
           activeRole={activeRole}
           onOpenMobileMenu={() => setIsMobileOpen(true)}
         />
         
-        <main className="flex-1 overflow-y-auto px-4 sm:px-6 py-8">
+        <main className="flex-1 px-4 sm:px-6 py-8">
           <div className="max-w-7xl mx-auto w-full">
             {/* Marketplace View */}
 
@@ -403,6 +408,7 @@ export default function App() {
       />
       {/* Global AI Chat Widget */}
       <AIChatWidget />
-    </div>
+      </div>
+    </ReactLenis>
   );
 }

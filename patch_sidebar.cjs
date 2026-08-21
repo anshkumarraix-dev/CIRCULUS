@@ -1,24 +1,25 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/components/layout/Sidebar.tsx', 'utf8');
 
-// Add to props
-code = code.replace(/onSignOut: \(\) => void;/, 'onSignOut: () => void;\n  onDeleteAccount: () => void;');
-code = code.replace(/onSignOut,/, 'onSignOut,\n  onDeleteAccount,');
-
-// Add the button
-const buttonHtml = `
-          <button
-            onClick={() => {
-              if (window.confirm("Are you sure you want to delete your account? All personal data will be anonymized and removed.")) {
-                onDeleteAccount();
-              }
-            }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-silver hover:text-red-500 hover:bg-red-500/10 transition cursor-pointer mt-1"
-          >
-            <span className="font-body text-xs text-red-500/70">Delete Account</span>
-          </button>
-`;
-
-code = code.replace(/<span className="font-body">Sign Out<\/span>\s*<\/button>/, '<span className="font-body">Sign Out</span>\n          </button>' + buttonHtml);
+code = code.replace(
+  /w-64 bg-panel border-r border-white\/5/,
+  'w-64 glass-panel border-r border-white/5'
+);
+code = code.replace(
+  /bg-copper flex items-center justify-center shadow-\[0_0_15px_rgba\(168,93,51,0\.4\)\]/,
+  'bg-accent-teal flex items-center justify-center shadow-[0_0_15px_rgba(42,157,143,0.4)]'
+);
+code = code.replace(
+  /text-copper bg-copper\/10/,
+  'text-accent-cyan bg-accent-cyan/10'
+);
+code = code.replace(
+  /text-copper bg-copper\/20/,
+  'text-accent-cyan bg-accent-cyan/20'
+);
+code = code.replace(
+  /hover:bg-white\/5 hover:text-ink/g,
+  'hover:bg-white/5 hover:text-ink transition-all'
+);
 
 fs.writeFileSync('src/components/layout/Sidebar.tsx', code);

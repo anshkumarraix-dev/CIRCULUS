@@ -69,15 +69,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
 
-      <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50
-        w-64 bg-panel border-r border-white/5
+      <aside data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()} className={`
+        fixed lg:sticky lg:top-0 lg:h-screen inset-y-0 left-0 z-50
+        w-64 glass-panel border-r border-white/5
         flex flex-col transition-transform duration-300
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8">
-             <div className="w-8 h-8 rounded bg-copper flex items-center justify-center shadow-[0_0_15px_rgba(168,93,51,0.4)]">
+             <div className="w-8 h-8 rounded bg-accent-teal flex items-center justify-center shadow-[0_0_15px_rgba(42,157,143,0.4)]">
                <div className="w-4 h-4 border-2 border-black rounded-full border-t-transparent animate-spin"></div>
             </div>
             <span className="font-extrabold text-2xl tracking-tight text-ink font-display">CIRCULUS</span>
@@ -88,17 +88,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onOpenRealTimeEntry();
               setIsMobileOpen(false);
             }}
-            className="w-full py-3 mb-6 rounded-lg bg-copper hover:bg-copper/90 text-white font-bold text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
+            className="w-full py-3 mb-6 rounded-lg bg-copper hover:bg-copper/90 text-white font-bold text-base flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add Scrap Lot</span>
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 pb-6 space-y-8 scrollbar-hide">
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-6 space-y-8 " data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
           {navGroups.map((group) => (
             <div key={group.title}>
-              <h3 className="px-3 mb-2 text-[10px] font-bold text-silver/60 uppercase tracking-widest font-mono">
+              <h3 className="px-3 mb-2 text-xs font-bold text-silver/60 uppercase tracking-widest font-mono">
                 {group.title}
               </h3>
               <div className="space-y-1">
@@ -113,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         setIsMobileOpen(false);
                       }}
                       className={`
-                        w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition cursor-pointer
+                        w-full flex items-center gap-3 px-3 py-2 rounded-lg text-base transition cursor-pointer
                         ${isActive 
                           ? "bg-copper/10 text-copper border-l-2 border-copper font-bold" 
                           : "text-silver hover:text-ink hover:bg-white/5 border-l-2 border-transparent"
@@ -132,18 +132,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="p-4 border-t border-white/5">
           <div className="mb-4 px-3 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-base shrink-0">
               {activeRole.avatar}
             </div>
             <div className="min-w-0">
-              <p className="text-ink font-bold truncate text-xs">{activeRole.orgName}</p>
-              <p className="text-[10px] text-silver truncate font-body">{activeRole.name}</p>
+              <p className="text-ink font-bold truncate text-sm">{activeRole.orgName}</p>
+              <p className="text-xs text-silver truncate font-body">{activeRole.name}</p>
             </div>
           </div>
           
           <button
             onClick={onSignOut}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-silver hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-base text-silver hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             <span className="font-body">Sign Out</span>
@@ -154,9 +154,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onDeleteAccount();
               }
             }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-silver hover:text-red-500 hover:bg-red-500/10 transition cursor-pointer mt-1"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-base text-silver hover:text-red-500 hover:bg-red-500/10 transition cursor-pointer mt-1"
           >
-            <span className="font-body text-xs text-red-500/70">Delete Account</span>
+            <span className="font-body text-sm text-red-500/70">Delete Account</span>
           </button>
 
         </div>

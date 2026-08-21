@@ -106,14 +106,14 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
         />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-sm font-bold">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               Safety & Anti-Fraud Timeline
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
               Safe Record of Who Handled & Moved This Scrap
             </h1>
-            <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium">
+            <p className="text-sm sm:text-base text-emerald-100/90 leading-relaxed font-medium">
               Every handover between factories, drivers, and buyers is permanently saved so no one can fake scrap quantities or sell stolen goods.
             </p>
           </div>
@@ -122,7 +122,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
           <div className="bg-slate-900/80 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 flex items-center gap-1 shrink-0">
             <button
               onClick={() => setBlockchainMode("mock")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-sm font-bold transition cursor-pointer ${
                 blockchainMode === "mock"
                   ? "bg-[#12181F] text-emerald-400 shadow-xs border border-slate-700"
                   : "text-slate-300 hover:text-white"
@@ -132,7 +132,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
             </button>
             <button
               onClick={() => setBlockchainMode("polygon-amoy")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1 ${
+              className={`px-3.5 py-1.5 rounded-xl text-sm font-bold transition cursor-pointer flex items-center gap-1 ${
                 blockchainMode === "polygon-amoy"
                   ? "bg-purple-600 text-white shadow-xs border border-purple-400"
                   : "text-slate-300 hover:text-white"
@@ -185,19 +185,19 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                     <Check className="w-4 h-4 text-white stroke-[3]" />
                   </div>
                 ) : s.isActive ? (
-                  <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-emerald-600/30 animate-pulse shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-emerald-600/30 animate-pulse shrink-0">
                     {s.step}
                   </div>
                 ) : (
-                  <div className="w-8 h-8 rounded-full border-2 border-slate-600 text-slate-400 bg-[#12181F] flex items-center justify-center font-bold text-xs shrink-0">
+                  <div className="w-8 h-8 rounded-full border-2 border-slate-600 text-slate-400 bg-[#12181F] flex items-center justify-center font-bold text-sm shrink-0">
                     {s.step}
                   </div>
                 )}
                 <div className="min-w-0">
-                  <p className={`text-xs font-bold truncate ${s.isActive ? "text-emerald-400" : s.isCompleted ? "text-white" : "text-slate-500"}`}>
+                  <p className={`text-sm font-bold truncate ${s.isActive ? "text-emerald-400" : s.isCompleted ? "text-white" : "text-slate-500"}`}>
                     {s.title}
                   </p>
-                  <p className={`text-[11px] truncate ${s.isActive ? "text-emerald-400 font-semibold" : s.isCompleted ? "text-emerald-500" : "text-slate-400"}`}>
+                  <p className={`text-sm truncate ${s.isActive ? "text-emerald-400 font-semibold" : s.isCompleted ? "text-emerald-500" : "text-slate-400"}`}>
                     {s.desc}
                   </p>
                 </div>
@@ -219,8 +219,8 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
 
       {/* Verify Authenticity Tool */}
       <div className="bg-[#12181F] p-5 rounded-3xl border border-slate-700 space-y-3 shadow-xs">
-        <p className="text-xs font-extrabold text-white uppercase tracking-wider flex items-center gap-1.5">
-          <Search className="w-4 h-4 text-blue-600" />
+        <p className="text-sm font-extrabold text-white uppercase tracking-wider flex items-center gap-1.5">
+          <Search className="w-4 h-4 text-accent-cyan" />
           Check If a Scrap ID or Digital Stamp is Real:
         </p>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -229,11 +229,11 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
             value={hashSearch}
             onChange={(e) => setHashSearch(e.target.value)}
             placeholder="Type or paste Scrap ID (e.g. CUS-AL-6063-GJ) or digital proof code..."
-            className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 font-medium focus:border-blue-500 focus:bg-[#12181F] focus:outline-none transition"
+            className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-400 font-medium focus:border-blue-500 focus:bg-[#12181F] focus:outline-none transition"
           />
           <button
             onClick={handleVerifyHash}
-            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-extrabold text-white transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs"
+            className="px-5 py-2.5 rounded-xl bg-accent-cyan text-primary hover:bg-accent-cyan/80 text-sm font-extrabold text-white transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs"
           >
             <ShieldCheck className="w-4 h-4" />
             <span>Verify Authenticity</span>
@@ -241,7 +241,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
         </div>
 
         {verificationResult && (
-          <p className={`text-xs p-3 rounded-2xl ${
+          <p className={`text-sm p-3 rounded-2xl ${
             verificationResult.startsWith("✓")
               ? "bg-emerald-50 text-emerald-900 border border-emerald-200 font-semibold"
               : "bg-red-50 text-red-900 border border-red-200 font-semibold"
@@ -257,19 +257,19 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
         {/* Left Column: Transfer to Buyer (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
           <div className="bg-[#12181F] p-6 rounded-3xl border border-slate-700 space-y-4 shadow-xs">
-            <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-              <LinkIcon className="w-4 h-4 text-blue-600" />
+            <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+              <LinkIcon className="w-4 h-4 text-accent-cyan" />
               Transfer Scrap to a Buyer Factory
             </h3>
 
             {passports.length > 0 ? (
-              <form onSubmit={handleTransfer} className="space-y-3 text-xs">
+              <form onSubmit={handleTransfer} className="space-y-3 text-sm">
                 <div>
                   <label className="block text-slate-300 font-bold mb-1">Select Scrap Batch</label>
                   <select
                     value={selectedPassportId}
                     onChange={(e) => setSelectedPassportId(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-200 text-xs focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-200 text-sm focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
                   >
                     {passports.map((p) => (
                       <option key={p.id} value={p.id}>
@@ -285,7 +285,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                     type="text"
                     disabled
                     value={`${activeRole.orgName} (${activeRole.gstin})`}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-400 text-xs font-medium"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-400 text-sm font-medium"
                   />
                 </div>
 
@@ -295,7 +295,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                     type="text"
                     value={recipientOrg}
                     onChange={(e) => setRecipientOrg(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 text-xs focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 text-sm focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
                     placeholder="e.g. Gujarat Solar Frame Extrusions"
                   />
                 </div>
@@ -306,7 +306,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                     type="text"
                     value={transferLocation}
                     onChange={(e) => setTransferLocation(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 text-xs focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 text-sm focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
                   />
                 </div>
 
@@ -316,14 +316,14 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                     rows={2}
                     value={transferNotes}
                     onChange={(e) => setTransferNotes(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 text-xs focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 text-sm focus:border-blue-500 focus:bg-[#12181F] focus:outline-none font-medium"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting || !selectedPassport}
-                  className="w-full py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20"
+                  className="w-full py-3 rounded-2xl bg-accent-cyan text-primary hover:bg-accent-cyan/80 text-white font-extrabold text-sm transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shadow-accent-cyan/20"
                 >
                   {isSubmitting ? (
                     <>
@@ -339,9 +339,9 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                 </button>
               </form>
             ) : (
-              <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 text-center space-y-2 text-xs">
+              <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 text-center space-y-2 text-sm">
                 <p className="font-bold text-slate-300">No Scrap Batches Available to Transfer</p>
-                <p className="text-slate-500 text-[11px]">
+                <p className="text-slate-500 text-sm">
                   Add a real-time entry or scan a batch photo to register scrap before recording custody handovers.
                 </p>
               </div>
@@ -352,11 +352,11 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
         {/* Right Column: Event History (7 cols) */}
         <div className="lg:col-span-7 bg-[#12181F] p-6 rounded-3xl border border-slate-700 space-y-4 shadow-xs">
           <div className="flex items-center justify-between pb-3 border-b border-slate-150">
-            <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-              <Clock className="w-4 h-4 text-blue-600" />
+            <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+              <Clock className="w-4 h-4 text-accent-cyan" />
               Live Scrap Movement History
             </h3>
-            <span className="text-xs font-bold text-slate-400 bg-slate-800 px-3 py-1 rounded-xl">
+            <span className="text-sm font-bold text-slate-400 bg-slate-800 px-3 py-1 rounded-xl">
               {events.length} Events Saved
             </span>
           </div>
@@ -366,23 +366,23 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
               events.map((ev) => (
                 <div
                   key={ev.id}
-                  className="bg-slate-800 p-4 rounded-2xl border border-slate-700 space-y-2 text-xs hover:border-blue-300 transition"
+                  className="bg-slate-800 p-4 rounded-2xl border border-slate-700 space-y-2 text-sm hover:border-blue-300 transition"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-blue-400">{ev.eventType.replace(/_/g, " ")}</span>
-                      <span className="text-[11px] px-2 py-0.5 rounded-lg bg-[#12181F] border border-slate-700 text-slate-300 font-semibold">
+                      <span className="font-extrabold text-accent-cyan">{ev.eventType.replace(/_/g, " ")}</span>
+                      <span className="text-sm px-2 py-0.5 rounded-lg bg-[#12181F] border border-slate-700 text-slate-300 font-semibold">
                         ID: {ev.passportId}
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-500 font-medium">
+                    <span className="text-sm text-slate-500 font-medium">
                       {new Date(ev.timestamp).toLocaleDateString("en-IN")}
                     </span>
                   </div>
 
-                  <p className="text-slate-300 text-xs leading-relaxed">{ev.notes}</p>
+                  <p className="text-slate-300 text-sm leading-relaxed">{ev.notes}</p>
 
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-700 text-[11px] text-slate-500">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-700 text-sm text-slate-500">
                     <span><strong>By:</strong> {ev.actor}</span>
                     <span>📍 {ev.location}</span>
                   </div>
@@ -392,17 +392,17 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
               <div className="space-y-4">
                 {/* 3-Step Educational Guide */}
                 <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700 space-y-3">
-                  <p className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                    <Info className="w-4 h-4 text-blue-600" />
+                  <p className="text-sm font-bold text-slate-200 flex items-center gap-1.5">
+                    <Info className="w-4 h-4 text-accent-cyan" />
                     How Chain of Custody Works (3-Step Lifecycle):
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
                     <div className="p-2.5 rounded-xl bg-[#12181F] border border-slate-700/80">
                       <span className="font-bold text-emerald-500 block mb-0.5">1. Origin Mint</span>
                       <p className="text-slate-500">Generator registers scrap lot with AI purity & geo-stamp.</p>
                     </div>
                     <div className="p-2.5 rounded-xl bg-[#12181F] border border-slate-700/80">
-                      <span className="font-bold text-blue-400 block mb-0.5">2. Safe Handover</span>
+                      <span className="font-bold text-accent-cyan block mb-0.5">2. Safe Handover</span>
                       <p className="text-slate-500">Logistics driver or recycler records receipt with GST e-Way bill.</p>
                     </div>
                     <div className="p-2.5 rounded-xl bg-[#12181F] border border-slate-700/80">
@@ -414,25 +414,25 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
 
                 {/* Ghost Cards at 40% opacity */}
                 <div className="space-y-2.5 opacity-40 select-none pointer-events-none">
-                  <div className="bg-slate-800 p-4 rounded-2xl border border-dashed border-slate-600 space-y-2 text-xs">
+                  <div className="bg-slate-800 p-4 rounded-2xl border border-dashed border-slate-600 space-y-2 text-sm">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-blue-400">CUSTODY TRANSFER</span>
-                      <span className="text-[10px] text-slate-500 font-mono">HASH: 0x8f3c...1e9a</span>
+                      <span className="font-bold text-accent-cyan">CUSTODY TRANSFER</span>
+                      <span className="text-xs text-slate-500 font-mono">HASH: 0x8f3c...1e9a</span>
                     </div>
-                    <p className="text-slate-400 text-xs">Sample: Transferred 25.0 MT Aluminium 6063 Scrap to Recycler Plant</p>
-                    <div className="flex justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-700">
+                    <p className="text-slate-400 text-sm">Sample: Transferred 25.0 MT Aluminium 6063 Scrap to Recycler Plant</p>
+                    <div className="flex justify-between text-sm text-slate-500 pt-1 border-t border-slate-700">
                       <span>By: Reliance Industries Logistics</span>
                       <span>📍 Sanand Hub, GJ</span>
                     </div>
                   </div>
 
-                  <div className="bg-slate-800 p-4 rounded-2xl border border-dashed border-slate-600 space-y-2 text-xs">
+                  <div className="bg-slate-800 p-4 rounded-2xl border border-dashed border-slate-600 space-y-2 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-emerald-400">FINAL REMELT CERTIFICATE</span>
-                      <span className="text-[10px] text-slate-500 font-mono">HASH: 0x4a12...99b2</span>
+                      <span className="text-xs text-slate-500 font-mono">HASH: 0x4a12...99b2</span>
                     </div>
-                    <p className="text-slate-400 text-xs">Sample: 100% recycled into secondary extrusion billets. 230 t CO₂ avoided.</p>
-                    <div className="flex justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-700">
+                    <p className="text-slate-400 text-sm">Sample: 100% recycled into secondary extrusion billets. 230 t CO₂ avoided.</p>
+                    <div className="flex justify-between text-sm text-slate-500 pt-1 border-t border-slate-700">
                       <span>By: Gujarat Secondary Metals Ltd</span>
                       <span>📍 Hazira, GJ</span>
                     </div>

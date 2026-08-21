@@ -87,14 +87,14 @@ export const IndiaComplianceHub: React.FC = () => {
           referrerPolicy="no-referrer"
         />
         <div className="relative z-10 max-w-2xl space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-900/200/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-900/200/20 text-emerald-300 border border-emerald-400/30 text-sm font-bold">
             <Scale className="w-4 h-4 text-emerald-400" />
             Indian Environmental Laws Made Simple
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
             Government Rules & Recycling Laws in India
           </h1>
-          <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium">
+          <p className="text-sm sm:text-base text-emerald-100/90 leading-relaxed font-medium">
             Understanding India's environmental regulations doesn't need to be confusing. Here are the 4 main government rules that require factories to recycle scrap cleanly.
           </p>
         </div>
@@ -117,23 +117,23 @@ export const IndiaComplianceHub: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
               <div className="absolute top-3 left-3">
-                <span className="text-xs font-extrabold px-3 py-1 rounded-xl bg-[#12181F]/95 backdrop-blur-md text-emerald-400 border border-slate-700 shadow-sm">
+                <span className="text-sm font-extrabold px-3 py-1 rounded-xl bg-[#12181F]/95 backdrop-blur-md text-emerald-400 border border-slate-700 shadow-sm">
                   {fw.badge}
                 </span>
               </div>
               <div className="absolute bottom-3 left-3 right-3 text-white">
-                <p className="text-[11px] text-emerald-300 font-bold">{fw.authority}</p>
-                <h3 className="text-base font-extrabold text-white leading-tight">{fw.title}</h3>
+                <p className="text-sm text-emerald-300 font-bold">{fw.authority}</p>
+                <h3 className="text-lg font-extrabold text-white leading-tight">{fw.title}</h3>
               </div>
             </div>
 
             <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
               <div>
-                <p className="text-xs text-slate-400 leading-relaxed font-medium">{fw.desc}</p>
+                <p className="text-sm text-slate-400 leading-relaxed font-medium">{fw.desc}</p>
 
                 <div className="mt-4 space-y-2">
-                  <p className="text-xs font-extrabold text-white uppercase tracking-wider">What the law says:</p>
-                  <ul className="space-y-2 text-xs text-slate-700">
+                  <p className="text-sm font-extrabold text-white uppercase tracking-wider">What the law says:</p>
+                  <ul className="space-y-2 text-sm text-slate-700">
                     {fw.rules.map((rule, idx) => (
                       <li key={idx} className="flex items-start gap-2 bg-emerald-900/20/50 p-2.5 rounded-2xl border border-emerald-100 text-slate-200">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
@@ -150,11 +150,11 @@ export const IndiaComplianceHub: React.FC = () => {
 
       {/* Factory Legal Checklist */}
       <div className="bg-[#12181F] p-6 sm:p-8 rounded-3xl border border-slate-700 space-y-4 shadow-xs">
-        <h3 className="text-base font-extrabold text-white flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-blue-600" />
+        <h3 className="text-lg font-extrabold text-white flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-accent-cyan" />
           Factory Scrap Safety & Legal Checklist
         </h3>
-        <p className="text-xs text-slate-500">
+        <p className="text-sm text-slate-500">
           Click each box to make sure your factory complies with state pollution and tax rules:
         </p>
 
@@ -169,8 +169,8 @@ export const IndiaComplianceHub: React.FC = () => {
           >
             <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 ${checkedItems.gst_rcm ? "text-emerald-600" : "text-slate-400"}`} />
             <div>
-              <p className="font-extrabold text-xs text-white">Proper GST Invoice (RCM)</p>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="font-extrabold text-sm text-white">Proper GST Invoice (RCM)</p>
+              <p className="text-sm text-slate-400 mt-1">
                 GST rules applied properly when buying scrap from local collectors.
               </p>
             </div>
@@ -186,8 +186,8 @@ export const IndiaComplianceHub: React.FC = () => {
           >
             <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 ${checkedItems.spcb_cto ? "text-emerald-600" : "text-slate-400"}`} />
             <div>
-              <p className="font-extrabold text-xs text-white">Pollution Board License (CTO)</p>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="font-extrabold text-sm text-white">Pollution Board License (CTO)</p>
+              <p className="text-sm text-slate-400 mt-1">
                 Active state government permission to melt and recycle materials safely.
               </p>
             </div>
@@ -203,8 +203,8 @@ export const IndiaComplianceHub: React.FC = () => {
           >
             <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 ${checkedItems.eway_bill ? "text-emerald-600" : "text-slate-400"}`} />
             <div>
-              <p className="font-extrabold text-xs text-white">Truck e-Way Bill with QR Tag</p>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="font-extrabold text-sm text-white">Truck e-Way Bill with QR Tag</p>
+              <p className="text-sm text-slate-400 mt-1">
                 Digital QR code attached to truck transport paper for police and tax checkpoints.
               </p>
             </div>
