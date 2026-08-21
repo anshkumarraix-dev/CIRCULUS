@@ -6,7 +6,7 @@ import { OwnershipEvent, MaterialPassport, EvidenceStatus } from "../types";
 
 export interface LedgerVerificationResult {
   isVerified: boolean;
-  network: "Polygon Amoy Testnet" | "CIRCULUS Demo Ledger";
+  network: "Polygon Amoy Testnet" | "CIRCULUS Local Ledger";
   mode: "polygon-amoy" | "mock";
   txHash?: string;
   recordHash: string;
@@ -38,7 +38,7 @@ export class OwnershipLedgerAdapter {
     const isPolygon = this.mode === "polygon-amoy" && !!passport.ledgerTxHash;
     return {
       isVerified: true,
-      network: isPolygon ? "Polygon Amoy Testnet" : "CIRCULUS Demo Ledger",
+      network: isPolygon ? "Polygon Amoy Testnet" : "CIRCULUS Local Ledger",
       mode: isPolygon ? "polygon-amoy" : "mock",
       txHash: passport.ledgerTxHash || "0x8f3a9e112d4b9671fcae0419280efc9392aa034f195821cde9943261a7eb4431",
       recordHash: passport.recordHash,

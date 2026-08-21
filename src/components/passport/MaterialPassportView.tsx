@@ -26,7 +26,6 @@ interface MaterialPassportViewProps {
   onBackToList?: () => void;
   onFindMatches: (passportId: string) => void;
   onTransferCustody: (passportId: string) => void;
-  onAskCopilot: (passport: MaterialPassport) => void;
   events?: OwnershipEvent[];
 }
 
@@ -35,7 +34,6 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
   onBackToList,
   onFindMatches,
   onTransferCustody,
-  onAskCopilot,
   events = [],
 }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
@@ -124,14 +122,6 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
           >
             <QrCode className="w-4 h-4 text-copper/600" />
             <span>Print Truck QR Tag</span>
-          </button>
-
-          <button
-            onClick={() => onAskCopilot(passport)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-panel hover:bg-slate-50 border border-emerald-300 text-xs font-bold text-emerald-800 transition cursor-pointer shadow-xs"
-          >
-            <Sparkles className="w-4 h-4 text-emerald-600" />
-            <span>Ask AI About This</span>
           </button>
 
           <button

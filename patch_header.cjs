@@ -1,18 +1,16 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/components/layout/AppHeader.tsx', 'utf8');
 
-code = code.replace(
-  'className="h-16 border-b border-white/5 bg-panel flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30"',
-  'className="h-16 border-b border-[var(--color-neo-border)] neo-glass flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 shadow-none"'
-);
+// 1. Remove props from interface
+code = code.replace(/  onToggleCopilot: \(\) => void;\n/, "");
+code = code.replace(/  isCopilotOpen: boolean;\n/, "");
 
-code = code.replace(
-  /className=\{`px-3 py-1\.5 rounded-lg border text-xs font-bold flex items-center gap-1\.5 transition cursor-pointer font-body \$\{[\s\S]*?\}\`\}/,
-  `className={\`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer font-body \${
-            isCopilotOpen
-              ? "bg-[var(--color-neo-accent)] text-white border-transparent"
-              : "neo-btn-secondary"
-          }\`}`
-);
+// 2. Remove props from component
+code = code.replace(/  onToggleCopilot,\n/, "");
+code = code.replace(/  isCopilotOpen,\n/, "");
+
+// 3. Remove the button block
+const buttonBlock = /\s*\{\/\* AI Helper Bot \*\/\}\n\s*<button[\s\S]*?<\/button>/;
+code = code.replace(buttonBlock, "");
 
 fs.writeFileSync('src/components/layout/AppHeader.tsx', code);

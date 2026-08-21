@@ -1,47 +1,21 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/App.tsx', 'utf8');
 
-// Insert handleDeleteAccount and handleGuestLogin
-const injectLogic = `
-  const handleDeleteAccount = async () => {
-    try {
-      await fetch('/api/auth/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: activeRole.gstin })
-      });
-    } catch (e) {
-      console.error(e);
-    }
-    
-    setIsAuthenticated(false);
-    localStorage.removeItem("circulus_auth");
-    localStorage.removeItem("circulus_role");
-    showToast("Account deleted and personal data anonymized.");
-  };
+// 1. Remove import
+code = code.replace(/import \{ CirculAiCopilot \} from "\.\/components\/copilot\/CirculAiCopilot";\n?/, "");
 
-  const handleGuestLogin = () => {
-    const guestUser = USER_ROLES.find(r => r.id === "guest") || USER_ROLES[0];
-    setActiveRole(guestUser);
-    setIsAuthenticated(true);
-    localStorage.setItem("circulus_auth", "true");
-    localStorage.setItem("circulus_role", JSON.stringify(guestUser));
-    showToast("Welcome! Exploring as Read-Only Guest.");
-  };
-`;
+// 2. Remove state
+code = code.replace(/  const \[isCopilotOpen, setIsCopilotOpen\] = useState<boolean>\(false\);\n?/, "");
 
-code = code.replace(/const \[activeRole, setActiveRole\] = useState<UserRole>\(USER_ROLES\[0\]\);/, 'const [activeRole, setActiveRole] = useState<UserRole>(USER_ROLES[0]);\n' + injectLogic);
+// 3. Remove AppHeader props
+code = code.replace(/          onToggleCopilot=\{\(\) => setIsCopilotOpen\(!isCopilotOpen\)\}\n/, "");
+code = code.replace(/          isCopilotOpen=\{isCopilotOpen\}\n/, "");
 
-// Replace onExploreAsGuest
-code = code.replace(/onExploreAsGuest=\{\(\) \=\> setIsAuthenticated\(true\)\}/, 'onExploreAsGuest={handleGuestLogin}');
+// 4. Remove onAskCopilot
+code = code.replace(/              onAskCopilot=\{\(p\) => \{\n                setActivePassportId\(p\.id\);\n                setIsCopilotOpen\(true\);\n              \}\}\n/, "");
 
-// Add guest guards
-code = code.replace(/const handleRealTimeEntryCreated = \(newPassport: MaterialPassport\) => {/, 'const handleRealTimeEntryCreated = (newPassport: MaterialPassport) => {\n    if (activeRole.role === "guest" || activeRole.id === "guest") {\n      showToast("Action Forbidden: Guest mode is read-only.");\n      return;\n    }');
-code = code.replace(/const handlePassportCreated = \(newPassport: MaterialPassport\) => {/, 'const handlePassportCreated = (newPassport: MaterialPassport) => {\n    if (activeRole.role === "guest" || activeRole.id === "guest") {\n      showToast("Action Forbidden: Guest mode is read-only.");\n      return;\n    }');
-code = code.replace(/const handleAddLedgerEvent = \(passportId: string, e: LedgerEvent\) => {/, 'const handleAddLedgerEvent = (passportId: string, e: LedgerEvent) => {\n    if (activeRole.role === "guest" || activeRole.id === "guest") {\n      showToast("Action Forbidden: Guest mode is read-only.");\n      return;\n    }');
-code = code.replace(/const handleSubmitOffer = \(passportId: string, price: number\) => {/, 'const handleSubmitOffer = (passportId: string, price: number) => {\n    if (activeRole.role === "guest" || activeRole.id === "guest") {\n      showToast("Action Forbidden: Guest mode is read-only.");\n      return;\n    }');
-
-// Pass onDeleteAccount to Sidebar
-code = code.replace(/onSignOut=\{handleSignOut\}/, 'onSignOut={handleSignOut}\n        onDeleteAccount={handleDeleteAccount}');
+// 5. Remove <CirculAiCopilot /> block
+const copilotBlock = /\s*\{\/\* Floating CirculAI Copilot Drawer \*\/\}\n\s*<CirculAiCopilot\n\s*isOpen=\{isCopilotOpen\}\n\s*onClose=\{\(\) => setIsCopilotOpen\(false\)\}\n\s*activePassport=\{currentPassport \|\| undefined\}\n\s*activeRole=\{activeRole\}\n\s*\/>/;
+code = code.replace(copilotBlock, "");
 
 fs.writeFileSync('src/App.tsx', code);

@@ -163,7 +163,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
         hazardousFlag: false,
         createdAt: timestamp,
         verifiedAt: timestamp,
-        verificationStatus: "demo_ledger_anchored",
+        verificationStatus: "verified",
         ledgerTxHash: txHash,
         recordHash,
         imageUrl: PRESET_IMAGES[category] || PRESET_IMAGES.non_ferrous,
@@ -211,7 +211,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
         imageUrl: PRESET_IMAGES[category] || PRESET_IMAGES.non_ferrous,
         reusabilityScore,
         co2eAvoidedKg: carbonImpact.avoidedCo2eKg,
-        verificationStatus: "demo_ledger_anchored",
+        verificationStatus: "verified",
         createdAt: timestamp,
         status: "active",
       };

@@ -118,7 +118,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
             </p>
           </div>
 
-          {/* Demo Mode Toggle */}
+          {/* Ledger Mode Toggle */}
           <div className="bg-slate-900/80 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 flex items-center gap-1 shrink-0">
             <button
               onClick={() => setBlockchainMode("mock")}
@@ -128,7 +128,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                   : "text-slate-300 hover:text-white"
               }`}
             >
-              Demo Ledger
+              Local Ledger
             </button>
             <button
               onClick={() => setBlockchainMode("polygon")}

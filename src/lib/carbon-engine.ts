@@ -170,7 +170,7 @@ export function generateBRSRReport(passports: MaterialPassport[]): BRSRReportSum
     methodologyStandard: "SEBI BRSR Principle 6 (Environment & Circular Economy) + GHG Protocol Scope 3 Category 1/12 Avoided Emissions",
     complianceDisclaimers: [
       "Prototype estimate based on configured emission factors. Not an official legal certification or regulatory filing.",
-      "Primary data collected through CIRCULUS Material Passports and verified on demo/testnet ledgers.",
+      "Primary data collected through CIRCULUS Material Passports and verified on local/testnet ledgers.",
       "Carbon avoidance figures calculated with reference to Indian Central Pollution Control Board (CPCB) and Bureau of Indian Standards (BIS) parameters.",
     ],
   };

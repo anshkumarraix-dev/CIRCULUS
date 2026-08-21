@@ -3,7 +3,6 @@
  */
 
 export type EvidenceStatus =
-  | "demo"
   | "user_provided"
   | "ai_estimated"
   | "lab_verified"
@@ -141,7 +140,7 @@ export interface MaterialPassport {
   hazardousFlag: boolean;
   createdAt: string;
   verifiedAt?: string;
-  verificationStatus: "demo_ledger" | "demo_ledger_anchored" | "pending_audit";
+  verificationStatus: "verified" | "pending_audit";
   aiStatus?: "AI_ANALYZED" | "USER_DECLARED";
   aiSource?: string;
   documentStatus?: "DOCUMENT_SUBMITTED" | "DOCUMENT_VERIFIED" | "PENDING";
@@ -189,7 +188,7 @@ export interface MarketplaceListing {
   imageUrl: string;
   reusabilityScore: number;
   co2eAvoidedKg: number;
-  verificationStatus: "demo_ledger_anchored" | "demo_ledger" | "pending_audit";
+  verificationStatus: "verified" | "pending_audit";
   listedDate?: string;
   createdAt?: string;
   status?: "active" | "under_offer" | "settled";

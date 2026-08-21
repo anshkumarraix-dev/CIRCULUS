@@ -30,7 +30,6 @@ import {
   IndianRupee
 } from "lucide-react";
 import { MaterialAnalysis, MaterialPassport, UserRole, RealtimeDetectionResult, MaterialCategory, SearchGroundingResult } from "../../types";
-import { DEMO_PRESET_MATERIALS } from "../../lib/demo-data";
 import { calculateMaterialCarbonImpact } from "../../lib/carbon-engine";
 import { calculateDynamicValuation, formatInrCurrency } from "../../lib/valuation-engine";
 import { generateSimpleRecordHash } from "../../lib/ledger-adapter";
@@ -41,7 +40,7 @@ interface MaterialScannerProps {
   onOpenPassport: (passportId: string) => void;
 }
 
-type InputMode = "presets" | "camera" | "upload";
+type InputMode = "camera" | "upload";
 
 // Helper to get styling and readable category names
 export function getCategoryBadgeProps(cat: string | undefined): { label: string; bg: string; text: string; border: string; icon: string } {
@@ -93,9 +92,9 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
   activeRole,
   onOpenPassport,
 }) => {
-  const [inputMode, setInputMode] = useState<InputMode>("presets");
-  const [selectedImage, setSelectedImage] = useState<string | null>(DEMO_PRESET_MATERIALS[0].image);
-  const [selectedPresetName, setSelectedPresetName] = useState<string>(DEMO_PRESET_MATERIALS[0].name);
+  const [inputMode, setInputMode] = useState<InputMode>("upload");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  
   const [materialCategory, setMaterialCategory] = useState<string>("non_ferrous");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [quantityMT, setQuantityMT] = useState<number>(18.5);
@@ -274,6 +273,19 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
   }, [inputMode, cameraFacing, stopCamera]);
 
   // Capture frame from live video
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setSelectedImage(event.target?.result as string);
+        setInputMode("upload");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCaptureSnapshot = () => {
     if (!videoRef.current || !canvasRef.current) return;
     const video = videoRef.current;
@@ -289,10 +301,10 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
 
       // Apply real-time detection hint if available
       if (realtimeDetection && realtimeDetection.isRecognized) {
-        setSelectedPresetName(`Live: ${realtimeDetection.detectedObject}`);
+        // (`Live: ${realtimeDetection.detectedObject}`);
         setMaterialCategory(realtimeDetection.category);
       } else {
-        setSelectedPresetName("Live Camera Capture (Factory Floor)");
+        // ("Live Camera Capture (Factory Floor)");
         setMaterialCategory("other");
       }
 
@@ -303,38 +315,6 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
     }
   };
 
-  // Handle sample dataset selection
-  const handleSelectPreset = (preset: typeof DEMO_PRESET_MATERIALS[0]) => {
-    setSelectedImage(preset.image);
-    setSelectedPresetName(preset.name);
-    setMaterialCategory(preset.category);
-    setQuantityMT(preset.quantity);
-    setOriginState(preset.state);
-    setOriginCity(preset.city);
-    setSpcbJurisdiction(preset.spcb);
-    setHsnCode(preset.hsn);
-    setAnalysisResult(null);
-    setCreatedPassport(null);
-  };
-
-  // Handle user photo upload
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setSelectedImage(event.target.result as string);
-          setSelectedPresetName(file.name.replace(/\.[^/.]+$/, ""));
-          setMaterialCategory("other"); // Allow AI to detect automatically
-          setAnalysisResult(null);
-          setCreatedPassport(null);
-          setInputMode("upload");
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   // Run AI Deep Material Test via Server Gemini Multimodal & Certified Engine
   const handleRunAnalysis = async () => {
@@ -384,7 +364,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
 
         // Fetch Real-time Google Search Grounding for current material and location
         fetchLiveSearchGrounding(
-          data.analysis.materialType || selectedPresetName,
+          data.analysis.materialType || "",
           data.analysis.indiaMetadata?.materialCategory || materialCategory,
           data.analysis.indiaMetadata?.city || originCity
         );
@@ -397,7 +377,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
       const carbon = calculateMaterialCarbonImpact(materialCategory as any, quantityMT);
       const val = calculateDynamicValuation(materialCategory as any, "excellent", quantityMT, 35);
       setAnalysisResult({
-        materialType: selectedPresetName,
+        materialType: "",
         grade: "Clean Recyclable Grade A (IS Tested)",
         condition: "good",
         confidence: 88,
@@ -432,7 +412,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
       });
 
       // Trigger search grounding fallback
-      fetchLiveSearchGrounding(selectedPresetName, materialCategory, originCity);
+      fetchLiveSearchGrounding("", materialCategory, originCity);
     } finally {
       setIsAnalyzing(false);
     }
@@ -495,10 +475,10 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
       hazardousFlag: analysisResult.indiaMetadata?.hazardousFlag || false,
       createdAt: timestamp,
       verifiedAt: timestamp,
-      verificationStatus: "demo_ledger_anchored",
+      verificationStatus: "verified",
       ledgerTxHash: txHash,
       recordHash,
-      imageUrl: selectedImage || DEMO_PRESET_MATERIALS[0].image,
+      imageUrl: selectedImage || "",
       suggestedApplications: analysisResult.suggestedApplications,
       processingNeeded: analysisResult.processingNeeded,
       visualEvidence: analysisResult.visualEvidence,
@@ -518,18 +498,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
     onPassportCreated(newPassport);
   };
 
-  // Filtered preset materials
-  const filteredPresets = DEMO_PRESET_MATERIALS.filter((p) => {
-    if (categoryFilter === "all") return true;
-    if (categoryFilter === "metals") return p.category === "non_ferrous" || p.category === "ferrous";
-    if (categoryFilter === "polymers") return p.category === "plastic";
-    if (categoryFilter === "paper_packaging") return p.category === "paper_cardboard";
-    if (categoryFilter === "ewaste") return p.category === "ewaste";
-    if (categoryFilter === "glass") return p.category === "glass";
-    if (categoryFilter === "minerals") return p.category === "fly_ash" || p.category === "slag" || p.category === "construction_demolition";
-    if (categoryFilter === "bio_textile") return p.category === "organic" || p.category === "wood" || p.category === "textile" || p.category === "rubber";
-    return true;
-  });
+  
 
   const liveBadge = getCategoryBadgeProps(realtimeDetection?.category);
 
@@ -645,29 +614,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
       {/* Mode Selector Tabs: Live Camera vs Real Industrial Dataset vs Upload */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-[#12181F] p-2.5 rounded-2xl border border-slate-700 shadow-xs">
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setInputMode("camera")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-              inputMode === "camera"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "bg-slate-800 hover:bg-slate-100 text-slate-700"
-            }`}
-          >
-            <Video className="w-4 h-4 text-emerald-300" />
-            <span>Live Camera AI Scanner</span>
-          </button>
-
-          <button
-            onClick={() => setInputMode("presets")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-              inputMode === "presets"
-                ? "bg-blue-600 text-white shadow-xs"
-                : "bg-slate-800 hover:bg-slate-100 text-slate-700"
-            }`}
-          >
-            <Layers className="w-4 h-4" />
-            <span>Verified Dataset ({DEMO_PRESET_MATERIALS.length} Batches)</span>
-          </button>
+          
         </div>
 
         <label className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-600 text-xs font-bold text-slate-800 transition cursor-pointer flex items-center gap-2">
@@ -678,7 +625,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
       </div>
 
       {/* Step 1 Content Area */}
-      {inputMode === "camera" ? (
+      {inputMode === "camera" && (
         /* LIVE CAMERA VIEWPORT WITH REAL-TIME COMPUTER VISION HUD */
         <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4 text-white">
           <div className="flex items-center justify-between">
@@ -805,96 +752,6 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
             </button>
           </div>
         </div>
-      ) : (
-        /* VERIFIED INDUSTRIAL DATASET SELECTOR */
-        <div className="bg-[#12181F] p-6 rounded-3xl border border-slate-700 shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
-            <div>
-              <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">1</span>
-                <span>Select from Verified Indian Circular Material Batches</span>
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Physical test lots spanning plastics, metals, paper, e-waste, glass, wood, textiles, and minerals:
-              </p>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
-              {[
-                { id: "all", label: "All" },
-                { id: "polymers", label: "Plastic / Polymers" },
-                { id: "metals", label: "Metals (Al/Cu/Steel)" },
-                { id: "paper_packaging", label: "Cardboard / Paper" },
-                { id: "ewaste", label: "E-Waste" },
-                { id: "glass", label: "Glass" },
-                { id: "bio_textile", label: "Wood / Textile / Agro" },
-                { id: "minerals", label: "Minerals / C&D" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setCategoryFilter(tab.id)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
-                    categoryFilter === tab.id
-                      ? "bg-[#12181F] text-blue-700 shadow-xs"
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Product Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5">
-            {filteredPresets.map((preset) => {
-              const isSelected = selectedImage === preset.image;
-              const badge = getCategoryBadgeProps(preset.category);
-              return (
-                <button
-                  key={preset.id}
-                  onClick={() => handleSelectPreset(preset)}
-                  className={`p-3 rounded-2xl border text-left transition duration-200 flex flex-col justify-between gap-2.5 cursor-pointer ${
-                    isSelected
-                      ? "bg-blue-50/80 border-blue-600 shadow-md ring-2 ring-blue-500"
-                      : "bg-slate-800 hover:bg-[#12181F] border-slate-700 hover:border-blue-300"
-                  }`}
-                >
-                  <div className="aspect-[4/3] w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-700 relative">
-                    <img
-                      src={preset.image}
-                      alt={preset.name}
-                      className="w-full h-full object-cover"
-                    />
-                    {isSelected && (
-                      <div className="absolute top-2 right-2 bg-blue-600 text-white rounded-full p-1 shadow-md">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      </div>
-                    )}
-                    <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-xs text-[10px] text-white px-2 py-0.5 rounded-md font-bold">
-                      {badge.icon} {badge.label.split(" ")[0]}
-                    </div>
-                    <div className="absolute bottom-1.5 left-1.5 bg-black/60 backdrop-blur-xs text-[10px] text-white px-2 py-0.5 rounded-md font-mono">
-                      {preset.hsn}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-white line-clamp-1">
-                      {preset.name}
-                    </p>
-                    <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
-                      {preset.city} • {preset.quantity} Tons
-                    </p>
-                    <p className="text-[11px] font-bold text-blue-700 mt-1 font-mono">
-                      ₹{(preset.estimatedInrPerMT).toLocaleString("en-IN")} / Ton
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
       )}
 
       {/* Step 2 & 3: Weight & AI Test Result */}
@@ -919,7 +776,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
               )}
               <div className="absolute bottom-2.5 left-2.5 bg-[#12181F]/95 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-bold text-white border border-slate-700 shadow-xs flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                <span className="truncate max-w-[220px]">{selectedPresetName}</span>
+                <span className="truncate max-w-[220px]">{""}</span>
               </div>
             </div>
 
@@ -1169,7 +1026,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
 
                       <button
                         onClick={() => fetchLiveSearchGrounding(
-                          analysisResult.materialType || selectedPresetName,
+                          analysisResult.materialType || "",
                           analysisResult.indiaMetadata?.materialCategory || materialCategory,
                           analysisResult.indiaMetadata?.city || originCity
                         )}
@@ -1258,7 +1115,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
                       <div className="text-center py-3">
                         <button
                           onClick={() => fetchLiveSearchGrounding(
-                            analysisResult.materialType || selectedPresetName,
+                            analysisResult.materialType || "",
                             analysisResult.indiaMetadata?.materialCategory || materialCategory,
                             analysisResult.indiaMetadata?.city || originCity
                           )}

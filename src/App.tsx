@@ -13,8 +13,6 @@ import { MatchRecommendations } from "./components/matches/MatchRecommendations"
 import { ImpactAnalyticsDashboard } from "./components/impact/ImpactAnalyticsDashboard";
 import { OwnershipLedgerView } from "./components/ledger/OwnershipLedgerView";
 import { IndiaComplianceHub } from "./components/compliance/IndiaComplianceHub";
-import { CirculAiCopilot } from "./components/copilot/CirculAiCopilot";
-import { DemoTourGuide } from "./components/demo/DemoTourGuide";
 
 import { 
   MaterialPassport, 
@@ -100,8 +98,6 @@ export default function App() {
   }, [events]);
 
   // Modals & Drawers
-  const [isCopilotOpen, setIsCopilotOpen] = useState<boolean>(false);
-  const [isDemoTourOpen, setIsDemoTourOpen] = useState<boolean>(false);
   const currentPassport = activePassportId
     ? passports.find((p) => p.id === activePassportId)
     : null;
@@ -307,8 +303,6 @@ export default function App() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <AppHeader
           activeRole={activeRole}
-          onToggleCopilot={() => setIsCopilotOpen(!isCopilotOpen)}
-          isCopilotOpen={isCopilotOpen}
           onOpenMobileMenu={() => setIsMobileOpen(true)}
         />
         
@@ -349,10 +343,6 @@ export default function App() {
               onBackToList={() => setActivePassportId(null)}
               onFindMatches={(pid) => setActiveTab("matches")}
               onTransferCustody={(pid) => setActiveTab("ledger")}
-              onAskCopilot={(p) => {
-                setActivePassportId(p.id);
-                setIsCopilotOpen(true);
-              }}
               events={events.filter((e) => e.passportId === currentPassport.id)}
             />
           ) : (
@@ -409,21 +399,6 @@ export default function App() {
         onClose={() => setIsRealTimeModalOpen(false)}
         activeRole={activeRole}
         onEntryCreated={handleRealTimeEntryCreated}
-      />
-
-      {/* Floating CirculAI Copilot Drawer */}
-      <CirculAiCopilot
-        isOpen={isCopilotOpen}
-        onClose={() => setIsCopilotOpen(false)}
-        activePassport={currentPassport || undefined}
-        activeRole={activeRole}
-      />
-
-      {/* 3-Minute Judge Demo Tour Guide Modal */}
-      <DemoTourGuide
-        isOpen={isDemoTourOpen}
-        onClose={() => setIsDemoTourOpen(false)}
-        onNavigateStep={handleNavigateStep}
       />
     </div>
   );

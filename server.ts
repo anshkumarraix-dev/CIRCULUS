@@ -1153,7 +1153,7 @@ CRITICAL INSTRUCTIONS:
 7. If you see clothing or fabric, classify as "textile".
 8. If the image is blurry, blank, dark, or shows a person/face/wall, set confidence < 40 and isRecognized to false.
 9. Provide honest confidence score (0-100). If confidence < 45, isRecognized MUST be false and detectedObject should be "Unable to confidently identify material".
-
+10. DO NOT GUESS OR HALLUCINATE. Do not make up non-real answers. If you cannot clearly identify the material, you must set isRecognized to false.
 Return strictly JSON matching this schema:
 {
   "detectedObject": string (e.g. "PET Plastic Water Bottle", "Corrugated Shipping Box", "Printed Circuit Board PCB", "HMS Heavy Steel Scrap", "Aluminium Window Extrusion", "Cotton Garment Scrap"),
@@ -1167,7 +1167,7 @@ Return strictly JSON matching this schema:
 }`;
 
       // Fast models cascade for rapid real-time video frame throughput:
-      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-flash-latest"];
+      const modelsToTry = ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-flash-latest"];
       let response = null;
 
       for (const modelName of modelsToTry) {
@@ -1285,7 +1285,7 @@ Analyze this industrial material / scrap imagery conservatively and objectively.
 Identify the true material shown in the image.
 Do NOT default to metal scrap if the image contains other materials like plastic, cardboard, paper, electronics/e-waste, glass, wood, rubber, textiles, or organic matter.
 If the image shows a non-industrial object (e.g. human face/hand, room background, animal), return low confidence (<40) and state "Unable to confidently verify industrial material" in warnings.
-
+ABSOLUTELY NO GUESSING OR HALLUCINATING. Base your analysis purely on the real visual evidence in the image. Do not invent non-real prices or carbon impacts. If you are uncertain about a value, output a realistic range and note it as an estimate.
 Context hints:
 Category hint: ${effectiveCategory !== "other" ? effectiveCategory : "auto (visually detect from image pixels)"}
 Location hint: ${effectiveLocation}
@@ -1318,7 +1318,7 @@ Return strictly structured JSON matching this schema:
 `;
 
       // Complex Image Understanding: Try gemini-3.1-flash-lite first for speed and to avoid quota limits
-      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-3.1-pro-preview"];
+      const modelsToTry = ["gemini-3.5-flash", "gemini-3.1-pro-preview"];
       let response = null;
       let usedModel = "fallback";
 
@@ -1507,6 +1507,7 @@ Focus on:
       const prompt = `You are the Search-Grounded Industrial Market Intelligence engine for CIRCULUS.
 Using the Google Search tool, find the latest real-world market intelligence for "${cleanName}" in India.
 Summarize the findings into clear, structured facts for an industrial recycler or procurement manager.
+NEVER GUESS. NEVER INVENT OR HALLUCINATE PRICES OR DATA. Use the Google Search tool to find REAL, current data. If real data cannot be found, state "Real data unavailable" or default to 0 for numerical fields.
 
 Return strictly JSON with:
 {
@@ -1524,7 +1525,7 @@ Return strictly JSON with:
 
       // Execute search-grounded prompt using gemini-3.1-flash-lite with googleSearch tool
       let response = null;
-      const searchModels = ["gemini-3.1-flash-lite", "gemini-flash-latest"];
+      const searchModels = ["gemini-3.5-flash", "gemini-3.1-flash-lite"];
 
       for (const modelName of searchModels) {
         try {
@@ -1745,8 +1746,9 @@ Selected material batch context:
 Guidelines:
 1. Explain recycling concepts clearly using simple, professional words that even a 10th-grade student or busy factory supervisor can understand easily.
 2. Answer queries related to the real-time location or distance between the buyer and supplier using Google Maps grounding.
-3. Structure your response with clean bullet points and bold highlights.
-4. Keep the answer concise.
+3. NEVER GUESS OR HALLUCINATE. For factual questions, you MUST use the Google Maps tool to find real, factual answers for locations, routing, and distances. If the information is not real or cannot be found, state "I do not have real data for this."
+4. Structure your response with clean bullet points and bold highlights.
+5. Keep the answer concise.
 5. At the very end of your response, on a new line, suggest 2 or 3 short follow-up questions formatted as:
 FOLLOW_UPS:
 - Question 1
