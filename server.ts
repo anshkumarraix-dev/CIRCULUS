@@ -1078,7 +1078,7 @@ app.post("/api/events", authenticate, (req, res) => {
 
 
   // AI Chatbot endpoint
-  app.post("/api/chat", async (req, res) => {
+  app.post("/api/copilot-chat", async (req, res) => {
     try {
       const { history, message, systemInstruction } = req.body;
       const ai = getGeminiClient();
