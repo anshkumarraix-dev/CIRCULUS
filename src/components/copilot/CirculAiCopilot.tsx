@@ -61,6 +61,7 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
     }
   }, [messages, isOpen]);
 
+  
   const handleSendMessage = async (textToSend?: string) => {
     const query = textToSend || inputMessage;
     if (!query.trim() || isLoading) return;
@@ -72,16 +73,23 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const newHistory = [...messages, userMsg];
+    setMessages(newHistory);
     setInputMessage("");
     setIsLoading(true);
 
     try {
+      const historyToSend = newHistory.map(m => ({
+        sender: m.sender,
+        text: m.text
+      }));
+
       const response = await fetch("/api/copilot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query,
+          history: historyToSend,
           context: {
             activeRole: activeRole.name,
             orgName: activeRole.orgName,
@@ -92,13 +100,15 @@ export const CirculAiCopilot: React.FC<CirculAiCopilotProps> = ({
               category: activePassport.category,
               quantityMT: activePassport.quantityMT,
               reusabilityScore: activePassport.reusabilityScore,
-              spcb: activePassport.spcbJurisdiction,
-            } : null,
+              location: activePassport.location,
+              locationState: activePassport.locationState,
+            } : null
           },
         }),
       });
 
       const data = await response.json();
+
 
       if (data.success && data.reply) {
         const copilotMsg: Message = {

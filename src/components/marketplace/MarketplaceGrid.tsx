@@ -222,7 +222,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
       spcbJurisdiction: `${sample.state} SPCB`,
       hsnCode: "76020010",
       hazardousFlag: false,
-      verificationStatus: "verified_onchain",
+      verificationStatus: "demo_ledger_anchored",
       recordHash: generateSimpleRecordHash({
         passportId,
         materialType: sample.materialType,
@@ -275,7 +275,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
       imageUrl: sample.imageUrl,
       reusabilityScore: Math.round(sample.purity),
       co2eAvoidedKg: carbonRes.avoidedCo2eKg,
-      verificationStatus: "verified_onchain",
+      verificationStatus: "demo_ledger_anchored",
       status: "active",
       createdAt: new Date().toISOString()
     };

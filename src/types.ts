@@ -141,7 +141,13 @@ export interface MaterialPassport {
   hazardousFlag: boolean;
   createdAt: string;
   verifiedAt?: string;
-  verificationStatus: "demo_ledger" | "verified_onchain" | "pending_audit";
+  verificationStatus: "demo_ledger" | "demo_ledger_anchored" | "pending_audit";
+  aiStatus?: "AI_ANALYZED" | "USER_DECLARED";
+  aiSource?: string;
+  documentStatus?: "DOCUMENT_SUBMITTED" | "DOCUMENT_VERIFIED" | "PENDING";
+  labStatus?: "LAB_VERIFICATION_PENDING" | "LAB_VERIFIED" | "NOT_PROVIDED";
+  organizationStatus?: "ORGANIZATION_VERIFIED" | "PENDING";
+  gstinStatus?: "GSTIN_FORMAT_CHECKED" | "GSTIN_VERIFIED" | "PENDING";
   ledgerTxHash?: string;
   recordHash: string;
   imageUrl: string;
@@ -183,7 +189,7 @@ export interface MarketplaceListing {
   imageUrl: string;
   reusabilityScore: number;
   co2eAvoidedKg: number;
-  verificationStatus: "verified_onchain" | "demo_ledger" | "pending_audit";
+  verificationStatus: "demo_ledger_anchored" | "demo_ledger" | "pending_audit";
   listedDate?: string;
   createdAt?: string;
   status?: "active" | "under_offer" | "settled";
@@ -270,6 +276,15 @@ export interface BRSRReportSummary {
 }
 
 export const USER_ROLES: UserRole[] = [
+  {
+    id: "guest",
+    name: "Guest Explorer",
+    orgName: "Public Viewer",
+    gstin: "N/A",
+    location: "N/A",
+    avatar: "👁️",
+    isVerified: false
+  },
   { id: "supplier", name: "Plant Manager", orgName: "AluCast Manufacturing", gstin: "24AAACA1234B1Z5", location: "Sanand, GJ", avatar: "👤", isVerified: true },
   { id: "buyer", name: "Procurement Lead", orgName: "Mahavir PolyRecycle", gstin: "24AABCM1234F1Z8", location: "Surat, GJ", avatar: "👔", isVerified: true },
   { id: "auditor", name: "Compliance Officer", orgName: "GreenTech Audits", gstin: "27AADCG9876E1Z2", location: "Mumbai, MH", avatar: "🛡️", isVerified: true },

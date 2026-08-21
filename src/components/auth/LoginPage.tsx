@@ -129,7 +129,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
             <div className="mt-12">
               <p className="font-mono text-[10px] text-silver/80 flex flex-wrap gap-4">
-                <span>[ GSTIN VALIDATED ]</span>
+                <span>[ GSTIN FORMAT CHECKED ]</span>
                 <span>[ SPCB RECOGNIZED ]</span>
               </p>
             </div>
@@ -298,7 +298,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             )}
 
             <p className="mt-10 text-[9px] uppercase tracking-widest text-silver/60 font-mono leading-relaxed relative z-10">
-              Protected by 256-bit SHA state proofs.<br/>
+              Protected by deterministic content hashes.<br/>
               Compliant with MoEFCC & CPCB Digital Waste Rules 2026.
             </p>
           </div>

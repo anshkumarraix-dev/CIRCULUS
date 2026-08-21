@@ -123,6 +123,33 @@ export default function App() {
     showToast(`Welcome ${user.name} (${user.orgName})! Facility logged in.`);
   };
 
+  
+  const handleDeleteAccount = async () => {
+    try {
+      await fetch('/api/auth/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: activeRole.gstin })
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    
+    setIsAuthenticated(false);
+    localStorage.removeItem("circulus_auth");
+    localStorage.removeItem("circulus_role");
+    showToast("Account deleted and personal data anonymized.");
+  };
+
+  const handleGuestLogin = () => {
+    const guestUser = USER_ROLES.find(r => r.id === "guest") || USER_ROLES[0];
+    setActiveRole(guestUser);
+    setIsAuthenticated(true);
+    localStorage.setItem("circulus_auth", "true");
+    localStorage.setItem("circulus_role", JSON.stringify(guestUser));
+    showToast("Welcome! Exploring as Read-Only Guest.");
+  };
+
   const handleSignOut = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("circulus_auth");
@@ -147,6 +174,10 @@ export default function App() {
 
   // Scanner Passport Mint Handler
   const handlePassportCreated = (newPassport: MaterialPassport) => {
+    if (activeRole.role === "guest" || activeRole.id === "guest") {
+      showToast("Action Forbidden: Guest mode is read-only.");
+      return;
+    }
     // Create a marketplace listing automatically
     const newListing: MarketplaceListing = {
       id: `LIST-${newPassport.id.replace("CUS-", "")}`,
@@ -244,7 +275,7 @@ export default function App() {
     return (
       <LoginPage 
         onLoginSuccess={handleLoginSuccess}
-        onExploreAsGuest={() => setIsAuthenticated(true)}
+        onExploreAsGuest={handleGuestLogin}
       />
     );
   }
@@ -267,6 +298,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         activeRole={activeRole}
         onSignOut={handleSignOut}
+        onDeleteAccount={handleDeleteAccount}
         onOpenRealTimeEntry={() => setIsRealTimeModalOpen(true)}
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}

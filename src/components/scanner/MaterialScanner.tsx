@@ -495,7 +495,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
       hazardousFlag: analysisResult.indiaMetadata?.hazardousFlag || false,
       createdAt: timestamp,
       verifiedAt: timestamp,
-      verificationStatus: "verified_onchain",
+      verificationStatus: "demo_ledger_anchored",
       ledgerTxHash: txHash,
       recordHash,
       imageUrl: selectedImage || DEMO_PRESET_MATERIALS[0].image,

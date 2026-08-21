@@ -17,16 +17,10 @@ export interface LedgerVerificationResult {
   contractAddress?: string;
 }
 
+import { sha256 } from 'js-sha256';
+
 export function generateSimpleRecordHash(payload: object): string {
-  const str = JSON.stringify(payload);
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0; // Convert to 32bit integer
-  }
-  const hex = Math.abs(hash).toString(16).padStart(8, "0");
-  return `sha256-${hex}98fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`;
+  return sha256(JSON.stringify(payload));
 }
 
 export class OwnershipLedgerAdapter {

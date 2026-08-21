@@ -2,7 +2,7 @@
 
 ## AI-Powered Circular Economy Marketplace
 
-> Turning industrial waste into valuable resources through AI-driven material intelligence and smart supply chain matchmaking.
+> Turning industrial waste into valuable resources.
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-circulus--rust.vercel.app-blue?style=for-the-badge&logo=vercel)](https://circulus-rust.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/anshkumarraix-dev/CIRCULUS)
@@ -10,125 +10,102 @@
 
 ---
 
-## 🎯 The Problem
+## 🎯 1. Problem
+Industrial manufacturing generates massive amounts of high-value scrap (metals, plastics, e-waste). However, due to fragmented supply chains, opaque pricing, and lack of verifiable quality tracking, a significant portion of this material is downcycled or sent to landfills. This inefficiency drives unnecessary virgin material extraction, contributing heavily to global industrial carbon emissions.
 
-Industrial manufacturing generates massive amounts of high-value scrap (metals, plastics, e-waste). However, due to fragmented supply chains, opaque pricing, and lack of verifiable quality tracking, a significant portion of this material is downcycled or sent to landfills.
-
-This inefficiency not only costs the industry billions but also drives unnecessary virgin material extraction, contributing heavily to global industrial carbon emissions.
-
-## 💡 The Solution
-
+## 💡 2. Solution
 CIRCULUS is a secure enterprise portal designed to close the loop on industrial waste. By leveraging multimodal AI (Google Gemini), CIRCULUS instantly classifies, values, and tracks industrial scrap, connecting manufacturers directly with verified recyclers through an intelligent marketplace.
 
----
+## ✨ 3. Key Features
+- **AI-Powered Material Scanner:** Instantly classify scrap types and purity from a photograph using Gemini 2.5 Flash.
+- **Material Intelligence Passport:** Auto-generate a "Digital Aadhaar" for materials containing compliance data.
+- **Smart Buyer Matching:** Proximity-based recommendation engine connecting scrap generators with regional remelting facilities.
+- **Chain of Custody Ledger (Simulated):** A prototype audit timeline tracking material movement from origin to remelt.
+- **Live Industrial Marketplace (Demo Data):** An illustrative marketplace grid and benchmark ticker for material discovery.
+- **CirculAI Assistant:** Context-aware interactive copilot answering industrial recycling queries.
 
-## ✨ Key Features
+## 🧠 4. AI Intelligence
+CIRCULUS integrates **Google Gemini 2.5 Flash (Multimodal Vision & Reasoning)** for core operations.
 
-- **Multimodal AI Material Scanner:** Instantly classify scrap types, purity, and standard compliance from a single photograph using Gemini 2.5 Flash.
-- **Material Intelligence Passport:** Auto-generate a "Digital Aadhaar" for materials containing compliance data, environmental impact, and a scannable QR code.
-- **Smart Buyer Matching:** Proximity-based recommendation engine connecting scrap generators with appropriate regional remelting facilities.
-- **Chain of Custody Ledger:** Immutable audit timeline tracking material movement from origin mint to final remelt certificate.
-- **Live Industrial Marketplace:** Real-time Indian Scrap Benchmark ticker, 1-click listings, and discovery grid.
-- **CirculAI Assistant:** Context-aware interactive copilot answering industrial recycling and compliance (SPCB/CPCB) queries.
-- **BRSR Sustainability Impact Dashboard:** Real-time tracking of CO₂ avoidance and circularity metrics.
+- **Where it is used:** The AI is used in the `Scanner` module to analyze uploaded images of industrial scrap, and in the `Copilot` for interactive Q&A.
+- **Workflow:** `Photograph / Description` → `Express Backend Proxy` → `Gemini AI` → `Material Classification (Purity / Category)` → `Marketplace Ready Data`.
+- **Security:** All AI processing is strictly handled on the Node.js backend. The `GEMINI_API_KEY` is completely isolated from the client-side browser, ensuring credential security.
 
----
+## 🏛️ 5. Architecture
 
-## 🧠 How CIRCULUS Works
+### Real / Implemented
+* **AI classification:** Image-based analysis using Gemini Multimodal APIs.
+* **Persistent Records:** Node.js backend acting as the primary source of truth for passports and listings (via in-memory Hackathon DB).
+* **SHA-256 Hashing:** Deterministic content hashing for material passports to establish a tamper-evident baseline.
+* **Custody State Machine:** Backend-enforced transitions for ownership transfer.
+* **Authorization:** Server-side JWT/session validation preventing guest privilege escalation.
+* **Evidence Management:** File and metadata tracking for verification records.
 
-```text
-Industrial Waste 
-      ↓
-📸 AI Material Scanner (Gemini)
-      ↓
-🛂 Material Passport Generated (Classification & Grade)
-      ↓
-🌐 Live Marketplace Listing
-      ↓
-🤝 Smart Buyer/Seller Match (Proximity & Need)
-      ↓
-🚚 Secure Handover (Chain of Custody Ledger)
-      ↓
-♻️ Final Remelt & Circular Economy Impact
-```
+### Demo / Simulated
+* **CIRCULUS Demo Ledger:** Event hashing and chaining is simulated in an internal ledger without connecting to a public blockchain.
+* **Demo Market Activity:** Pricing metrics and buyers are generated from realistic seed data to demonstrate marketplace logic without relying on external real-time trading APIs.
+* **Government/GSTIN Checks:** Currently limited to regex format checks, labeled as `GSTIN_FORMAT_CHECKED`.
+* **Lab Verification:** Simulated lab statuses default to `LAB_VERIFICATION_PENDING` unless seeded evidence is present.
 
-## 🤖 AI Intelligence
+### Production Roadmap
+* **Polygon Testnet/Mainnet Smart Contract:** Migrate the Demo Ledger to an actual Polygon adapter.
+* **Government Verification:** Integrate with GSTN/SPCB APIs for real-time compliance validation.
+* **Lab Integrations:** API partnerships with certified material testing laboratories.
+* **Logistics APIs:** E-way bill and GPS tracking integration.
+* **Production Identity:** OAuth/Enterprise SSO and HSM-backed digital signatures.
 
-CIRCULUS heavily integrates **Google Gemini 2.5 Flash (Multimodal Vision & Reasoning)** for core operations.
+## 🛠️ 6. Tech Stack
+- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, Framer Motion
+- **Backend:** Node.js, Express
+- **AI Integration:** Google Gemini API (@google/genai)
+- **Deployment:** Vercel
 
-- **Where it is used:** The AI is used in the `Scanner` module to analyze uploaded images of industrial scrap, and in the `Copilot` for interactive compliance Q&A.
-- **Input:** Photographic evidence of industrial material, along with contextual meta-data.
-- **Output:** Structured JSON containing precise material categorization (e.g., Aluminium 6063), estimated purity score, contaminant flags, and recommended next steps.
-- **Security:** All AI processing is strictly handled on the Express backend (`server.ts`). The `GEMINI_API_KEY` is completely isolated from the client-side browser, ensuring enterprise-grade credential security and data sanitization.
+## 📸 7. Screenshots
+*(Please add screenshots of the AI Scanner, Dashboard, and Marketplace in the `docs/screenshots/` folder.)*
 
----
-
-## 📸 Product Showcase
-
-- **AI Scanner:** Upload a photo and let Gemini deduce material properties.
-- **Material Passport:** View the generated digital record.
-- **Ledger & History:** Track the transparent lifecycle of materials.
-- **Marketplace:** Explore current listings and benchmark prices.
-
----
-
-## 🎥 3-Minute Judge Demo
-
-1. **Access the Portal:** Open the [Live Demo](https://circulus-rust.vercel.app/).
-2. **Login Gateway:** Explore as a guest or simulate login.
-3. **AI Scanner:** Navigate to the Scanner, upload a sample scrap photo (e.g., Aluminium Extrusion), and run the AI Material Test to see Gemini's technical breakdown.
-4. **Material Passport:** View the resulting Digital Aadhaar with its scannable QR code.
-5. **Marketplace & Ledger:** Observe the live ticker, browse the marketplace, and track a material's history in the Safe Ledger.
-6. **CirculAI Copilot:** Ask the assistant a question about SPCB recycling rules.
-
-*(Note: Certain data points such as live market prices, cryptographically generated hashes, and specific buyer profiles in the demo are illustrative for prototype demonstration purposes.)*
-
----
-
-## 🚀 Quick Start & Installation
-
-### Prerequisites
-- Node.js 18.x or higher
-- npm 9.x or higher
-- Google Gemini API Key
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/anshkumarraix-dev/CIRCULUS.git
-   cd CIRCULUS
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Environment Setup:**
-   ```bash
-   cp .env.example .env
-   ```
-   Open `.env` and add your Gemini API Key:
-   ```env
-   GEMINI_API_KEY="your_api_key_here"
-   ```
-
-4. **Run Development Server:**
-   ```bash
-   npm run dev
-   ```
-   *The application will be available at `http://localhost:3000`.*
-
-### Production Build
+## 🚀 8. Installation
 
 ```bash
-npm run build
-npm run start
+git clone https://github.com/anshkumarraix-dev/CIRCULUS.git
+cd CIRCULUS
+npm install
 ```
+
+## 🔐 9. Environment Variables
+Copy the template file:
+```bash
+cp .env.example .env
+```
+Add your required keys to `.env` (Never commit this file):
+```env
+GEMINI_API_KEY="your_api_key_here"
+```
+
+## 🎥 10. Demo Flow (3-Minute Judge Guide)
+1. **Access Portal:** Open the Live Demo.
+2. **AI Scanner:** Navigate to the Scanner, upload a sample scrap photo.
+3. **Classification:** Run the AI Material Test to see Gemini's technical breakdown.
+4. **Passport:** View the generated Material Passport.
+5. **Marketplace:** Browse the marketplace discovery grid.
+6. **Copilot:** Ask the CirculAI assistant a question about recycling.
+
+## 🌍 11. Impact
+*(Estimated / Prototype Metrics)*
+By connecting buyers and sellers directly and accurately classifying materials, CIRCULUS aims to increase the recovery rate of high-value industrial scrap, directly reducing Scope 3 emissions associated with virgin material mining.
+
+## 🔭 12. Future Scope
+- Integration with live national compliance databases.
+- Real-time verified logistics tracking.
+- IoT integration for automated weight and purity sensing.
+
+## 👥 13. Team
+- Built by the CIRCULUS Hackathon Team.
+
+## 📄 14. License
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
+## ⚠️ Security Notice & Git History Warning
+**Important:** If you are migrating this repository or cloning it from an older version where a `GEMINI_API_KEY` or any other credential might have been hardcoded for testing, **that secret is still visible in the Git commit history.**
+If you have ever committed a real secret to this repository, you must **rotate/revoke that key immediately** in the Google AI Studio console or your respective provider dashboard. Never rely on deleting a file in a new commit to hide a compromised secret.

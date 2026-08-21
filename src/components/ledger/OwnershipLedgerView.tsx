@@ -128,7 +128,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
                   : "text-slate-300 hover:text-white"
               }`}
             >
-              Standard Mode
+              Demo Ledger
             </button>
             <button
               onClick={() => setBlockchainMode("polygon")}
@@ -158,7 +158,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
             {
               step: 2,
               title: "2. Record Handover & Hash",
-              desc: isSubmitting ? "Generating SHA-256 state proof..." : "Log SPCB/GST transfer proof",
+              desc: isSubmitting ? "Generating SHA-256 content hash..." : "Log SPCB/GST transfer proof",
               isCompleted: events.length > 0,
               isActive: !!selectedPassport && !isSubmitting,
             },

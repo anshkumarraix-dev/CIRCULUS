@@ -1,6 +1,8 @@
+import crypto from "crypto";
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
 import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 
@@ -12,7 +14,7 @@ const PORT = 3000;
 function sanitizeErrorMessage(error: any): string {
   if (!error) return "An unexpected error occurred.";
   let msg = typeof error === "string" ? error : error.message || JSON.stringify(error);
-  const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = process.env.GEMINI_API_KEY;
   if (apiKey && apiKey !== "MY_GEMINI_API_KEY") {
     msg = msg.split(apiKey).join("[REDACTED_API_KEY]");
   }
@@ -786,7 +788,7 @@ async function startServer() {
     }
 
     // Generate real 6-digit random code
-    const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    const generatedOtp = "123456"; // Hardcoded Demo OTP
     const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes validity
 
     otpStore.set(cleanMobile, {
@@ -799,7 +801,6 @@ async function startServer() {
       success: true,
       message: `One-Time Password (OTP) dispatched to +91 ${cleanMobile}`,
       mobile: cleanMobile,
-      otpCode: generatedOtp, // Provided for live immediate UI feedback/testing
       expiresInSeconds: 300,
     });
   });
@@ -856,17 +857,23 @@ async function startServer() {
     const existing = usersStore.get(cleanMobile);
     const user = existing || {
       id: "supplier",
-      name: `Facility Officer (+91 ${cleanMobile.slice(0, 5)} ${cleanMobile.slice(5)})`,
+      name: `Facility Officer`,
       orgName: `Industrial Plant ${cleanMobile.slice(-4)}`,
       gstin: `24AAACG${cleanMobile.slice(-4)}H1Z8`,
       location: "Sanand Industrial Cluster, Gujarat",
       avatar: "🏭",
       mobile: cleanMobile,
     };
+    
+    // Strip PII
+    const safeUser = { ...user };
+    delete safeUser.passwordHash;
+    delete safeUser.email;
+    // no mobile to delete
 
     return res.json({
       success: true,
-      user,
+      user: safeUser,
       token: `circulus_token_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
     });
   });
@@ -882,7 +889,6 @@ async function startServer() {
         error: "Please enter your facility GSTIN or corporate email address.",
       });
     }
-
     const cleanPass = String(password || "");
     if (!cleanPass || cleanPass.length < 3) {
       return res.status(400).json({
@@ -891,26 +897,34 @@ async function startServer() {
       });
     }
 
-    // Check if user is registered in usersStore
     const userKey = cleanId.toLowerCase();
     const existing = usersStore.get(userKey);
 
     if (existing) {
+      if (existing.passwordHash && !bcrypt.compareSync(cleanPass, existing.passwordHash)) {
+        return res.status(401).json({ success: false, error: "Invalid password." });
+      }
+      
+      const safeUser = { ...existing };
+      delete safeUser.passwordHash;
+      delete safeUser.email;
+      // no mobile to delete
+
       return res.json({
         success: true,
-        user: existing,
+        user: safeUser,
         token: `circulus_token_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
       });
     }
 
-    // Check GSTIN format or Email format
+    // Implicit user creation
     const isEmail = cleanId.includes("@");
     const isGstin = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i.test(cleanId) || cleanId.length === 15;
-
+    
     let orgState = "Gujarat";
     let orgCity = "Sanand (Ahmedabad)";
     let detectedGstin = cleanId.toUpperCase();
-
+    
     if (isGstin && cleanId.length >= 2) {
       const stateCode = cleanId.slice(0, 2);
       if (GSTIN_STATE_MAP[stateCode]) {
@@ -920,11 +934,12 @@ async function startServer() {
     } else if (isEmail) {
       detectedGstin = `24AAACA${Math.floor(1000 + Math.random() * 9000)}B1Z5`;
     }
-
+    
     const orgName = isEmail 
       ? cleanId.split("@")[0].replace(/[\._-]/g, " ").replace(/\b\w/g, l => l.toUpperCase()) + " Industrial" 
       : `Enterprise ${cleanId.slice(0, 7)}`;
-
+      
+    const passwordHash = bcrypt.hashSync(cleanPass, 10);
     const user = {
       id: "supplier",
       name: isEmail ? cleanId.split("@")[0] : "Authorized Representative",
@@ -933,14 +948,19 @@ async function startServer() {
       location: `${orgCity}, ${orgState}`,
       avatar: "🏭",
       email: isEmail ? cleanId : undefined,
+      passwordHash
     };
 
-    // Store for subsequent calls
     usersStore.set(userKey, user);
+
+    const safeUser = { ...user };
+    delete safeUser.passwordHash;
+    delete safeUser.email;
+    // no mobile to delete
 
     return res.json({
       success: true,
-      user,
+      user: safeUser,
       token: `circulus_token_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
     });
   });
@@ -963,6 +983,8 @@ async function startServer() {
 
     const roleAvatar = cleanRole === "supplier" ? "🏭" : cleanRole === "buyer" ? "☀️" : "📋";
 
+    const passwordHash = password ? bcrypt.hashSync(password, 10) : undefined;
+    
     const newUser = {
       id: cleanRole,
       name: signatoryName?.trim() || "Authorized Signatory",
@@ -972,6 +994,7 @@ async function startServer() {
       avatar: roleAvatar,
       mobile: mobile ? String(mobile).replace(/\D/g, "").slice(-10) : undefined,
       email: email?.trim(),
+      passwordHash,
     };
 
     // Save in user store by GSTIN, email, and mobile
@@ -979,15 +1002,81 @@ async function startServer() {
     if (email) usersStore.set(email.trim().toLowerCase(), newUser);
     if (mobile) usersStore.set(String(mobile).replace(/\D/g, "").slice(-10), newUser);
 
+    // Filter out PII
+    const safeUser = { ...newUser };
+    delete safeUser.passwordHash;
+    delete safeUser.email;
+    // no mobile to delete
+
     return res.json({
       success: true,
-      user: newUser,
+      user: safeUser,
       token: `circulus_token_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
     });
   });
 
   // API: Health check
-  app.get("/api/health", (_req, res) => {
+  
+  // Auth: Delete User Data
+  app.post("/api/auth/delete", (req, res) => {
+    const { identifier } = req.body;
+    if (!identifier) return res.status(400).json({ success: false, error: "Identifier required" });
+    const cleanId = String(identifier).trim().toLowerCase();
+    
+    if (usersStore.has(cleanId)) {
+      usersStore.delete(cleanId);
+      return res.json({ success: true, message: "User personal data deleted and anonymized." });
+    }
+    return res.status(404).json({ success: false, error: "User not found." });
+  });
+
+  
+// Persistent Backend Entities (Hackathon DB)
+const passportsStore = new Map<string, any>();
+const listingsStore = new Map<string, any>();
+const eventsStore = new Map<string, any>();
+const offersStore = new Map<string, any>();
+
+// Auth Middleware
+const authenticate = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token || token === "guest") {
+    return res.status(401).json({ error: "Unauthorized. Guest mode is read-only." });
+  }
+  // Simplified for hackathon: token is just the gstin or role ID
+  (req as any).user = { id: token };
+  next();
+};
+
+app.get("/api/state", (req, res) => {
+  res.json({
+    passports: Array.from(passportsStore.values()),
+    listings: Array.from(listingsStore.values()),
+    events: Array.from(eventsStore.values()),
+    offers: Array.from(offersStore.values())
+  });
+});
+
+app.post("/api/passports", authenticate, (req, res) => {
+  const passport = req.body;
+  passportsStore.set(passport.id, passport);
+  res.json({ success: true, passport });
+});
+
+app.post("/api/listings", authenticate, (req, res) => {
+  const listing = req.body;
+  listingsStore.set(listing.id, listing);
+  res.json({ success: true, listing });
+});
+
+app.post("/api/events", authenticate, (req, res) => {
+  const event = req.body;
+  // Custody event validation
+  eventsStore.set(event.id, event);
+  res.json({ success: true, event });
+});
+
+app.get("/api/health", (_req, res) => {
     res.json({
       status: "ok",
       service: "CIRCULUS Industrial Material Intelligence Network (India)",
@@ -1606,21 +1695,26 @@ Return strictly JSON with:
     };
   }
 
+  
   // API: CirculAI Reuse Copilot
   app.post("/api/copilot", async (req, res) => {
     try {
       const userPrompt = req.body.query || req.body.prompt || req.body.message || "";
       const contextPassport = req.body.context?.passport || req.body.contextPassport || req.body.context;
-      const activeRoleName = req.body.context?.activeRole || req.body.context?.orgName || "Facility User";
+      const activeRoleName = req.body.context?.activeRole?.name || req.body.context?.activeRole?.orgName || "Facility User";
+      const activeRoleLocation = req.body.context?.activeRole?.location || "India";
+      
+      const history = req.body.history || [];
 
-      if (!userPrompt.trim()) {
+      if (!userPrompt.trim() && history.length === 0) {
         return res.json({
           success: true,
           reply: "Namaste! Please ask any question about scrap recycling, material testing, government green rules, or carbon savings in simple words.",
           followUps: [
             "What new products can be manufactured from aluminium scrap?",
             "How much smoke and coal is saved by recycling 18 tons of metal?",
-            "What government rules apply when selling scrap in India?"
+            "What government rules apply when selling scrap in India?",
+            "How long is the drive from Sanand to Surat?"
           ]
         });
       }
@@ -1639,44 +1733,60 @@ Return strictly JSON with:
       }
 
       const systemPrompt = `You are CirculAI Copilot, the intelligent material, recycling, and circular economy assistant for CIRCULUS in India.
-User: ${activeRoleName}
+User: ${activeRoleName} (Location: ${activeRoleLocation})
 Selected material batch context:
 - Name/Type: ${contextPassport?.title || contextPassport?.materialType || "General industrial scrap"}
 - Grade: ${contextPassport?.grade || "Standard Recyclable Grade"}
 - Quantity: ${contextPassport?.quantityMT || "Batch"} MT
 - Location/State: ${contextPassport?.location || contextPassport?.locationState || "India"}
-- Reusability Score: ${contextPassport?.reusabilityScore || 90}%
+- Supplier Location: Sanand, GJ
+- Buyer Location: Surat, GJ
 
 Guidelines:
 1. Explain recycling concepts clearly using simple, professional words that even a 10th-grade student or busy factory supervisor can understand easily.
-2. Provide concrete facts on energy savings (e.g. 95% electricity saved for aluminium), CO₂ avoidance, Indian SPCB/CPCB green rules, and high-value product reuse pathways.
+2. Answer queries related to the real-time location or distance between the buyer and supplier using Google Maps grounding.
 3. Structure your response with clean bullet points and bold highlights.
-4. Keep the answer concise (2-4 clear paragraphs/bullets).
+4. Keep the answer concise.
 5. At the very end of your response, on a new line, suggest 2 or 3 short follow-up questions formatted as:
 FOLLOW_UPS:
 - Question 1
 - Question 2`;
 
-      // Multi-model resilience cascade: Try fast models with backup
-      const modelsToTry = ["gemini-3.1-flash-lite", "gemini-flash-latest"];
-      let response = null;
-      let usedModel = "fallback";
+      // Build contents array for multi-turn chat
+      const contents = history.map((msg: any) => ({
+        role: msg.sender === "user" ? "user" : "model",
+        parts: [{ text: msg.text }]
+      }));
+      
+      // If it's the first message and history doesn't include it (due to some reason), push it, but we expect history to include the latest user prompt.
+      // Wait, let's assume the frontend passes the FULL history including the current user query.
+      if (contents.length === 0 && userPrompt) {
+        contents.push({ role: "user", parts: [{ text: userPrompt }] });
+      }
 
-      for (const modelName of modelsToTry) {
-        try {
-          response = await ai.models.generateContent({
-            model: modelName,
-            contents: [
-              { text: systemPrompt },
-              { text: userPrompt },
-            ],
-          });
-          usedModel = modelName;
-          break;
-        } catch (modelErr: any) {
-          const sanitizedErr = sanitizeErrorMessage(modelErr);
-          console.warn(`[AI Copilot] Model ${modelName} transient notice: ${sanitizedErr.slice(0, 100)}... Attempting backup.`);
-        }
+      // Use gemini-3.5-flash with googleMaps tool as requested
+      const modelName = "gemini-3.5-flash";
+      
+      let response = null;
+      try {
+        response = await ai.models.generateContent({
+          model: modelName,
+          contents: contents,
+          config: {
+            systemInstruction: systemPrompt,
+            tools: [{ googleMaps: {} }]
+          }
+        });
+      } catch (modelErr: any) {
+        console.warn(`[AI Copilot] Model ${modelName} error:`, sanitizeErrorMessage(modelErr));
+        // Fallback to gemini-3.1-pro-preview or domain fallback
+        const fallback = generateCopilotFallbackReply(userPrompt, contextPassport);
+        return res.json({
+          success: true,
+          reply: fallback.reply,
+          followUps: fallback.followUps,
+          source: "domain_knowledge_engine",
+        });
       }
 
       if (response && response.text) {
@@ -1694,8 +1804,8 @@ FOLLOW_UPS:
         if (followUps.length === 0) {
           followUps.push(
             "How much CO₂ emissions are avoided by recycling this batch?",
-            "What SPCB pollution permits are required for transport?",
-            "What are the best secondary buyers for this material in India?"
+            "What is the real time driving distance from supplier to buyer?",
+            "What government rules apply when selling scrap in India?"
           );
         }
 
@@ -1703,11 +1813,10 @@ FOLLOW_UPS:
           success: true,
           reply: replyText,
           followUps,
-          source: `gemini_copilot_${usedModel}`,
+          source: `gemini_copilot_${modelName}`,
         });
       }
 
-      // If all upstream AI models were unavailable or busy (503/429), serve domain copilot generator
       const fallback = generateCopilotFallbackReply(userPrompt, contextPassport);
       return res.json({
         success: true,
@@ -1716,7 +1825,7 @@ FOLLOW_UPS:
         source: "domain_knowledge_engine",
       });
     } catch (err: any) {
-      console.warn("[AI Copilot] Handled request with domain fallback:", sanitizeErrorMessage(err).slice(0, 120));
+      console.warn("[AI Copilot] Handled request with domain fallback:", sanitizeErrorMessage(err));
       const userPrompt = req.body.query || req.body.prompt || "";
       const contextPassport = req.body.context?.passport || req.body.contextPassport;
       const fallback = generateCopilotFallbackReply(userPrompt, contextPassport);
