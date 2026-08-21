@@ -24,6 +24,7 @@ import {
 import { findMatchesForListing } from "./lib/matching-engine";
 import { generateSimpleRecordHash } from "./lib/ledger-adapter";
 import { CheckCircle2 } from "lucide-react";
+import { AIChatWidget } from "./components/common/AIChatWidget";
 
 export default function App() {
   // Auth state
@@ -170,7 +171,7 @@ export default function App() {
 
   // Scanner Passport Mint Handler
   const handlePassportCreated = (newPassport: MaterialPassport) => {
-    if (activeRole.role === "guest" || activeRole.id === "guest") {
+    if (activeRole.id === "guest" || activeRole.id === "guest") {
       showToast("Action Forbidden: Guest mode is read-only.");
       return;
     }
@@ -400,6 +401,8 @@ export default function App() {
         activeRole={activeRole}
         onEntryCreated={handleRealTimeEntryCreated}
       />
+      {/* Global AI Chat Widget */}
+      <AIChatWidget />
     </div>
   );
 }

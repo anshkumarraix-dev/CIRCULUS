@@ -314,8 +314,8 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
       grade: "Grade-A (Clean Industrial)",
       quantityMT: simTonnage,
       pricePerMT: selectedSim.price,
-      city: activeRole.city || "Sanand",
-      state: activeRole.state || "Gujarat",
+      city: (activeRole.location?.split(",")[0] || "") || "Sanand",
+      state: (activeRole.location?.split(",")[1]?.trim() || "") || "Gujarat",
       imageUrl: selectedSim.img,
       suggestedApplications: ["Secondary Ingot Casting", "Circular Remanufacturing"],
       co2PerTon: selectedSim.co2

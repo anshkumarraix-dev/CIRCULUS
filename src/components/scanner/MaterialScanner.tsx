@@ -311,7 +311,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
       setAnalysisResult(null);
       setCreatedPassport(null);
       stopCamera();
-      setInputMode("presets");
+      setInputMode("upload");
     }
   };
 
@@ -660,7 +660,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
               <AlertCircle className="w-8 h-8 text-amber-400 mx-auto" />
               <p className="text-xs text-slate-300 max-w-md mx-auto">{cameraError}</p>
               <button
-                onClick={() => setInputMode("presets")}
+                onClick={() => setInputMode("upload")}
                 className="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs cursor-pointer"
               >
                 Switch to Verified Training Dataset
@@ -1053,29 +1053,29 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
                             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">LIVE SPOT ESTIMATE</span>
                             <div className="flex items-center gap-2">
                               <span className="text-lg font-extrabold text-emerald-400 font-mono">
-                                ₹{(searchGrounding.spotPriceEstimateInrPerMT || 205000).toLocaleString("en-IN")} / MT
+                                ₹{((searchGrounding as any).spotPriceEstimateInrPerMT || 205000).toLocaleString("en-IN")} / MT
                               </span>
                               <span className="text-[11px] text-slate-300">
-                                (₹{Math.round((searchGrounding.spotPriceEstimateInrPerMT || 205000) / 1000)}/kg)
+                                (₹{Math.round(((searchGrounding as any).spotPriceEstimateInrPerMT || 205000) / 1000)}/kg)
                               </span>
                             </div>
                           </div>
-                          {searchGrounding.cpcbEprStatus && (
+                          {(searchGrounding as any).cpcbEprStatus && (
                             <div className="text-left sm:text-right">
                               <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">CPCB MANDATE</span>
-                              <p className="text-xs text-blue-300 font-bold max-w-xs">{searchGrounding.cpcbEprStatus}</p>
+                              <p className="text-xs text-blue-300 font-bold max-w-xs">{(searchGrounding as any).cpcbEprStatus}</p>
                             </div>
                           )}
                         </div>
 
                         {/* Regional Hub Prices */}
-                        {searchGrounding.regionalPrices && searchGrounding.regionalPrices.length > 0 && (
+                        {(searchGrounding as any).regionalPrices && (searchGrounding as any).regionalPrices.length > 0 && (
                           <div>
                             <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1.5">
                               REGIONAL MANDI & PORT HUB BENCHMARKS:
                             </span>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                              {searchGrounding.regionalPrices.map((hub, idx) => (
+                              {(searchGrounding as any).regionalPrices.map((hub, idx) => (
                                 <div key={idx} className="bg-slate-800/80 p-2 rounded-xl border border-slate-700 text-center">
                                   <span className="text-[10px] text-slate-400 font-bold block truncate">{hub.hub}</span>
                                   <span className="text-xs font-extrabold text-blue-300 font-mono mt-0.5 block">
@@ -1088,14 +1088,14 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
                         )}
 
                         {/* Search Grounding Sources & Direct Citations */}
-                        {searchGrounding.sources && searchGrounding.sources.length > 0 && (
+                        {(searchGrounding as any).sources && (searchGrounding as any).sources.length > 0 && (
                           <div className="pt-2 border-t border-slate-800">
                             <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1.5 flex items-center gap-1">
                               <Search className="w-3 h-3 text-blue-400" />
                               <span>GOOGLE SEARCH VERIFIED SOURCES & CITATIONS:</span>
                             </span>
                             <div className="flex flex-wrap gap-1.5">
-                              {searchGrounding.sources.map((src, i) => (
+                              {(searchGrounding as any).sources.map((src, i) => (
                                 <a
                                   key={i}
                                   href={src.uri}

@@ -35,7 +35,7 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
   activeRole,
   onViewPassport,
 }) => {
-  const [blockchainMode, setBlockchainMode] = useState<"mock" | "polygon">("mock");
+  const [blockchainMode, setBlockchainMode] = useState<"mock" | "polygon-amoy">("mock");
   const [selectedPassportId, setSelectedPassportId] = useState<string>(passports[0]?.id || "");
   const [recipientOrg, setRecipientOrg] = useState<string>("Gujarat Solar Frame Extrusions");
   const [transferNotes, setTransferNotes] = useState<string>("Scrap handover completed under GST e-Way bill #7291823719");
@@ -131,9 +131,9 @@ export const OwnershipLedgerView: React.FC<OwnershipLedgerViewProps> = ({
               Local Ledger
             </button>
             <button
-              onClick={() => setBlockchainMode("polygon")}
+              onClick={() => setBlockchainMode("polygon-amoy")}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1 ${
-                blockchainMode === "polygon"
+                blockchainMode === "polygon-amoy"
                   ? "bg-purple-600 text-white shadow-xs border border-purple-400"
                   : "text-slate-300 hover:text-white"
               }`}
