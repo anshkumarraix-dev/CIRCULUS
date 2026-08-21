@@ -45,14 +45,20 @@ export const AIChatWidget: React.FC = () => {
         })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch(e) {
+        throw new Error("Invalid JSON from server. Status: " + response.status + " Body: " + responseText.substring(0, 100));
+      }
       if (data.success) {
         setMessages([...newMessages, { role: "model", text: data.text }]);
       } else {
         setMessages([...newMessages, { role: "model", text: "Sorry, I encountered an error: " + data.error }]);
       }
     } catch (error: any) {
-      setMessages([...newMessages, { role: "model", text: "Sorry, I encountered an error connecting to the server." }]);
+      setMessages([...newMessages, { role: "model", text: "Sorry, I encountered an error connecting to the server. Details: " + String(error) }]);
     } finally {
       setIsTyping(false);
     }
