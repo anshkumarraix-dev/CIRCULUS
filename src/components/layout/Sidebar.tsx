@@ -69,7 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
 
-      <aside data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()} className={`
+      <aside className={`
         fixed lg:sticky lg:top-0 lg:h-screen inset-y-0 left-0 z-50
         w-64 glass-panel border-r border-white/5
         flex flex-col transition-transform duration-300
@@ -95,7 +95,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-6 space-y-8 " data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-6 space-y-8">
           {navGroups.map((group) => (
             <div key={group.title}>
               <h3 className="px-3 mb-2 text-xs font-bold text-silver/60 uppercase tracking-widest font-mono">

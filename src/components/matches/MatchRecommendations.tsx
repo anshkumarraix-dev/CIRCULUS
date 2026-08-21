@@ -553,7 +553,7 @@ export const MatchRecommendations: React.FC<MatchRecommendationsProps> = ({
 
       {/* Interactive Quotation & Route Simulation Modal */}
       {selectedBuyerForModal && (
-        <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+        <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
           <div className="bg-[#12181F] rounded-3xl border border-slate-700 max-w-xl w-full p-6 sm:p-8 space-y-5 shadow-2xl relative my-8 animate-fadeIn">
             
             <div className="flex items-start justify-between pb-3 border-b border-slate-800">

@@ -436,7 +436,7 @@ export const ImpactAnalyticsDashboard: React.FC<ImpactAnalyticsDashboardProps> =
 
       {/* Green Audit Modal */}
       {showBrsrModal && (
-        <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+        <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
           <div className="bg-panel rounded-3xl border border-white/10 max-w-2xl w-full p-6 sm:p-8 space-y-5 shadow-2xl relative my-8 animate-fadeIn">
             <div className="flex items-start justify-between pb-3 border-b border-white/5">
               <div>

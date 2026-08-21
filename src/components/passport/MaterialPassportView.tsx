@@ -431,7 +431,7 @@ export const MaterialPassportView: React.FC<MaterialPassportViewProps> = ({
 
       {/* Printable Digital Aadhaar QR Modal */}
       {showQrModal && (
-        <div className="fixed inset-0 z-50 bg-primary/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+        <div className="fixed inset-0 z-50 bg-primary/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
           <div className="glass-panel glow-edge-cyan rounded-3xl p-6 sm:p-7 max-w-lg w-full space-y-5 shadow-2xl animate-fadeIn my-6">
             
             {/* Modal Header */}

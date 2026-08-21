@@ -106,7 +106,7 @@ export const AIChatWidget: React.FC = () => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-4 bg-transparent" data-lenis-prevent="true">
+            <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-4 bg-transparent">
               {messages.length === 0 && (
                 <div className="text-center text-ink-muted my-8 text-base">
                   <Bot className="w-12 h-12 mx-auto mb-3 text-accent-cyan/30" />

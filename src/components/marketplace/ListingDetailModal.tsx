@@ -53,7 +53,7 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+    <div className="fixed inset-0 z-50 bg-[#0B0F13]/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
       <div className="glass-panel glow-edge-teal rounded-3xl max-w-2xl w-full p-6 space-y-6 shadow-2xl relative my-8 animate-fadeIn">
         {/* Modal Header */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/5">

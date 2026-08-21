@@ -238,7 +238,7 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-primary/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto overscroll-contain" data-lenis-prevent="true">
+    <div className="fixed inset-0 z-50 bg-primary/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
       <div className="glass-panel glow-edge-cyan rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 relative my-8 animate-fadeIn">
         
         {/* Header */}

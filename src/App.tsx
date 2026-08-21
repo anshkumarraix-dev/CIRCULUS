@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ReactLenis } from "lenis/react";
 import { AppHeader } from "./components/layout/AppHeader";
 import { Sidebar } from "./components/layout/Sidebar";
 import { USER_ROLES } from "./types";
@@ -279,8 +278,7 @@ export default function App() {
   }
 
   return (
-    <ReactLenis root>
-      <div className="bg-primary text-ink flex min-h-screen font-sans relative">
+    <div className="bg-primary text-ink flex min-h-screen font-sans relative">
       {/* Cinematic Volumetric Background */}
       <div className="volumetric-blob-cyan top-[-100px] left-[-100px] opacity-70"></div>
       <div className="volumetric-blob-teal bottom-[-200px] right-[-100px] opacity-70"></div>
@@ -408,7 +406,6 @@ export default function App() {
       />
       {/* Global AI Chat Widget */}
       <AIChatWidget />
-      </div>
-    </ReactLenis>
+    </div>
   );
 }

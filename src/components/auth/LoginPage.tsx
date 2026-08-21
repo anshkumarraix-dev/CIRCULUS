@@ -102,7 +102,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           <div className="absolute -inset-0.5 bg-gradient-to-br from-copper/40 via-transparent to-copper/30 rounded-2xl sm:rounded-3xl blur-md opacity-60 group-hover:opacity-100 transition duration-1000 animate-pulse pointer-events-none z-0"></div>
           
           {/* Main Modal (Glassmorphism) */}
-          <div className="relative w-full max-h-[95vh] lg:max-h-[90vh] overflow-y-auto overscroll-contain grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch bg-panel/20 hover:bg-panel/90 focus-within:bg-panel/90 transition-colors duration-500 border border-copper/20 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.8)] z-10 overflow-hidden" data-lenis-prevent="true">
+          <div className="relative w-full max-h-[95vh] lg:max-h-[90vh] overflow-y-auto overscroll-contain grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch bg-panel/20 hover:bg-panel/90 focus-within:bg-panel/90 transition-colors duration-500 border border-copper/20 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.8)] z-10 overflow-hidden">
             
             {/* Subtle Industrial Grid Pattern */}
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0 mix-blend-screen"></div>
