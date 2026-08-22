@@ -389,30 +389,35 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden font-sans text-ink selection:bg-copper selection:text-panel bg-[#12181F]">
-      {/* Background Industrial Scan Visual (webp running in background) */}
+    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden font-sans text-ink selection:bg-copper selection:text-panel bg-[#0B0F13]">
+      {/* Background Industrial Scan Visual (Hardware-Accelerated Smooth WebP) */}
       <img 
         src="/assets/laser-bg.webp" 
         alt="Laser Scanning Industrial Scrap Metal" 
-        className="absolute inset-0 w-full h-full object-cover z-0" 
+        decoding="async"
+        loading="eager"
+        draggable={false}
+        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none transform-gpu translate-z-0 will-change-transform" 
+        style={{ transform: "translate3d(0, 0, 0)", backfaceVisibility: "hidden" }}
       />
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] z-0 pointer-events-none" />
+      {/* High-Performance Smooth Contrast Vignette (No heavy backdrop blur) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#07090C]/50 via-[#07090C]/35 to-[#07090C]/60 z-0 pointer-events-none" />
 
       {/* Main Glassmorphism Card Container */}
       <main className="flex-1 flex items-center justify-center w-full px-3 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
-        {/* Animated Glow Wrapper */}
+        {/* Glowing Border Element */}
         <div className="relative w-full max-w-5xl group my-auto">
-          {/* Glowing Border Element */}
-          <div className="absolute -inset-0.5 bg-gradient-to-br from-copper/40 via-transparent to-copper/30 rounded-2xl sm:rounded-3xl blur-md opacity-60 group-hover:opacity-100 transition duration-1000 animate-pulse pointer-events-none z-0"></div>
+          {/* Subtle Ambient Outer Glow */}
+          <div className="absolute -inset-0.5 bg-gradient-to-br from-copper/30 via-transparent to-copper/20 rounded-2xl sm:rounded-3xl blur-md opacity-70 pointer-events-none z-0"></div>
 
-          {/* Main Modal (Glassmorphism Sign-In Card) */}
-          <div className="relative w-full max-h-[92vh] overflow-y-auto overscroll-contain grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch bg-panel/15 border border-copper/25 rounded-2xl sm:rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.6)] z-10 overflow-hidden backdrop-blur-md">
+          {/* Main Modal (Optimized High-Performance Glass Card) */}
+          <div className="relative w-full max-h-[92vh] overflow-y-auto overscroll-contain grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch bg-[#10151C]/75 border border-copper/30 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.85)] z-10 overflow-hidden">
             
             {/* Subtle Industrial Grid Pattern */}
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0 mix-blend-screen"></div>
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSkiLz48L3N2Zz4=')] opacity-15 pointer-events-none z-0 mix-blend-screen"></div>
 
             {/* Left Column (Brand & Tech Simulation) */}
-            <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between relative z-10 border-b lg:border-b-0 lg:border-r border-white/10 bg-black/20 backdrop-blur-xs">
+            <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between relative z-10 border-b lg:border-b-0 lg:border-r border-white/10 bg-[#090C10]/60">
               <div>
                 <div className="mb-6">
                   <CirculusLogo size="md" showTagline={true} glow={true} />
@@ -434,7 +439,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             </div>
 
             {/* Right Column (The Login & Registration Form) */}
-            <div className="lg:col-span-7 bg-black/25 backdrop-blur-sm p-5 sm:p-7 lg:p-9 flex flex-col justify-between relative z-10">
+            <div className="lg:col-span-7 bg-[#0E131A]/70 p-5 sm:p-7 lg:p-9 flex flex-col justify-between relative z-10">
               <div>
                 {/* Mode Switcher Tabs */}
                 <div className="flex border-b border-white/10 mb-6 bg-white/5 rounded-xl p-1">
