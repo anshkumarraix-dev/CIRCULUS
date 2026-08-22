@@ -98,6 +98,28 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
   const [materialCategory, setMaterialCategory] = useState<string>("non_ferrous");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [quantityMT, setQuantityMT] = useState<number>(18.5);
+  const [weightUnit, setWeightUnit] = useState<"kg" | "tonne" | "metric_tonne">("metric_tonne");
+  const [enteredWeight, setEnteredWeight] = useState<number>(18.5);
+
+  const handleWeightChange = (val: number, unit: "kg" | "tonne" | "metric_tonne" = weightUnit) => {
+    setEnteredWeight(val);
+    let mt = val;
+    if (unit === "kg") {
+      mt = val / 1000;
+    } else {
+      mt = val;
+    }
+    setQuantityMT(Math.max(0.001, parseFloat(mt.toFixed(4))));
+  };
+
+  const handleUnitChange = (newUnit: "kg" | "tonne" | "metric_tonne") => {
+    setWeightUnit(newUnit);
+    if (newUnit === "kg") {
+      setEnteredWeight(Math.round(quantityMT * 1000 * 10) / 10);
+    } else {
+      setEnteredWeight(Math.round(quantityMT * 100) / 100);
+    }
+  };
   const [originState, setOriginState] = useState<string>("Gujarat");
   const [originCity, setOriginCity] = useState<string>("Sanand, Ahmedabad");
   const [spcbJurisdiction, setSpcbJurisdiction] = useState<string>("Gujarat Pollution Control Board (GPCB)");
@@ -611,10 +633,21 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
         </div>
       </div>
 
-      {/* Mode Selector Tabs: Live Camera vs Real Industrial Dataset vs Upload */}
+      {/* Mode Selector Tabs: Live Camera vs Upload */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-[#12181F] p-2.5 rounded-2xl border border-slate-700 shadow-xs">
         <div className="flex items-center gap-2">
-          
+          <button
+            type="button"
+            onClick={() => setInputMode("camera")}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 cursor-pointer ${
+              inputMode === "camera"
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+            }`}
+          >
+            <Camera className="w-4 h-4" />
+            <span>Live Camera Scanner</span>
+          </button>
         </div>
 
         <label className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-600 text-sm font-bold text-slate-800 transition cursor-pointer flex items-center gap-2">
@@ -656,7 +689,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
           </div>
 
           {cameraError ? (
-            <div className="bg-slate-900 p-8 rounded-2xl border border-slate-800 text-center space-y-3">
+            <div className="bg-slate-900 p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-slate-800 text-center space-y-3">
               <AlertCircle className="w-8 h-8 text-amber-400 mx-auto" />
               <p className="text-sm text-slate-300 max-w-md mx-auto">{cameraError}</p>
               <button
@@ -667,7 +700,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
               </button>
             </div>
           ) : (
-            <div className="relative aspect-video max-h-[460px] w-full rounded-2xl overflow-hidden bg-black flex items-center justify-center border border-slate-800">
+            <div className="relative aspect-[9/16] sm:aspect-[4/3] md:aspect-video max-h-[70vh] sm:max-h-[480px] w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-black flex items-center justify-center border border-slate-800 shadow-2xl">
               <video
                 ref={videoRef}
                 playsInline
@@ -677,63 +710,63 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
               />
 
               {/* RETICLE OVERLAY & REAL-TIME RECOGNITION HUD */}
-              <div className="absolute inset-4 sm:inset-8 border border-emerald-500/40 rounded-2xl pointer-events-none flex flex-col justify-between p-3.5">
+              <div className="absolute inset-3 sm:inset-6 md:inset-8 border border-emerald-500/40 rounded-2xl pointer-events-none flex flex-col justify-between p-2.5 sm:p-4">
                 {/* Top HUD: Real-time Category & Confidence */}
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   {realtimeDetection ? (
-                    <div className="flex items-center gap-2 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
+                    <div className="flex items-center gap-2 bg-black/80 backdrop-blur-md px-2.5 sm:px-3 py-1.5 rounded-xl border border-white/10 max-w-[85%] sm:max-w-none">
                       <span className="text-base">{liveBadge.icon}</span>
                       <div>
-                        <div className="flex items-center gap-1.5">
-                          <span className={`text-sm font-bold px-2 py-0.5 rounded-md ${liveBadge.bg} ${liveBadge.text} border ${liveBadge.border}`}>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className={`text-xs sm:text-sm font-bold px-2 py-0.5 rounded-md ${liveBadge.bg} ${liveBadge.text} border ${liveBadge.border}`}>
                             {liveBadge.label}
                           </span>
-                          <span className={`text-sm font-mono font-bold ${realtimeDetection.confidence >= 70 ? "text-emerald-400" : realtimeDetection.confidence >= 45 ? "text-amber-400" : "text-rose-400"}`}>
+                          <span className={`text-xs sm:text-sm font-mono font-bold ${realtimeDetection.confidence >= 70 ? "text-emerald-400" : realtimeDetection.confidence >= 45 ? "text-amber-400" : "text-rose-400"}`}>
                             {realtimeDetection.confidence}% Confident
                           </span>
                         </div>
-                        <p className="text-sm font-bold text-white mt-0.5">
+                        <p className="text-xs sm:text-sm font-bold text-white mt-0.5 truncate max-w-[200px] sm:max-w-sm">
                           {realtimeDetection.isRecognized ? realtimeDetection.detectedObject : "Unable to confidently identify material"}
                         </p>
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-xl text-sm font-mono text-emerald-300 font-bold border border-emerald-500/30 flex items-center gap-2">
+                    <div className="bg-black/70 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-xl text-xs sm:text-sm font-mono text-emerald-300 font-bold border border-emerald-500/30 flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
-                      <span>POINT CAMERA AT SCRAP MATERIAL</span>
+                      <span className="truncate">SCAN SCRAP MATERIAL</span>
                     </div>
                   )}
 
-                  <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-mono text-slate-300">
+                  <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono text-slate-300">
                     <Eye className="w-3 h-3 text-emerald-400" />
-                    <span>{isRealtimeDetecting ? "EVALUATING..." : "REALTIME ACTIVE"}</span>
+                    <span>{isRealtimeDetecting ? "EVALUATING..." : "ACTIVE"}</span>
                   </div>
                 </div>
 
                 {/* Center Warning If Low Confidence */}
                 {realtimeDetection && (!realtimeDetection.isRecognized || realtimeDetection.confidence < 45) && (
-                  <div className="bg-amber-950/90 border border-amber-500/50 backdrop-blur-md p-2.5 rounded-xl text-center max-w-md mx-auto pointer-events-auto">
-                    <div className="flex items-center justify-center gap-1.5 text-amber-300 font-bold text-sm">
+                  <div className="bg-amber-950/90 border border-amber-500/50 backdrop-blur-md p-2 sm:p-2.5 rounded-xl text-center max-w-md mx-auto pointer-events-auto">
+                    <div className="flex items-center justify-center gap-1.5 text-amber-300 font-bold text-xs sm:text-sm">
                       <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>Unable to confidently identify material</span>
+                      <span>Unable to confidently identify</span>
                     </div>
-                    <p className="text-sm text-amber-200/90 mt-0.5 font-medium">
-                      Hold the item steady under good lighting or center within reticle.
+                    <p className="text-[11px] sm:text-xs text-amber-200/90 mt-0.5 font-medium">
+                      Hold steady under good light or center in frame.
                     </p>
                   </div>
                 )}
 
                 {/* Bottom HUD: Visual traits & targeting info */}
-                <div className="flex items-end justify-between text-sm font-mono text-emerald-400 font-bold">
+                <div className="flex items-end justify-between text-xs sm:text-sm font-mono text-emerald-400 font-bold">
                   {realtimeDetection && realtimeDetection.visualTraits?.length > 0 ? (
-                    <div className="bg-black/75 backdrop-blur-md p-2 rounded-xl border border-white/10 text-left max-w-sm">
-                      <span className="text-xs text-slate-400 block mb-0.5">DETECTED VISUAL SIGNATURE:</span>
-                      <p className="text-sm text-slate-200 truncate">{realtimeDetection.visualTraits[0]}</p>
+                    <div className="bg-black/80 backdrop-blur-md p-1.5 sm:p-2 rounded-xl border border-white/10 text-left max-w-[180px] sm:max-w-sm">
+                      <span className="text-[10px] text-slate-400 block mb-0.5">DETECTED SIGNATURE:</span>
+                      <p className="text-xs sm:text-sm text-slate-200 truncate">{realtimeDetection.visualTraits[0]}</p>
                     </div>
                   ) : (
-                    <span>SPECTRA: MULTIMODAL_RGB</span>
+                    <span className="text-[11px]">SPECTRA: RGB_AI</span>
                   )}
-                  <span className="bg-black/60 px-2 py-1 rounded-md">AUTO_CLASSIFIER: ACTIVE</span>
+                  <span className="bg-black/70 px-2 py-0.5 rounded text-[10px] sm:text-xs">CLASSIFIER: ACTIVE</span>
                 </div>
               </div>
             </div>
@@ -766,7 +799,7 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
             </h3>
 
             {/* Selected Image Preview */}
-            <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-700 relative">
+            <div className="aspect-[4/3] sm:aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 relative">
               {selectedImage ? (
                 <img src={selectedImage} alt="Selected Scrap" className="w-full h-full object-cover" />
               ) : (
@@ -774,37 +807,98 @@ export const MaterialScanner: React.FC<MaterialScannerProps> = ({
                   No image selected
                 </div>
               )}
-              <div className="absolute bottom-2.5 left-2.5 bg-[#12181F]/95 backdrop-blur-md px-3 py-1 rounded-xl text-sm font-bold text-white border border-slate-700 shadow-xs flex items-center gap-1.5">
+              <div className="absolute bottom-2.5 left-2.5 bg-[#12181F]/95 backdrop-blur-md px-3 py-1 rounded-xl text-xs sm:text-sm font-bold text-white border border-slate-700 shadow-xs flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-accent-cyan" />
-                <span className="truncate max-w-[220px]">{""}</span>
+                <span className="truncate max-w-[200px] sm:max-w-[220px]">Live Certified Batch</span>
               </div>
             </div>
 
             <div className="space-y-3.5 text-sm">
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-slate-700 font-bold">
-                    Batch Weight in Metric Tons (MT)
+              <div className="bg-slate-800/90 p-3 rounded-2xl border border-slate-700 space-y-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <label className="block text-slate-200 font-bold text-xs uppercase tracking-wider">
+                    Scrap Lot Weight / Quantity
                   </label>
-                  <span className="font-mono font-bold text-blue-700">
-                    {quantityMT} MT ({(quantityMT * 1000).toLocaleString("en-IN")} kg)
+                  {/* Unit Selector Pills: kg / Tonne / Metric Tonnes */}
+                  <div className="inline-flex p-0.5 rounded-lg bg-slate-900 border border-slate-700 text-xs font-semibold">
+                    <button
+                      type="button"
+                      onClick={() => handleUnitChange("kg")}
+                      className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                        weightUnit === "kg"
+                          ? "bg-blue-600 text-white shadow-xs"
+                          : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      kg
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleUnitChange("tonne")}
+                      className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                        weightUnit === "tonne"
+                          ? "bg-blue-600 text-white shadow-xs"
+                          : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      Tonne
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleUnitChange("metric_tonne")}
+                      className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                        weightUnit === "metric_tonne"
+                          ? "bg-blue-600 text-white shadow-xs"
+                          : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      Metric Tonnes (MT)
+                    </button>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="number"
+                    min={weightUnit === "kg" ? 1 : 0.01}
+                    step={weightUnit === "kg" ? 10 : 0.1}
+                    value={enteredWeight}
+                    onChange={(e) => handleWeightChange(parseFloat(e.target.value) || 0)}
+                    className="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2 text-sm text-white font-mono font-bold focus:bg-[#12181F] focus:border-blue-500 focus:outline-none"
+                  />
+                  <span className="absolute right-3 top-2 text-xs font-bold text-slate-400 font-mono uppercase">
+                    {weightUnit === "kg" ? "KG" : weightUnit === "tonne" ? "TONNES" : "MT"}
                   </span>
                 </div>
+
+                {/* Live Unit Conversion Breakdown */}
+                <div className="flex flex-wrap items-center justify-between gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/60 border border-slate-700/50 text-xs font-mono">
+                  <span className="text-slate-400">Equivalent:</span>
+                  <div className="flex items-center gap-1.5 text-slate-300">
+                    <span className={weightUnit === "kg" ? "text-emerald-400 font-bold" : ""}>
+                      {(quantityMT * 1000).toLocaleString("en-IN")} kg
+                    </span>
+                    <span className="text-slate-600">•</span>
+                    <span className={weightUnit === "tonne" ? "text-emerald-400 font-bold" : ""}>
+                      {quantityMT.toLocaleString("en-IN", { maximumFractionDigits: 3 })} Tonnes
+                    </span>
+                    <span className="text-slate-600">•</span>
+                    <span className={weightUnit === "metric_tonne" ? "text-emerald-400 font-bold" : ""}>
+                      {quantityMT.toLocaleString("en-IN", { maximumFractionDigits: 3 })} MT
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quick Slider */}
                 <input
                   type="range"
-                  min={0.5}
-                  max={200}
-                  step={0.5}
-                  value={quantityMT}
-                  onChange={(e) => setQuantityMT(parseFloat(e.target.value))}
+                  min={weightUnit === "kg" ? 100 : 0.1}
+                  max={weightUnit === "kg" ? 100000 : 100}
+                  step={weightUnit === "kg" ? 100 : 0.5}
+                  value={enteredWeight}
+                  onChange={(e) => handleWeightChange(parseFloat(e.target.value) || 0)}
                   className="w-full accent-blue-600 cursor-pointer"
                 />
-                <div className="flex items-center justify-between text-xs text-slate-400 mt-1">
-                  <span>0.5 MT</span>
-                  <span>50 MT</span>
-                  <span>100 MT</span>
-                  <span>200 MT (Heavy Lot)</span>
-                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2.5">

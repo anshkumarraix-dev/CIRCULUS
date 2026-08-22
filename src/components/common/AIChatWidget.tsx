@@ -162,11 +162,11 @@ export const AIChatWidget: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 p-4 rounded-full glass-panel glow-edge-cyan text-accent-cyan hover:bg-accent-cyan/10 transition-colors z-50 flex items-center justify-center cursor-pointer shadow-[0_0_25px_rgba(79,216,232,0.4)]"
+            className="fixed bottom-20 right-4 lg:bottom-6 lg:right-6 p-3.5 sm:p-4 rounded-full glass-panel glow-edge-cyan text-accent-cyan hover:bg-accent-cyan/10 transition-colors z-40 flex items-center justify-center cursor-pointer shadow-[0_0_25px_rgba(79,216,232,0.4)]"
             aria-label="Open CIRCULUS AI Copilot"
           >
             <div className="relative">
-              <Bot className="w-6 h-6" />
+              <Bot className="w-5 h-5 sm:w-6 sm:h-6" />
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-accent-emerald animate-pulse" />
             </div>
           </motion.button>
@@ -182,7 +182,7 @@ export const AIChatWidget: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.96 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100vw-32px)] sm:w-[420px] h-[580px] max-h-[85vh] glass-panel glow-edge-cyan rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden border border-accent-cyan/30"
+            className="fixed inset-x-2 bottom-20 top-16 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[420px] sm:h-[580px] sm:max-h-[85vh] glass-panel glow-edge-cyan rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden border border-accent-cyan/30 bg-[#0c1015]/95 backdrop-blur-xl"
           >
             {/* Header */}
             <div className="bg-panel-elevated/70 backdrop-blur-md border-b border-white/10 p-3.5 flex items-center justify-between text-ink">

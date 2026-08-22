@@ -55,13 +55,35 @@ export interface SearchGroundingResult {
   materialName: string;
   category: MaterialCategory;
   spotPricePerMT?: number;
+  spotPriceEstimateInrPerMT?: number;
   priceRangeNote: string;
-  regionalHubPricing: { hub: string; priceNote: string }[];
+  regionalHubPricing: { hub: string; priceNote: string; priceInrPerMT?: number }[];
+  regionalPrices?: { hub: string; priceInrPerMT: number; priceNote?: string }[];
   cpcbEprRules: string;
+  cpcbEprStatus?: string;
   spcbMandates: string;
   marketTrendSummary: string;
   lastUpdated: string;
   groundingSources: GroundingSource[];
+  sources?: { title: string; uri: string; domain?: string }[];
+  searchQueries?: string[];
+  trainedModelContext?: string;
+}
+
+export interface ScannerTrainingProfile {
+  id: string;
+  category: MaterialCategory;
+  materialName: string;
+  trainedAt: string;
+  searchQueries: string[];
+  benchmarkPriceInrPerMT: number;
+  priceCorridor: string;
+  cpcbEprDirectives: string;
+  spcbComplianceNotes: string;
+  visualDefectChecklist: string[];
+  qualityGradeStandards: string[];
+  groundingSources: GroundingSource[];
+  status: "active_grounded" | "calibrated" | "cached";
 }
 
 export interface IndiaMaterialMetadata {
@@ -107,6 +129,8 @@ export interface MaterialAnalysis {
   };
   warnings: string[];
   indiaMetadata?: IndiaMaterialMetadata;
+  searchGrounding?: SearchGroundingResult;
+  groundingTrained?: boolean;
 }
 
 export interface ValuationBreakdown {
@@ -199,6 +223,8 @@ export interface MatchRecommendation {
   listingId: string;
   buyerOrg: string;
   buyerType: string;
+  industrySector?: string;
+  annualCapacityMT?: number;
   buyerCity: string;
   buyerState: string;
   spcbJurisdiction: string;

@@ -7,18 +7,15 @@ import {
   History, 
   FileText, 
   Leaf, 
-  Camera,
-  Settings,
-  LogOut
+  Camera
 } from "lucide-react";
 import { UserRole } from "../../types";
+import { CirculusLogo } from "../common/CirculusLogo";
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   activeRole: UserRole;
-  onSignOut: () => void;
-  onDeleteAccount: () => void;
   onOpenRealTimeEntry: () => void;
   isMobileOpen: boolean;
   setIsMobileOpen: (open: boolean) => void;
@@ -28,8 +25,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   setActiveTab,
   activeRole,
-  onSignOut,
-  onDeleteAccount,
   onOpenRealTimeEntry,
   isMobileOpen,
   setIsMobileOpen
@@ -64,7 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Mobile Backdrop */}
       {isMobileOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
@@ -76,11 +71,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6">
-          <div className="flex items-center gap-2 mb-8">
-             <div className="w-8 h-8 rounded bg-accent-teal flex items-center justify-center shadow-[0_0_15px_rgba(42,157,143,0.4)]">
-               <div className="w-4 h-4 border-2 border-black rounded-full border-t-transparent animate-spin"></div>
-            </div>
-            <span className="font-extrabold text-2xl tracking-tight text-ink font-display">CIRCULUS</span>
+          <div className="mb-8">
+            <CirculusLogo size="md" showTagline={true} glow={true} />
           </div>
           
           <button
@@ -131,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="p-4 border-t border-white/5">
-          <div className="mb-4 px-3 flex items-center gap-3">
+          <div className="px-3 flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-base shrink-0">
               {activeRole.avatar}
             </div>
@@ -140,25 +132,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <p className="text-xs text-silver truncate font-body">{activeRole.name}</p>
             </div>
           </div>
-          
-          <button
-            onClick={onSignOut}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-base text-silver hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
-          >
-            <LogOut className="w-4 h-4" />
-            <span className="font-body">Sign Out</span>
-          </button>
-          <button
-            onClick={() => {
-              if (window.confirm("Are you sure you want to delete your account? All personal data will be anonymized and removed.")) {
-                onDeleteAccount();
-              }
-            }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-base text-silver hover:text-red-500 hover:bg-red-500/10 transition cursor-pointer mt-1"
-          >
-            <span className="font-body text-sm text-red-500/70">Delete Account</span>
-          </button>
-
         </div>
       </aside>
     </>

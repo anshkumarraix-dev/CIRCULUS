@@ -68,12 +68,29 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
   const [title, setTitle] = useState<string>("Secondary Aluminium Extrusion Scrap (Grade 6063)");
   const [grade, setGrade] = useState<string>("6063-T6 Pure Profile");
   const [quantityMT, setQuantityMT] = useState<number>(12.5);
+  const [weightUnit, setWeightUnit] = useState<"kg" | "tonne" | "metric_tonne">("metric_tonne");
+  const [enteredQuantity, setEnteredQuantity] = useState<number>(12.5);
   const [pricePerMT, setPricePerMT] = useState<number>(198000);
   const [reusabilityScore, setReusabilityScore] = useState<number>(94);
   const [city, setCity] = useState<string>(activeRole.location.split(",")[0] || "Sanand");
   const [state, setState] = useState<string>("Gujarat");
   const [hsnCode, setHsnCode] = useState<string>("76020010");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const handleQuantityChange = (val: number, unit: "kg" | "tonne" | "metric_tonne" = weightUnit) => {
+    setEnteredQuantity(val);
+    const mt = unit === "kg" ? val / 1000 : val;
+    setQuantityMT(Math.max(0.001, parseFloat(mt.toFixed(4))));
+  };
+
+  const handleUnitChange = (newUnit: "kg" | "tonne" | "metric_tonne") => {
+    setWeightUnit(newUnit);
+    if (newUnit === "kg") {
+      setEnteredQuantity(Math.round(quantityMT * 1000 * 10) / 10);
+    } else {
+      setEnteredQuantity(Math.round(quantityMT * 100) / 100);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -314,49 +331,115 @@ export const RealTimeEntryModal: React.FC<RealTimeEntryModalProps> = ({
           </div>
 
           {/* Volume, Price & Circularity */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
-                Batch Volume (MT)
+          <div className="space-y-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/10">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <label className="block text-xs uppercase tracking-wider text-slate-300 font-bold">
+                Batch Volume / Weight
               </label>
-              <input
-                type="number"
-                step="0.5"
-                min="0.5"
-                value={quantityMT}
-                onChange={(e) => setQuantityMT(parseFloat(e.target.value) || 1)}
-                required
-                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
-              />
+              {/* Unit Selector Pills: kg / Tonne / Metric Tonnes */}
+              <div className="inline-flex p-0.5 rounded-lg bg-black/40 border border-white/10 text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => handleUnitChange("kg")}
+                  className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                    weightUnit === "kg"
+                      ? "bg-accent-cyan text-primary font-bold shadow-xs"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  kg
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleUnitChange("tonne")}
+                  className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                    weightUnit === "tonne"
+                      ? "bg-accent-cyan text-primary font-bold shadow-xs"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  Tonne
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleUnitChange("metric_tonne")}
+                  className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                    weightUnit === "metric_tonne"
+                      ? "bg-accent-cyan text-primary font-bold shadow-xs"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  Metric Tonnes (MT)
+                </button>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
-                Unit Price (₹/MT)
-              </label>
-              <input
-                type="number"
-                step="500"
-                min="100"
-                value={pricePerMT}
-                onChange={(e) => setPricePerMT(parseFloat(e.target.value) || 100)}
-                required
-                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-accent-cyan focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <div className="relative">
+                  <input
+                    type="number"
+                    min={weightUnit === "kg" ? 1 : 0.01}
+                    step={weightUnit === "kg" ? 10 : 0.1}
+                    value={enteredQuantity}
+                    onChange={(e) => handleQuantityChange(parseFloat(e.target.value) || 0)}
+                    required
+                    className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
+                  />
+                  <span className="absolute right-3 top-2 text-xs font-bold text-slate-400 font-mono uppercase">
+                    {weightUnit === "kg" ? "KG" : weightUnit === "tonne" ? "TONNES" : "MT"}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <input
+                  type="number"
+                  step="500"
+                  min="100"
+                  value={pricePerMT}
+                  onChange={(e) => setPricePerMT(parseFloat(e.target.value) || 100)}
+                  required
+                  placeholder="Unit Price (₹/MT)"
+                  className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-accent-cyan focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
+                />
+                <p className="text-[11px] text-slate-500 mt-1 font-mono">
+                  Asking Price: ₹{pricePerMT.toLocaleString("en-IN")}/MT (₹{(pricePerMT / 1000).toFixed(2)}/kg)
+                </p>
+              </div>
+
+              <div>
+                <input
+                  type="number"
+                  min="50"
+                  max="100"
+                  value={reusabilityScore}
+                  onChange={(e) => setReusabilityScore(parseInt(e.target.value) || 90)}
+                  placeholder="Circularity Score (0-100)"
+                  className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
+                />
+                <p className="text-[11px] text-slate-500 mt-1">
+                  Circularity Purity Score: {reusabilityScore}%
+                </p>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-1">
-                Circularity Score (0-100)
-              </label>
-              <input
-                type="number"
-                min="50"
-                max="100"
-                value={reusabilityScore}
-                onChange={(e) => setReusabilityScore(parseInt(e.target.value) || 90)}
-                className="w-full bg-primary border border-white/10 rounded-lg px-3 py-2 text-sm text-ink focus:border-accent-cyan focus:bg-primary/50 focus:outline-none font-mono font-bold"
-              />
+            {/* Equivalent live conversions */}
+            <div className="flex flex-wrap items-center justify-between gap-1.5 px-2.5 py-1 rounded-xl bg-black/30 border border-white/5 text-xs font-mono">
+              <span className="text-slate-400">Equivalent:</span>
+              <div className="flex items-center gap-1.5 text-slate-300">
+                <span className={weightUnit === "kg" ? "text-emerald-400 font-bold" : ""}>
+                  {(quantityMT * 1000).toLocaleString("en-IN")} kg
+                </span>
+                <span className="text-slate-600">•</span>
+                <span className={weightUnit === "tonne" ? "text-emerald-400 font-bold" : ""}>
+                  {quantityMT.toLocaleString("en-IN", { maximumFractionDigits: 3 })} Tonnes
+                </span>
+                <span className="text-slate-600">•</span>
+                <span className={weightUnit === "metric_tonne" ? "text-emerald-400 font-bold" : ""}>
+                  {quantityMT.toLocaleString("en-IN", { maximumFractionDigits: 3 })} MT
+                </span>
+              </div>
             </div>
           </div>
 

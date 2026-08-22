@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { UserRole } from "../../types";
+import { CirculusLogo } from "../common/CirculusLogo";
 
 interface LoginPageProps {
   onLoginSuccess: (user: UserRole) => void;
@@ -108,16 +109,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0 mix-blend-screen"></div>
 
             {/* Left Column (Brand & Tech Simulation) */}
-            <div className="lg:col-span-6 p-8 sm:p-14 flex flex-col justify-between relative z-10">
+            <div className="lg:col-span-6 p-6 sm:p-10 lg:p-14 flex flex-col justify-between relative z-10 border-b lg:border-b-0 lg:border-r border-white/5">
             <div>
-              <div className="flex items-center gap-3 mb-10">
-                <div className="w-8 h-8 rounded bg-copper flex items-center justify-center shadow-[0_0_15px_rgba(239,122,59,0.4)]">
-                   <div className="w-4 h-4 border-2 border-black rounded-full border-t-transparent animate-spin"></div>
-                </div>
-                <span className="font-bold text-2xl tracking-widest text-ink font-display">CIRCULUS</span>
+              <div className="mb-6 sm:mb-10">
+                <CirculusLogo size="lg" showTagline={true} glow={true} />
               </div>
               
-              <h2 className="text-3xl sm:text-4xl font-bold text-ink tracking-tight leading-tight mb-8">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-ink tracking-tight leading-tight mb-4 sm:mb-8">
                 Secure Enterprise Portal
               </h2>
 
@@ -127,16 +125,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               </div>
             </div>
 
-            <div className="mt-12">
-              <p className="font-mono text-xs text-silver/80 flex flex-wrap gap-4">
-                <span>[ GSTIN FORMAT CHECKED ]</span>
-                <span>[ SPCB RECOGNIZED ]</span>
+            <div className="mt-8 sm:mt-12">
+              <p className="font-mono text-[11px] sm:text-xs text-silver/80 flex flex-wrap gap-2 sm:gap-4">
+                <span>[ GSTIN VALIDATION ]</span>
+                <span>[ CPCB / SPCB RECOGNIZED ]</span>
               </p>
             </div>
           </div>
 
           {/* Right Column (The Login Form) */}
-          <div className="lg:col-span-6 bg-black/20 p-8 sm:p-14 flex flex-col justify-center relative z-10">
+          <div className="lg:col-span-6 bg-black/30 p-6 sm:p-10 lg:p-14 flex flex-col justify-center relative z-10">
             
             <div className="flex items-center gap-6 border-b border-white/10 mb-8">
               <button

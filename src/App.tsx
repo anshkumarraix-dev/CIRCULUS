@@ -13,6 +13,7 @@ import { MatchRecommendations } from "./components/matches/MatchRecommendations"
 import { ImpactAnalyticsDashboard } from "./components/impact/ImpactAnalyticsDashboard";
 import { OwnershipLedgerView } from "./components/ledger/OwnershipLedgerView";
 import { IndiaComplianceHub } from "./components/compliance/IndiaComplianceHub";
+import { MobileBottomNav } from "./components/layout/MobileBottomNav";
 
 import { 
   MaterialPassport, 
@@ -118,24 +119,6 @@ export default function App() {
     localStorage.setItem("circulus_auth", "true");
     localStorage.setItem("circulus_role", JSON.stringify(user));
     showToast(`Welcome ${user.name} (${user.orgName})! Facility logged in.`);
-  };
-
-  
-  const handleDeleteAccount = async () => {
-    try {
-      await fetch('/api/auth/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: activeRole.gstin })
-      });
-    } catch (e) {
-      console.error(e);
-    }
-    
-    setIsAuthenticated(false);
-    localStorage.removeItem("circulus_auth");
-    localStorage.removeItem("circulus_role");
-    showToast("Account deleted and personal data anonymized.");
   };
 
   const handleGuestLogin = () => {
@@ -297,8 +280,6 @@ export default function App() {
         activeTab={activeTab} 
         setActiveTab={setActiveTab}
         activeRole={activeRole}
-        onSignOut={handleSignOut}
-        onDeleteAccount={handleDeleteAccount}
         onOpenRealTimeEntry={() => setIsRealTimeModalOpen(true)}
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}
@@ -307,10 +288,12 @@ export default function App() {
       <div className="flex-1 flex flex-col min-w-0">
         <AppHeader
           activeRole={activeRole}
+          onOpenRealTimeEntry={() => setIsRealTimeModalOpen(true)}
           onOpenMobileMenu={() => setIsMobileOpen(true)}
+          onSignOut={handleSignOut}
         />
         
-        <main className="flex-1 px-4 sm:px-6 py-8">
+        <main className="flex-1 px-3 sm:px-6 py-4 sm:py-8 pb-24 lg:pb-8">
           <div className="max-w-7xl mx-auto w-full">
             {/* Marketplace View */}
 
@@ -393,7 +376,7 @@ export default function App() {
         {activeTab === "compliance" && (
           <IndiaComplianceHub />
         )}
-                </div>
+          </div>
         </main>
       </div>
 
@@ -406,6 +389,12 @@ export default function App() {
       />
       {/* Global AI Chat Widget */}
       <AIChatWidget />
+      {/* Mobile Ergonomic Bottom Navigation */}
+      <MobileBottomNav 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab}
+        onOpenRealTimeEntry={() => setIsRealTimeModalOpen(true)}
+      />
     </div>
   );
 }

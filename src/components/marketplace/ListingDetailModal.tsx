@@ -31,10 +31,27 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
   activeRole,
   onSubmitOffer,
 }) => {
+  const [weightUnit, setWeightUnit] = useState<"kg" | "tonne" | "metric_tonne">("metric_tonne");
   const [offerQty, setOfferQty] = useState<number>(listing.quantityMT);
+  const [enteredOfferQty, setEnteredOfferQty] = useState<number>(listing.quantityMT);
   const [offerPrice, setOfferPrice] = useState<number>(listing.pricePerMT);
   const [destinationCity, setDestinationCity] = useState<string>("Ahmedabad Factory Gate");
   const [offerSubmitted, setOfferSubmitted] = useState<boolean>(false);
+
+  const handleQtyChange = (val: number, unit: "kg" | "tonne" | "metric_tonne" = weightUnit) => {
+    setEnteredOfferQty(val);
+    const mt = unit === "kg" ? val / 1000 : val;
+    setOfferQty(Math.max(0.001, parseFloat(mt.toFixed(4))));
+  };
+
+  const handleUnitChange = (newUnit: "kg" | "tonne" | "metric_tonne") => {
+    setWeightUnit(newUnit);
+    if (newUnit === "kg") {
+      setEnteredOfferQty(Math.round(offerQty * 1000 * 10) / 10);
+    } else {
+      setEnteredOfferQty(Math.round(offerQty * 100) / 100);
+    }
+  };
 
   const estimatedFreight = estimateFreightCostInr(35, offerQty);
   const totalOfferValue = offerQty * offerPrice;
@@ -163,20 +180,69 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-3.5 text-sm">
-                  <div>
-                    <label className="block text-silver font-bold mb-1">
-                      How many Tons do you want? (Max: {listing.quantityMT} MT)
-                    </label>
-                    <input
-                      type="number"
-                      min={listing.minimumOrderMT || 1}
-                      max={listing.quantityMT}
-                      step={0.5}
-                      value={offerQty}
-                      onChange={(e) => setOfferQty(parseFloat(e.target.value) || 1)}
-                      className="w-full bg-[#0B0F13] border border-white/10 rounded-xl px-3 py-2 text-sm font-bold text-ink focus:border-copper/500 focus:outline-none"
-                    />
-                    <p className="text-xs text-slate-500 mt-1">1 Ton = 1,000 kg. Minimum order: {listing.minimumOrderMT || 1} Tons.</p>
+                  <div className="bg-[#0B0F13] p-3 rounded-xl border border-white/10 space-y-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <label className="block text-silver font-bold text-xs uppercase tracking-wider">
+                        Purchase Quantity
+                      </label>
+                      {/* Unit Selector Pills */}
+                      <div className="inline-flex p-0.5 rounded-lg bg-black/40 border border-white/10 text-xs font-semibold">
+                        <button
+                          type="button"
+                          onClick={() => handleUnitChange("kg")}
+                          className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                            weightUnit === "kg"
+                              ? "bg-copper text-white font-bold shadow-xs"
+                              : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          kg
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleUnitChange("tonne")}
+                          className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                            weightUnit === "tonne"
+                              ? "bg-copper text-white font-bold shadow-xs"
+                              : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          Tonne
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleUnitChange("metric_tonne")}
+                          className={`px-2 py-0.5 rounded-md transition cursor-pointer ${
+                            weightUnit === "metric_tonne"
+                              ? "bg-copper text-white font-bold shadow-xs"
+                              : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          Metric Tonnes (MT)
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min={weightUnit === "kg" ? (listing.minimumOrderMT || 1) * 1000 : listing.minimumOrderMT || 0.1}
+                        max={weightUnit === "kg" ? listing.quantityMT * 1000 : listing.quantityMT}
+                        step={weightUnit === "kg" ? 100 : 0.5}
+                        value={enteredOfferQty}
+                        onChange={(e) => handleQtyChange(parseFloat(e.target.value) || 0)}
+                        className="w-full bg-[#12141A] border border-white/10 rounded-xl px-3 py-2 text-sm font-bold text-ink focus:border-copper focus:outline-none"
+                      />
+                      <span className="absolute right-3 top-2 text-xs font-bold text-slate-400 font-mono uppercase">
+                        {weightUnit === "kg" ? "KG" : weightUnit === "tonne" ? "TONNES" : "MT"}
+                      </span>
+                    </div>
+
+                    {/* Equivalent conversion */}
+                    <div className="flex items-center justify-between text-xs text-slate-400 px-1 font-mono">
+                      <span>Max available: {listing.quantityMT} MT ({(listing.quantityMT * 1000).toLocaleString("en-IN")} kg)</span>
+                      <span className="text-emerald-400 font-bold">= {offerQty} MT ({offerQty * 1000} kg)</span>
+                    </div>
                   </div>
 
                   <div>

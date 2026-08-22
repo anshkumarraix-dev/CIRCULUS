@@ -1,5 +1,6 @@
 import React from "react";
 import { Recycle, ShieldAlert, Sparkles, ExternalLink } from "lucide-react";
+import { CirculusLogo } from "../common/CirculusLogo";
 
 export const AppFooter: React.FC = () => {
   return (
@@ -32,12 +33,7 @@ export const AppFooter: React.FC = () => {
         </div>
 
         <div className="flex flex-col md:items-end">
-          <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none mb-1 text-white font-display">
-            CIRCULUS
-          </div>
-          <span className="text-xs uppercase tracking-widest text-slate-500 font-semibold">
-            CIRCULAR MATERIAL INTELLIGENCE
-          </span>
+          <CirculusLogo size="sm" showTagline={true} glow={false} />
         </div>
       </div>
 
