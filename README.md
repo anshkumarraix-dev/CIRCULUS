@@ -64,17 +64,15 @@ CIRCULUS integrates **Google Gemini 2.5 Flash (Multimodal Vision & Reasoning)** 
 
 ```text
 CIRCULUS/
-├── api/                    # Vercel Serverless Functions (/api/copilot-chat.ts)
-├── assets/                 # Brand assets and diagrams
-├── docs/                   # Documentation and guides
-├── public/                 # Static assets & web manifest
+├── docs/                   # Architecture, development guides, and contributing docs
+├── public/                 # Static assets (logo, industrial backgrounds)
 ├── src/                    # Primary application source code
 │   ├── components/
-│   │   ├── auth/           # OTP Authentication & Role Switcher
-│   │   ├── common/         # Activity Ticker, Entry Modals, AIChatWidget
+│   │   ├── auth/           # OTP & GSTIN Authentication & Registration
+│   │   ├── common/         # Activity Ticker, Entry Modals, AIChatWidget, Google Maps
 │   │   ├── compliance/     # India Compliance Hub (CPCB / SPCB EPR)
 │   │   ├── impact/         # Impact Analytics & BRSR / Scope 3 Carbon Reports
-│   │   ├── layout/         # Header, Sidebar, and Footer navigation
+│   │   ├── layout/         # Header, Sidebar, Drawer, and Footer navigation
 │   │   ├── ledger/         # Tamper-evident Ownership Ledger & Custody Trails
 │   │   ├── marketplace/    # Live Scrap Marketplace & Listing Modals
 │   │   ├── matches/        # Proximity-based AI Buyer Matching
@@ -82,17 +80,17 @@ CIRCULUS/
 │   │   ├── scanner/        # Multimodal AI Material Photo & Stream Scanner
 │   │   └── ui/             # Reusable UI primitives (Badges, Chips)
 │   ├── lib/                # Valuation, Carbon LCA, Matching & Ledger Adapters
-│   ├── utils/              # Client-side fallback intelligence & helper engines
+│   ├── utils/              # AI Copilot engine & helper engines
 │   ├── types.ts            # Core TypeScript interfaces & enum models
 │   ├── App.tsx             # Main application component & routing state
 │   ├── main.tsx            # React root mount
 │   └── index.css           # Tailwind CSS v4 styles and custom scrollbar
 ├── .env.example            # Environment variable declarations
-├── index.html              # HTML entry point with native smooth scroll
+├── index.html              # HTML entry point
+├── metadata.json           # Platform application metadata
 ├── package.json            # NPM dependencies and build scripts
-├── server.ts               # Express backend proxy for secure Gemini calls
+├── server.ts               # Express backend proxy for secure Gemini & Maps calls
 ├── tsconfig.json           # TypeScript configuration
-├── vercel.json             # Vercel SPA and API routing configuration
 └── vite.config.ts          # Vite build and plugin configurations
 ```
 
