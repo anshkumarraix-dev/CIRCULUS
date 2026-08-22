@@ -78,7 +78,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
           {/* Account Dropdown Menu */}
           {isAccountOpen && (
-            <div className="absolute right-0 mt-2 w-72 rounded-xl bg-[#12141A] border border-white/10 shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 mt-2 w-72 max-w-[calc(100vw-32px)] rounded-xl bg-[#12141A] border border-white/10 shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               {/* User Profile Summary */}
               <div className="flex items-start gap-3 pb-3 border-b border-white/10">
                 <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-lg shrink-0">

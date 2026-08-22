@@ -536,7 +536,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
       >
         {/* Parallax Hero Section */}
         <motion.div 
-          className="relative overflow-hidden rounded-3xl bg-panel/40 border border-white/10 p-8 sm:p-12 flex items-center justify-center text-center shadow-xl"
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-panel/40 border border-white/10 p-5 sm:p-8 md:p-12 flex items-center justify-center text-center shadow-xl"
           style={{ opacity: heroOpacity, y: heroY }}
         >
           {/* Volumetric glow background */}
@@ -563,32 +563,33 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
               />
             ))}
           </div>
-          <div className="relative z-10 max-w-3xl space-y-6">
-            <h1 className="text-4xl sm:text-5xl font-extrabold font-display tracking-tight text-ink drop-shadow-md">
+          <div className="relative z-10 max-w-3xl space-y-3 sm:space-y-5">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold font-display tracking-tight text-ink drop-shadow-md leading-tight">
               Industrial Circular Exchange
             </h1>
-            <p className="text-lg sm:text-xl text-silver/80 font-body max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-base md:text-lg text-silver/80 font-body max-w-2xl mx-auto leading-relaxed">
               Tokenize, trade, and track secondary raw materials with cryptographic certainty.
               Powered by AI material grading and verifiable material passports.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-1 sm:pt-2">
               <button 
                 onClick={onOpenRealTimeEntryModal}
-                className="bg-accent-teal hover:bg-accent-teal/90 text-white px-6 py-3 rounded-xl font-bold font-body transition-colors shadow-[0_0_20px_rgba(42,157,143,0.3)] flex items-center gap-2 cursor-pointer"
+                className="bg-accent-teal hover:bg-accent-teal/90 text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-bold font-body text-xs sm:text-sm transition-colors shadow-[0_0_20px_rgba(42,157,143,0.3)] flex items-center gap-2 cursor-pointer"
               >
-                <Plus className="w-5 h-5" /> Tokenize Scrap Lot
+                <Plus className="w-4 h-4 sm:w-5 sm:h-5" /> Tokenize Scrap Lot
               </button>
             </div>
           </div>
         </motion.div>
+
         {/* Interactive Indian Scrap Benchmark Ticker */}
-        <div className="bg-panel text-ink p-3 sm:p-4 rounded-lg border border-white/5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm">
+        <div className="bg-panel text-ink p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-white/10 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs sm:text-sm">
           <div className="flex items-center gap-2 font-bold text-accent-gold shrink-0">
             <TrendingUp className="w-4 h-4 text-accent-gold animate-pulse" />
             <span className="font-display">India Scrap Spot Benchmarks:</span>
           </div>
-          <div className="w-full overflow-x-auto whitespace-nowrap scrollbar-hide">
-            <div className="flex min-w-max items-center gap-6">
+          <div className="w-full overflow-x-auto whitespace-nowrap scrollbar-none">
+            <div className="flex min-w-max items-center gap-2.5 sm:gap-4 pb-0.5">
               {BENCHMARK_TICKERS.map((t, idx) => (
                 <button
                   key={idx}
@@ -596,7 +597,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                     setSelectedCategory(t.category);
                     setSearchQuery("");
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5/80 hover:bg-white/10/90 border border-white/10/60 whitespace-nowrap transition cursor-pointer text-sm"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg sm:rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 whitespace-nowrap transition cursor-pointer text-xs sm:text-sm"
                   title={`Click to filter by ${t.material}`}
                 >
                   <span className="text-silver font-medium font-body">
@@ -604,7 +605,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                   </span>
                   <span className="font-mono font-bold text-ink">{t.rate}</span>
                   <span
-                    className={`font-mono text-xs font-bold ${t.trend.startsWith("+") ? "text-accent-gold" : "text-rose-400"}`}
+                    className={`font-mono text-[11px] sm:text-xs font-bold ${t.trend.startsWith("+") ? "text-accent-gold" : "text-rose-400"}`}
                   >
                     {t.trend}
                   </span>
@@ -613,12 +614,13 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
             </div>
           </div>
         </div>
+
         {/* 10th-Grade Friendly Explainer Banner with Clean Blur Design */}
         {/* Marketplace Onboarding Popover */}
         {!introDismissed && (
-          <div className="relative rounded-lg p-6 border border-accent-gold/30 bg-accent-gold/5 shadow-sm mb-6 flex justify-between items-start">
-            <div className="space-y-2 text-sm">
-              <h4 className="font-bold text-base sm:text-lg text-ink flex items-center gap-2 font-display">
+          <div className="relative rounded-xl p-4 sm:p-6 border border-accent-gold/30 bg-accent-gold/5 shadow-sm mb-4 sm:mb-6 flex justify-between items-start gap-3">
+            <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+              <h4 className="font-bold text-sm sm:text-base text-ink flex items-center gap-2 font-display">
                 What is this Marketplace?
               </h4>
               <p className="text-silver leading-relaxed font-body">
@@ -633,42 +635,43 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
             </div>
             <button
               onClick={dismissIntro}
-              className="p-2 text-silver hover:text-ink transition"
+              className="p-1.5 text-silver hover:text-ink transition rounded-lg hover:bg-white/5"
+              aria-label="Dismiss guide"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         )}
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end -mt-2 mb-2">
           {introDismissed && (
             <button
               onClick={() => setIntroDismissed(false)}
-              className="text-xs text-silver hover:text-accent-gold flex items-center gap-1 font-body"
+              className="text-xs text-silver hover:text-accent-gold flex items-center gap-1 font-body cursor-pointer"
             >
-              <HelpCircle className="w-3 h-3" /> How it works
+              <HelpCircle className="w-3.5 h-3.5" /> How it works
             </button>
           )}
         </div>
 
         {/* Search & Dynamic Interactive Filters */}
-        <div className="bg-panel p-5 sm:p-6 rounded-3xl border border-white/10 space-y-4 shadow-xs">
-          <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div className="bg-panel p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/10 space-y-3 sm:space-y-4 shadow-xs">
+          <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 items-stretch sm:items-center justify-between">
             <div className="relative flex-1 w-full">
-              <Search className="w-4 h-4 text-silver absolute left-3.5 top-3.5" />
+              <Search className="w-4 h-4 text-silver absolute left-3.5 top-3" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search materials (e.g. Aluminium, Plastic Bottles, Copper Wire, Steel, Fly Ash, Sanand)..."
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 pr-4 py-3 text-sm text-ink placeholder-slate-400 focus:border-blue-500 focus:bg-panel focus:outline-none font-medium"
+                placeholder="Search materials (Aluminium, rPET, Copper, Sanand)..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl pl-9 pr-4 py-2.5 sm:py-3 text-xs sm:text-sm text-ink placeholder-slate-400 focus:border-accent-teal focus:bg-panel focus:outline-none font-medium"
               />
             </div>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto">
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-ink focus:border-blue-500 font-bold cursor-pointer"
+                className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-ink focus:border-accent-teal font-semibold cursor-pointer truncate"
               >
                 {STATES.map((s) => (
                   <option key={s} value={s}>
@@ -680,37 +683,37 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-ink focus:border-blue-500 font-bold cursor-pointer"
+                className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-ink focus:border-accent-teal font-semibold cursor-pointer truncate"
               >
-                <option value="circularity">Sort: Highest Purity Grade</option>
-                <option value="price_asc">Sort: Price (Lowest First)</option>
-                <option value="carbon">Sort: Most Smoke Saved (CO₂)</option>
-                <option value="volume">Sort: Largest Batch (Tons)</option>
+                <option value="circularity">Sort: Purity Grade</option>
+                <option value="price_asc">Sort: Price (Lowest)</option>
+                <option value="carbon">Sort: CO₂ Saved</option>
+                <option value="volume">Sort: Batch Size</option>
               </select>
             </div>
           </div>
 
           {/* Dynamic Category Filter Pills with Active Buyers Indicator */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none snap-x">
             {CATEGORIES.map((cat) => {
               const isSelected = selectedCategory === cat.id;
               return (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 py-2.5 rounded-2xl text-sm whitespace-nowrap font-extrabold transition cursor-pointer flex items-center gap-2 ${
+                  className={`px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm whitespace-nowrap font-bold transition cursor-pointer flex items-center gap-1.5 sm:gap-2 shrink-0 snap-start ${
                     isSelected
                       ? "bg-accent-gold text-ink shadow-md shadow-copper/20"
-                      : "bg-white/10 text-ink hover:text-ink hover:bg-white/20 border border-white/10/60"
+                      : "bg-white/5 text-ink hover:text-ink hover:bg-white/10 border border-white/10"
                   }`}
                 >
                   <span>{cat.label}</span>
                   {cat.buyersCount > 0 && (
                     <span
-                      className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                      className={`text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold ${
                         isSelected
-                          ? "bg-panel/20 text-ink"
-                          : "bg-emerald-100 text-emerald-800"
+                          ? "bg-panel/30 text-ink"
+                          : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
                       }`}
                     >
                       {cat.buyersCount} Buyers
@@ -724,117 +727,217 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
 
         {/* Main Grid: Listings OR Interactive Playground Empty State */}
         {filteredListings.length > 0 ? (
-          <div className="bg-panel rounded-2xl border border-white/5 overflow-hidden shadow-lg">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm text-ink/80">
-                <thead className="text-xs uppercase bg-white/5 border-b border-white/10 text-silver font-bold">
-                  <tr>
-                    <th className="px-4 py-3">Asset Hash / Digital ID</th>
-                    <th className="px-4 py-3">Material & Grade</th>
-                    <th className="px-4 py-3">Volume</th>
-                    <th className="px-4 py-3">Purity</th>
-                    <th className="px-4 py-3">Origin</th>
-                    <th className="px-4 py-3">Spot Value</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-700/50">
-                  {filteredListings.map((listing) => {
-                    const passport = passports.find(
-                      (p) => p.id === listing.passportId,
-                    );
-                    return (
-                      <tr
-                        key={listing.id}
-                        className="hover:bg-white/5/50 transition-colors"
-                      >
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <img
-                              src={listing.imageUrl}
-                              alt=""
-                              className="w-8 h-8 rounded bg-white/5 object-cover border border-white/10"
-                            />
-                            <div>
-                              <span className="font-mono text-xs text-silver/60 block">
-                                {passport?.recordHash?.substring(0, 16) ||
-                                  listing.passportId}
-                              </span>
-                              <span className="font-bold text-[#00E676] flex items-center gap-1 mt-0.5">
-                                <ShieldCheck className="w-3 h-3" />
-                                Lab Verified
-                              </span>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 max-w-[200px]">
-                          <p className="font-bold text-slate-100 truncate">
-                            {listing.title}
-                          </p>
-                          <p className="text-xs text-silver truncate mt-0.5">
-                            {listing.grade}
-                          </p>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="font-mono font-bold text-slate-200">
-                            {listing.quantityMT} MT
+          <div className="space-y-4">
+            {/* Mobile Card View (Phone / Small Screens) */}
+            <div className="grid grid-cols-1 gap-3 md:hidden">
+              {filteredListings.map((listing) => {
+                const passport = passports.find((p) => p.id === listing.passportId);
+                return (
+                  <div
+                    key={`mobile-${listing.id}`}
+                    className="bg-panel rounded-2xl border border-white/10 p-4 space-y-3.5 shadow-md hover:border-accent-teal/40 transition"
+                  >
+                    {/* Header: Photo + Title + Grade + Badges */}
+                    <div className="flex items-start gap-3">
+                      <img
+                        src={listing.imageUrl}
+                        alt={listing.title}
+                        className="w-14 h-14 rounded-xl bg-white/5 object-cover border border-white/10 shrink-0"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-mono text-[10px] text-silver/60 truncate">
+                            {passport?.recordHash?.substring(0, 14) || listing.passportId}
                           </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-full bg-white/10 rounded-full h-1.5 max-w-[40px]">
-                              <div
-                                className="bg-[#00E676] h-1.5 rounded-full"
-                                style={{
-                                  width: `${listing.reusabilityScore}%`,
-                                }}
-                              ></div>
+                          <span className="font-bold text-[11px] text-[#00E676] flex items-center gap-1 shrink-0 bg-[#00E676]/10 px-1.5 py-0.5 rounded-md border border-[#00E676]/20">
+                            <ShieldCheck className="w-3 h-3" />
+                            Verified
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-sm text-ink truncate mt-0.5">
+                          {listing.title}
+                        </h3>
+                        <p className="text-xs text-silver truncate mt-0.5 font-body">
+                          {listing.grade}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Metrics Grid */}
+                    <div className="grid grid-cols-2 gap-2 bg-white/5 p-2.5 rounded-xl border border-white/5 text-xs">
+                      <div>
+                        <span className="text-[10px] text-silver block uppercase font-medium">Batch Volume</span>
+                        <span className="font-mono font-bold text-ink text-sm">
+                          {listing.quantityMT} MT
+                        </span>
+                        <span className="text-[10px] text-silver block font-mono">
+                          ({listing.quantityMT * 1000} kg)
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-silver block uppercase font-medium">Spot Rate</span>
+                        <span className="font-mono font-bold text-accent-gold text-sm">
+                          ₹{listing.pricePerMT.toLocaleString("en-IN")}/MT
+                        </span>
+                        <span className="text-[10px] text-silver block font-mono">
+                          {formatInrCurrency(listing.totalValueInr, true)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Meta Row: Purity & Location */}
+                    <div className="flex items-center justify-between text-xs text-silver/80 pt-0.5">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-12 bg-white/10 rounded-full h-1.5">
+                          <div
+                            className="bg-[#00E676] h-1.5 rounded-full"
+                            style={{ width: `${listing.reusabilityScore}%` }}
+                          />
+                        </div>
+                        <span className="font-mono font-semibold text-ink text-[11px]">
+                          {listing.reusabilityScore}% Purity
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 truncate max-w-[50%]">
+                        <MapPin className="w-3 h-3 text-copper shrink-0" />
+                        <span className="truncate">{listing.city}, {listing.state}</span>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/5">
+                      <button
+                        onClick={() => onViewPassport(listing.passportId)}
+                        className="py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-ink border border-white/10 text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <Layers className="w-3.5 h-3.5 text-copper" />
+                        <span>Passport</span>
+                      </button>
+                      <button
+                        onClick={() => setSelectedListingForModal(listing)}
+                        className="py-2 px-3 rounded-xl bg-[#FF6D00] hover:bg-[#E65C00] text-ink font-bold text-xs transition shadow-md shadow-[#FF6D00]/20 flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <span>Buy / Offer</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop Data Table (Tablet & Large Screens) */}
+            <div className="hidden md:block bg-panel rounded-2xl border border-white/5 overflow-hidden shadow-lg">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm text-ink/80">
+                  <thead className="text-xs uppercase bg-white/5 border-b border-white/10 text-silver font-bold">
+                    <tr>
+                      <th className="px-4 py-3">Asset Hash / Digital ID</th>
+                      <th className="px-4 py-3">Material & Grade</th>
+                      <th className="px-4 py-3">Volume</th>
+                      <th className="px-4 py-3">Purity</th>
+                      <th className="px-4 py-3">Origin</th>
+                      <th className="px-4 py-3">Spot Value</th>
+                      <th className="px-4 py-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-700/50">
+                    {filteredListings.map((listing) => {
+                      const passport = passports.find(
+                        (p) => p.id === listing.passportId,
+                      );
+                      return (
+                        <tr
+                          key={listing.id}
+                          className="hover:bg-white/5/50 transition-colors"
+                        >
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <img
+                                src={listing.imageUrl}
+                                alt=""
+                                className="w-8 h-8 rounded bg-white/5 object-cover border border-white/10"
+                              />
+                              <div>
+                                <span className="font-mono text-xs text-silver/60 block">
+                                  {passport?.recordHash?.substring(0, 16) ||
+                                    listing.passportId}
+                                </span>
+                                <span className="font-bold text-[#00E676] flex items-center gap-1 mt-0.5">
+                                  <ShieldCheck className="w-3 h-3" />
+                                  Lab Verified
+                                </span>
+                              </div>
                             </div>
-                            <span className="font-mono text-slate-200">
-                              {listing.reusabilityScore}%
+                          </td>
+                          <td className="px-4 py-3 max-w-[200px]">
+                            <p className="font-bold text-slate-100 truncate">
+                              {listing.title}
+                            </p>
+                            <p className="text-xs text-silver truncate mt-0.5">
+                              {listing.grade}
+                            </p>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="font-mono font-bold text-slate-200">
+                              {listing.quantityMT} MT
                             </span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-1 text-ink/80">
-                            <MapPin className="w-3 h-3 text-silver/60" />
-                            <span>
-                              {listing.city}, {listing.state}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          <p className="font-mono font-bold text-ink">
-                            ₹{listing.pricePerMT.toLocaleString("en-IN")}/MT
-                          </p>
-                          <p className="font-mono text-xs text-silver mt-0.5">
-                            {formatInrCurrency(listing.totalValueInr, true)}
-                          </p>
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={() => onViewPassport(listing.passportId)}
-                              className="p-1.5 rounded bg-white/5 hover:bg-white/10 text-ink/80 transition"
-                              title="View Passport"
-                            >
-                              <Layers className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() =>
-                                setSelectedListingForModal(listing)
-                              }
-                              className="px-3 py-1.5 rounded bg-[#FF6D00] hover:bg-[#E65C00] text-ink font-bold text-sm transition shadow-md shadow-[#FF6D00]/20"
-                            >
-                              Buy / Offer
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-1.5">
+                              <div className="w-full bg-white/10 rounded-full h-1.5 max-w-[40px]">
+                                <div
+                                  className="bg-[#00E676] h-1.5 rounded-full"
+                                  style={{
+                                    width: `${listing.reusabilityScore}%`,
+                                  }}
+                                ></div>
+                              </div>
+                              <span className="font-mono text-slate-200">
+                                {listing.reusabilityScore}%
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-1 text-ink/80">
+                              <MapPin className="w-3 h-3 text-silver/60" />
+                              <span>
+                                {listing.city}, {listing.state}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <p className="font-mono font-bold text-ink">
+                              ₹{listing.pricePerMT.toLocaleString("en-IN")}/MT
+                            </p>
+                            <p className="font-mono text-xs text-silver mt-0.5">
+                              {formatInrCurrency(listing.totalValueInr, true)}
+                            </p>
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => onViewPassport(listing.passportId)}
+                                className="p-1.5 rounded bg-white/5 hover:bg-white/10 text-ink/80 transition cursor-pointer"
+                                title="View Passport"
+                              >
+                                <Layers className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() =>
+                                  setSelectedListingForModal(listing)
+                                }
+                                className="px-3 py-1.5 rounded bg-[#FF6D00] hover:bg-[#E65C00] text-ink font-bold text-sm transition shadow-md shadow-[#FF6D00]/20 cursor-pointer"
+                              >
+                                Buy / Offer
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         ) : (
