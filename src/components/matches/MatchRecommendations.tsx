@@ -52,12 +52,110 @@ export const MatchRecommendations: React.FC<MatchRecommendationsProps> = ({
   onInitiateTransfer,
   activeRole,
 }) => {
-  const [activeViewTab, setActiveViewTab] = useState<"live_matches" | "buyer_directory">("live_matches");
+  const [activeViewTab, setActiveViewTab] = useState<"live_matches" | "buyer_directory" | "sellers_directory">("live_matches");
   const [sentOfferMap, setSentOfferMap] = useState<Record<string, boolean>>({});
   const [selectedBuyerForModal, setSelectedBuyerForModal] = useState<BuyerProfile | MatchRecommendation | null>(null);
   const [inquiryQuantityMT, setInquiryQuantityMT] = useState<number>(20);
   const [inquiryCustomNote, setInquiryCustomNote] = useState<string>("Ready for immediate dispatch with GST e-Way Bill & SPCB manifest.");
   const [inquirySuccess, setInquirySuccess] = useState<boolean>(false);
+
+  // Dynamic registered sellers from local storage & active session
+  const registeredSellers = useMemo(() => {
+    const defaultSellers = [
+      {
+        id: "SELL-001",
+        name: "Vikramaditya Mehta",
+        companyName: "Gujarat Toolroom Ltd (Sanand Auto Hub)",
+        designation: "General Manager - Plant Operations",
+        email: "v.mehta@gujaratsteel.co.in",
+        scrapTypeProduced: "Aluminium 6063 Scrap, High-Grade Punchings",
+        city: "Sanand",
+        state: "Gujarat",
+        gstin: "24AAACA1234B1Z5",
+        gpsLocation: {
+          latitude: 22.9904,
+          longitude: 72.3812,
+          formattedAddress: "GIDC Industrial Estate, Sanand, Gujarat 382170",
+          city: "Sanand",
+          state: "Gujarat",
+          pincode: "382170"
+        },
+        monthlyVolumeMT: 145,
+        isVerified: true
+      },
+      {
+        id: "SELL-002",
+        name: "Sunil Deshmukh",
+        companyName: "Maharashtra Precision Stampings",
+        designation: "Operations Lead",
+        email: "sunil@mhp-stampings.in",
+        scrapTypeProduced: "CRCA Steel Offcuts, Sheet Trimmings",
+        city: "Chakan, Pune",
+        state: "Maharashtra",
+        gstin: "27AAECM4455C1Z8",
+        gpsLocation: {
+          latitude: 18.7606,
+          longitude: 73.8567,
+          formattedAddress: "MIDC Phase 2, Chakan, Pune, Maharashtra 410501",
+          city: "Chakan, Pune",
+          state: "Maharashtra",
+          pincode: "410501"
+        },
+        monthlyVolumeMT: 210,
+        isVerified: true
+      },
+      {
+        id: "SELL-003",
+        name: "Arun Krishnan",
+        companyName: "Southern Cable & Harness Corp",
+        designation: "Quality & Scrap Logistics Manager",
+        email: "arun.k@southerncables.co.in",
+        scrapTypeProduced: "Copper Wire Millberry Grade A",
+        city: "Sriperumbudur",
+        state: "Tamil Nadu",
+        gstin: "33AAECS9988D1Z2",
+        gpsLocation: {
+          latitude: 12.9675,
+          longitude: 79.9458,
+          formattedAddress: "SIPCOT Industrial Complex, Sriperumbudur, Tamil Nadu 602105",
+          city: "Sriperumbudur",
+          state: "Tamil Nadu",
+          pincode: "602105"
+        },
+        monthlyVolumeMT: 65,
+        isVerified: true
+      }
+    ];
+
+    try {
+      const saved = localStorage.getItem("circulus_registered_sellers");
+      const list = saved ? JSON.parse(saved) : defaultSellers;
+
+      // If active user is seller, inject at top
+      if ((activeRole.accountType === "seller" || activeRole.id === "supplier") && activeRole.name) {
+        if (!list.some((s: any) => s.name === activeRole.name || s.email === activeRole.email)) {
+          list.unshift({
+            id: `SELL-CURRENT`,
+            name: activeRole.name,
+            companyName: activeRole.companyName || activeRole.orgName,
+            designation: activeRole.designation || "Plant Operations Lead",
+            email: activeRole.email || "seller@enterprise.in",
+            scrapTypeProduced: activeRole.scrapTypeProduced || "Aluminium 6063 Scrap, Heavy Extrusions",
+            city: activeRole.gpsLocation?.city || "Sanand",
+            state: activeRole.gpsLocation?.state || "Gujarat",
+            gstin: activeRole.gstin || "24AAACA1234B1Z5",
+            gpsLocation: activeRole.gpsLocation,
+            monthlyVolumeMT: 120,
+            isVerified: true,
+            isCurrentSession: true
+          });
+        }
+      }
+      return list;
+    } catch {
+      return defaultSellers;
+    }
+  }, [activeRole]);
 
   // Multi-Criteria Filtering State
   const [directorySearch, setDirectorySearch] = useState<string>("");
@@ -259,7 +357,7 @@ export const MatchRecommendations: React.FC<MatchRecommendationsProps> = ({
           <div className="flex flex-wrap items-center gap-3 pt-3">
             <button
               onClick={() => setActiveViewTab("live_matches")}
-              className={`px-5 py-2.5 rounded-2xl text-sm font-extrabold transition cursor-pointer flex items-center gap-2 ${
+              className={`px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 ${
                 activeViewTab === "live_matches"
                   ? "bg-[#00E676] text-[#0B0F13] shadow-md border border-[#00C853]"
                   : "bg-[#1E2630]/80 hover:bg-[#1E2630] text-white backdrop-blur-md border border-slate-700"
@@ -271,14 +369,26 @@ export const MatchRecommendations: React.FC<MatchRecommendationsProps> = ({
 
             <button
               onClick={() => setActiveViewTab("buyer_directory")}
-              className={`px-5 py-2.5 rounded-2xl text-sm font-extrabold transition cursor-pointer flex items-center gap-2 ${
+              className={`px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 ${
                 activeViewTab === "buyer_directory"
                   ? "bg-[#00E676] text-[#0B0F13] shadow-md border border-[#00C853]"
                   : "bg-[#1E2630]/80 hover:bg-[#1E2630] text-white backdrop-blur-md border border-slate-700"
               }`}
             >
               <Building2 className="w-4 h-4" />
-              <span>All-India Verified Buyer Directory ({filteredDirectoryBuyers.length} / {INDIAN_BUYERS_DIRECTORY.length} Plants)</span>
+              <span>Verified Buyers ({filteredDirectoryBuyers.length} Plants)</span>
+            </button>
+
+            <button
+              onClick={() => setActiveViewTab("sellers_directory")}
+              className={`px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 ${
+                activeViewTab === "sellers_directory"
+                  ? "bg-[#00E676] text-[#0B0F13] shadow-md border border-[#00C853]"
+                  : "bg-[#1E2630]/80 hover:bg-[#1E2630] text-white backdrop-blur-md border border-slate-700"
+              }`}
+            >
+              <Factory className="w-4 h-4" />
+              <span>Scrap Sellers & Generators ({registeredSellers.length} Facilities)</span>
             </button>
           </div>
         </div>
@@ -1058,6 +1168,134 @@ export const MatchRecommendations: React.FC<MatchRecommendationsProps> = ({
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* VIEW TAB 3: REGISTERED SCRAP SELLERS & GENERATORS HUB */}
+      {activeViewTab === "sellers_directory" && (
+        <div className="space-y-6 animate-fadeIn">
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between bg-[#12181F] p-5 rounded-2xl border border-slate-700">
+            <div>
+              <h3 className="text-lg font-extrabold text-white flex items-center gap-2">
+                <Factory className="w-5 h-5 text-[#00E676]" />
+                <span>Verified Scrap Generators & Manufacturing Plants</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                Authentic industrial scrap producers registered on CIRCULUS with GPS telemetry, authorized designations, and verified GSTIN credentials.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-full bg-[#00E676]/10 text-[#00E676] font-mono text-xs font-bold border border-[#00E676]/30">
+                {registeredSellers.length} Facilities Active
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {registeredSellers.map((seller) => (
+              <div
+                key={seller.id}
+                className="bg-[#12181F] rounded-3xl border border-slate-700 hover:border-[#00E676] transition duration-300 overflow-hidden shadow-xs hover:shadow-lg hover:shadow-[#00E676]/10 flex flex-col justify-between group"
+              >
+                {/* Header Strip */}
+                <div className="p-5 border-b border-slate-800 bg-slate-900/40">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-[#00E676]/15 border border-[#00E676]/30 flex items-center justify-center text-2xl shrink-0">
+                        🏭
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <h4 className="text-white font-extrabold text-base truncate">
+                            {seller.companyName}
+                          </h4>
+                          {seller.isVerified && (
+                            <CheckCircle className="w-4 h-4 text-[#00E676] shrink-0" />
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-400 truncate">
+                          {seller.city}, {seller.state}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {seller.isCurrentSession && (
+                    <div className="mt-3 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Your Active Logged-In Facility</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Seller & Scrap Details */}
+                <div className="p-5 space-y-4 flex-1 flex flex-col justify-between">
+                  <div className="space-y-3 text-sm">
+                    {/* Authorized Signatory & Designation */}
+                    <div className="bg-[#1E2630] p-3 rounded-2xl border border-slate-700/80 space-y-1">
+                      <span className="text-[11px] text-slate-400 uppercase font-bold tracking-wider block">
+                        Authorized Signatory
+                      </span>
+                      <p className="text-white font-bold text-sm">{seller.name}</p>
+                      <p className="text-xs text-[#00E676] font-medium">{seller.designation}</p>
+                    </div>
+
+                    {/* Scrap Produced */}
+                    <div className="space-y-1">
+                      <span className="text-[11px] text-slate-400 uppercase font-bold tracking-wider block">
+                        Primary Scrap Stream Produced
+                      </span>
+                      <div className="px-3 py-2 rounded-xl bg-orange-500/10 border border-orange-500/20 text-[#FF6D00] font-semibold text-xs flex items-center gap-2">
+                        <Layers className="w-4 h-4 shrink-0" />
+                        <span className="truncate">{seller.scrapTypeProduced}</span>
+                      </div>
+                    </div>
+
+                    {/* GPS Coordinates & Map Link */}
+                    {seller.gpsLocation && (
+                      <div className="bg-[#0B0F13] p-3 rounded-xl border border-slate-800 space-y-1 font-mono text-xs">
+                        <div className="flex items-center justify-between text-slate-400">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3.5 h-3.5 text-[#00E676]" />
+                            <span>GPS Verified Node:</span>
+                          </span>
+                          <span className="text-[#00E676] font-bold">
+                            {seller.gpsLocation.latitude.toFixed(4)}°N, {seller.gpsLocation.longitude.toFixed(4)}°E
+                          </span>
+                        </div>
+                        <p className="text-slate-400 text-[11px] truncate mt-0.5">
+                          {seller.gpsLocation.formattedAddress}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Compliance & GSTIN Grid */}
+                    <div className="grid grid-cols-2 gap-2 text-xs bg-[#0B0F13] p-2.5 rounded-xl border border-slate-800 font-mono">
+                      <div>
+                        <span className="text-slate-500 block text-[10px]">GSTIN:</span>
+                        <span className="text-slate-300 font-bold">{seller.gstin}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 block text-[10px]">Avg Output:</span>
+                        <span className="text-[#00E676] font-bold">~{seller.monthlyVolumeMT || 120} MT / Month</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <a
+                    href={`https://maps.google.com/?q=${seller.gpsLocation?.latitude || 22.9904},${seller.gpsLocation?.longitude || 72.3812}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-2.5 rounded-xl bg-[#1E2630] hover:bg-[#00E676] hover:text-[#0B0F13] border border-slate-600 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm mt-2"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>View Facility on Google Maps</span>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

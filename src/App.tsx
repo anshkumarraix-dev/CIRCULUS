@@ -14,6 +14,7 @@ import { ImpactAnalyticsDashboard } from "./components/impact/ImpactAnalyticsDas
 import { OwnershipLedgerView } from "./components/ledger/OwnershipLedgerView";
 import { IndiaComplianceHub } from "./components/compliance/IndiaComplianceHub";
 import { MobileBottomNav } from "./components/layout/MobileBottomNav";
+import { AccountDrawer } from "./components/layout/AccountDrawer";
 
 import { 
   MaterialPassport, 
@@ -104,6 +105,7 @@ export default function App() {
     ? passports.find((p) => p.id === activePassportId)
     : null;
   const [isRealTimeModalOpen, setIsRealTimeModalOpen] = useState<boolean>(false);
+  const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState<boolean>(false);
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -118,16 +120,7 @@ export default function App() {
     setIsAuthenticated(true);
     localStorage.setItem("circulus_auth", "true");
     localStorage.setItem("circulus_role", JSON.stringify(user));
-    showToast(`Welcome ${user.name} (${user.orgName})! Facility logged in.`);
-  };
-
-  const handleGuestLogin = () => {
-    const guestUser = USER_ROLES.find(r => r.id === "guest") || USER_ROLES[0];
-    setActiveRole(guestUser);
-    setIsAuthenticated(true);
-    localStorage.setItem("circulus_auth", "true");
-    localStorage.setItem("circulus_role", JSON.stringify(guestUser));
-    showToast("Welcome! Exploring as Read-Only Guest.");
+    showToast(`Welcome ${user.name} (${user.companyName || user.orgName})! Authenticated.`);
   };
 
   const handleSignOut = () => {
@@ -255,7 +248,6 @@ export default function App() {
     return (
       <LoginPage 
         onLoginSuccess={handleLoginSuccess}
-        onExploreAsGuest={handleGuestLogin}
       />
     );
   }
@@ -290,6 +282,7 @@ export default function App() {
           activeRole={activeRole}
           onOpenRealTimeEntry={() => setIsRealTimeModalOpen(true)}
           onOpenMobileMenu={() => setIsMobileOpen(true)}
+          onOpenAccountDetails={() => setIsAccountDrawerOpen(true)}
           onSignOut={handleSignOut}
         />
         
@@ -380,6 +373,18 @@ export default function App() {
         </main>
       </div>
 
+      {/* Account Profile & GPS Dossier Drawer */}
+      <AccountDrawer
+        isOpen={isAccountDrawerOpen}
+        onClose={() => setIsAccountDrawerOpen(false)}
+        activeRole={activeRole}
+        onSignOut={handleSignOut}
+        onUpdateRole={(newRole) => {
+          setActiveRole(newRole);
+          localStorage.setItem("circulus_role", JSON.stringify(newRole));
+          showToast("Profile & GPS telemetry updated!");
+        }}
+      />
       {/* Real-Time Entry Modal */}
       <RealTimeEntryModal
         isOpen={isRealTimeModalOpen}

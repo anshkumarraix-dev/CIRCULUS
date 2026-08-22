@@ -271,14 +271,55 @@ export interface OwnershipEvent {
   evidenceType?: EvidenceStatus;
 }
 
+export interface GPSLocation {
+  latitude: number;
+  longitude: number;
+  accuracyMeters?: number;
+  formattedAddress?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  district?: string;
+  verifiedAt?: string;
+}
+
 export interface UserRole {
-  id: string;
-  name: string;
-  orgName: string;
+  id: string; // e.g. "supplier" | "buyer" | "auditor" or unique user ID
+  name: string; // Signatory / User Name
+  email?: string; // Corporate Email
+  orgName: string; // Company / Facility Name
+  companyName?: string; // Alias
+  designation?: string; // e.g. "Plant Operations Head", "Procurement Lead"
+  accountType?: "buyer" | "seller" | "auditor"; // Role
+  scrapTypeProduced?: string; // e.g. "Aluminium Extrusion Scrap, Copper Wire"
+  scrapTypeProcured?: string; // For buyers
   gstin: string;
-  location: string;
+  location: string; // "City, State"
+  gpsLocation?: GPSLocation;
   avatar: string;
   isVerified?: boolean;
+  registeredAt?: string;
+  securityLevel?: string;
+  token?: string;
+}
+
+export interface SellerProfile {
+  id: string;
+  name: string;
+  companyName: string;
+  designation: string;
+  email: string;
+  scrapTypeProduced: string;
+  category: MaterialCategory;
+  city: string;
+  state: string;
+  gstin: string;
+  gpsLocation?: GPSLocation;
+  monthlyVolumeMT?: number;
+  purityAvg?: number;
+  verifiedAt: string;
+  isVerified: boolean;
+  avatar?: string;
 }
 
 export interface BRSRReportSummary {
@@ -301,16 +342,78 @@ export interface BRSRReportSummary {
 }
 
 export const USER_ROLES: UserRole[] = [
-  {
-    id: "guest",
-    name: "Guest Explorer",
-    orgName: "Public Viewer",
-    gstin: "N/A",
-    location: "N/A",
-    avatar: "👁️",
-    isVerified: false
+  { 
+    id: "supplier", 
+    name: "Rajesh Sharma", 
+    email: "rajesh.sharma@alucast.in",
+    orgName: "AluCast Manufacturing", 
+    companyName: "AluCast Manufacturing Pvt Ltd",
+    designation: "Plant Head & VP Operations",
+    accountType: "seller",
+    scrapTypeProduced: "Aluminium 6063 Scrap, Heavy Extrusions",
+    gstin: "24AAACA1234B1Z5", 
+    location: "Sanand, Gujarat", 
+    gpsLocation: {
+      latitude: 22.9904,
+      longitude: 72.3812,
+      formattedAddress: "GIDC Industrial Estate, Sanand II, Ahmedabad, Gujarat 382170",
+      city: "Sanand",
+      state: "Gujarat",
+      pincode: "382170",
+      verifiedAt: new Date().toISOString()
+    },
+    avatar: "🏭", 
+    isVerified: true,
+    securityLevel: "AES-256 / SPCB Node Certified"
   },
-  { id: "supplier", name: "Plant Manager", orgName: "AluCast Manufacturing", gstin: "24AAACA1234B1Z5", location: "Sanand, GJ", avatar: "👤", isVerified: true },
-  { id: "buyer", name: "Procurement Lead", orgName: "Mahavir PolyRecycle", gstin: "24AABCM1234F1Z8", location: "Surat, GJ", avatar: "👔", isVerified: true },
-  { id: "auditor", name: "Compliance Officer", orgName: "GreenTech Audits", gstin: "27AADCG9876E1Z2", location: "Mumbai, MH", avatar: "🛡️", isVerified: true },
+  { 
+    id: "buyer", 
+    name: "Priya Mehta", 
+    email: "p.mehta@mahavirrecycle.com",
+    orgName: "Mahavir PolyRecycle", 
+    companyName: "Mahavir PolyRecycle Industries",
+    designation: "Head of Procurement & Circularity",
+    accountType: "buyer",
+    scrapTypeProduced: "PET Flakes, Recycled Polymer Pellets",
+    scrapTypeProcured: "rPET Bottle Bales, HDPE Scrap, PP Granules",
+    gstin: "24AABCM1234F1Z8", 
+    location: "Surat, Gujarat", 
+    gpsLocation: {
+      latitude: 21.1702,
+      longitude: 72.8311,
+      formattedAddress: "Sachin GIDC Industrial Area, Surat, Gujarat 394230",
+      city: "Surat",
+      state: "Gujarat",
+      pincode: "394230",
+      verifiedAt: new Date().toISOString()
+    },
+    avatar: "👔", 
+    isVerified: true,
+    securityLevel: "AES-256 / SPCB Node Certified"
+  },
+  { 
+    id: "auditor", 
+    name: "Dr. Vikram Kulkarni", 
+    email: "vikram.k@greentechaudits.org",
+    orgName: "GreenTech Audits", 
+    companyName: "GreenTech Environmental Compliance Audits",
+    designation: "Lead CPCB / SPCB Technical Auditor",
+    accountType: "auditor",
+    scrapTypeProduced: "EPR & Hazardous Waste Manifest Verification",
+    gstin: "27AADCG9876E1Z2", 
+    location: "Mumbai, Maharashtra", 
+    gpsLocation: {
+      latitude: 19.0760,
+      longitude: 72.8777,
+      formattedAddress: "Bandra-Kurla Complex, Bandra East, Mumbai, MH 400051",
+      city: "Mumbai",
+      state: "Maharashtra",
+      pincode: "400051",
+      verifiedAt: new Date().toISOString()
+    },
+    avatar: "🛡️", 
+    isVerified: true,
+    securityLevel: "AES-256 / ISO 14001 Lead Assessor"
+  },
 ];
+
